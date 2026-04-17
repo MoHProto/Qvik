@@ -8,9 +8,20 @@ import { MessageItem, type MessageItemData } from './MessageItem';
 export type MessageListProps = {
   data: MessageItemData[];
   emptyMessage: React.ComponentProps<typeof EmptyMessage>;
+  /** Extra bottom padding (e.g. for a floating footer over the list). */
+  contentPaddingBottom?: number;
 };
 
-export function MessageList({ data, emptyMessage }: MessageListProps) {
+export function MessageList({
+  data,
+  emptyMessage,
+  contentPaddingBottom = 0,
+}: MessageListProps) {
+  const contentStyle =
+    data.length === 0
+      ? [styles.listEmpty, { paddingBottom: contentPaddingBottom }]
+      : [styles.list, { paddingBottom: contentPaddingBottom }];
+
   return (
     <FlatList
       data={data}
@@ -24,7 +35,7 @@ export function MessageList({ data, emptyMessage }: MessageListProps) {
           />
         </View>
       }
-      contentContainerStyle={data.length === 0 ? styles.listEmpty : styles.list}
+      contentContainerStyle={contentStyle}
     />
   );
 }

@@ -1,3 +1,7 @@
+import {
+  getMessageFormListInsetBottom,
+  MessageForm,
+} from 'components/message/MessageForm';
 import { MessageList } from 'components/message/MessageList';
 import type { MessageItemData } from 'components/message/MessageItem';
 import { ThreadTitleButton } from 'components/thread/ThreadTitleButton';
@@ -6,6 +10,7 @@ import type { Href } from 'expo-router';
 import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
 import React, { useLayoutEffect, useMemo } from 'react';
 import { View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StyleSheet } from 'react-native-unistyles';
 
 function buildExampleMessages(threadId: string): MessageItemData[] {
@@ -53,11 +58,16 @@ function buildExampleMessages(threadId: string): MessageItemData[] {
 export default function MessageListScreen() {
   const navigation = useNavigation();
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   const { threadId } = useLocalSearchParams<{ threadId: string }>();
   const id = threadId ?? '';
 
   const thread = useMemo(() => getExampleThreadById(id), [id]);
   const data = useMemo(() => buildExampleMessages(id), [id]);
+  const listBottomInset = useMemo(
+    () => getMessageFormListInsetBottom(insets.bottom),
+    [insets.bottom],
+  );
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -78,11 +88,13 @@ export default function MessageListScreen() {
     <View style={styles.screen}>
       <MessageList
         data={data}
+        contentPaddingBottom={listBottomInset}
         emptyMessage={{
           icon: 'chatbubble-ellipses-outline',
           message: 'No messages in this thread.',
         }}
       />
+      <MessageForm />
     </View>
   );
 }
