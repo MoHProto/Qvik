@@ -28,6 +28,14 @@ These rules apply to the `App/` project. Follow them for all new code and when t
 - **Requirement:** One clear place per domain: if code needs to “get X from somewhere,” there must be a **service function** for it; hooks orchestrate React Query + that function.
 - **Forbidden in components:** Direct `fetch`, axios, Watermelon/database calls, or Expo modules that perform I/O — use a service, then a hook.
 
+## 4. Forms: Formik + Yup
+
+- **Requirement:** User-facing forms **must** use **Formik** for state and **Yup** for validation. Yup schemas and shared validation helpers **must** live under **`validation/`** (`App/validation/`). Full rules: **`app-forms.mdc`** in this folder.
+
+## 5. Modals: react-popup-manager
+
+- **Requirement:** Modal overlays **must** be opened only via **react-popup-manager**, use **iOS-style sheet** motion (slide from bottom + **fading** backdrop), **height follows content**, and **inner scroll** when content is long. Full rules: **`app-modals.mdc`** in this folder.
+
 ## Quick reference
 
 | Layer        | Responsibility                                      |
@@ -37,6 +45,7 @@ These rules apply to the `App/` project. Follow them for all new code and when t
 | `app/`      | Expo Router: params + thin wrappers into `screens/` |
 | `screens/`  | Screen UI + hook wiring; call hooks only             |
 | `lib/queryKeys.ts` | Canonical query keys and invalidation targets |
+| `validation/` | Yup schemas and helpers for Formik (`app-forms.mdc`) |
 
 ```text
 Component → hook (hooks/**) → service (services/**) → API / DB / system

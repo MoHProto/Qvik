@@ -1,0 +1,24 @@
+---
+description: REQUIRED — App forms MUST use Formik, Yup, and schemas under validation/
+globs: App/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# Forms (`App/`) — mandatory
+
+Whenever you add or change a **user-facing form** in `App/` (fields, submit handlers, multi-step flows), you **MUST** use **Formik** for form state and **Yup** for validation. Do **not** use ad-hoc `useState` field wiring, `react-hook-form`, or other form libraries unless there is an explicit project exception.
+
+## Validation location (required)
+
+- **MUST** define Yup schemas (and shared validation helpers used by those schemas) under **`validation/`** (project path `App/validation/`) — e.g. `validation/loginSchema.ts`, `validation/messageSchema.ts`.
+- **MUST NOT** embed large Yup schemas inline in screen or component files when they are non-trivial or reused; colocate them in **`validation/`** and import into the form component or screen.
+
+## Component wiring (required)
+
+- **MUST** connect fields with Formik (`Field`, `useField`, or explicit `values` / `handleChange` / `handleBlur` / `errors` / `touched` from Formik) rather than duplicating parallel field state.
+- **MUST** pass Yup validation via Formik’s `validationSchema` (or equivalent Formik-supported Yup integration).
+
+## Do not
+
+- **Do not** add new forms that bypass Formik/Yup without an explicit exception.
+- **Do not** scatter Yup rules across unrelated modules — keep them in **`validation/`**.

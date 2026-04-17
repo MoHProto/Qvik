@@ -1,0 +1,35 @@
+---
+description: REQUIRED — App modals via react-popup-manager, iOS sheet look, content height + scroll
+globs: App/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# Modals (`App/`) — mandatory
+
+Whenever you add or change **modal overlays** in `App/` (dialogs, confirmations, bottom sheets / action sheets shown as overlays, pickers, lightboxes, or any full-screen or partial-screen layer that blocks or sits above the main UI), you **MUST** open and manage them with **react-popup-manager**. **Do not** use any other pattern to show those overlays unless there is an explicit project exception.
+
+## Opening modals (required)
+
+- **MUST** register/show/dismiss modal content through **react-popup-manager** APIs and providers as documented for that library (single supported stack for popups).
+- **MUST NOT** introduce parallel modal systems for the same use case.
+
+## iOS sheet look and motion (required)
+
+- **MUST** present overlay modals as an **iOS-style sheet**: the sheet **animates from the bottom** (slide / translate on show and hide), anchored to the safe area as appropriate.
+- **MUST** use a **backdrop** over the underlying UI that **fades** (opacity animation) in and out together with the sheet; avoid a hard-cut dim with no transition.
+
+## Sheet height and scrolling (required)
+
+- **MUST** size the sheet so its **height follows the content** (intrinsic / shrink-wrap height): for short content, the sheet **must not** occupy a tall empty band or default to full-screen height.
+- **MUST** make **long** content **scroll inside the sheet**: use **`ScrollView`**, **`FlatList`**, or **`SectionList`** (or an equivalent scroll container) for the body, with layout that **caps** sheet growth (e.g. **max height** or flex so the sheet stops growing) so overflow scrolls **within** the sheet, not off-screen.
+- **MUST NOT** leave overflowing sheet content non-scrollable.
+
+## Do not
+
+- **Do not** use React Native’s **`<Modal>`** component as the primary way to show app modals.
+- **Do not** use other modal, popup, or overlay manager libraries (or ad-hoc global `useState` + portal trees) to open the same class of UI.
+- **Do not** wire “open modal” flows through navigation-only presentation (e.g. stack `presentation: 'modal'`) **when** the intent is a managed overlay popup; use **react-popup-manager** instead.
+
+## Scope note
+
+- This rule targets **overlay modals managed as popups**. It does not replace normal **screen** navigation; route screens stay under the app’s router rules (`app-screens-routing.mdc`). If something is clearly a **route screen**, follow routing rules; if it is clearly a **popup overlay**, it **must** go through **react-popup-manager**.
