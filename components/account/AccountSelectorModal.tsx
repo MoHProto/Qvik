@@ -56,7 +56,7 @@ export function AccountSelectorModal({
         Animated.timing(sheetTranslateY, {
           toValue: maxSheetHeight,
           duration: SHEET_ANIM_MS,
-          useNativeDriver: true,
+          useNativeDriver: false,
         }),
       ]).start(() => {
         setModalShown(false);
@@ -76,7 +76,7 @@ export function AccountSelectorModal({
       Animated.timing(sheetTranslateY, {
         toValue: 0,
         duration: SHEET_ANIM_MS,
-        useNativeDriver: true,
+        useNativeDriver: false,
       }),
     ]).start();
   }, [backdropOpacity, sheetTranslateY]);
@@ -93,9 +93,9 @@ export function AccountSelectorModal({
       animationType="none"
       onRequestClose={() => runClose()}
     >
-      <View style={styles.root} pointerEvents="box-none">
+      <View style={styles.root}>
         <Pressable
-          style={StyleSheet.absoluteFill}
+          style={[StyleSheet.absoluteFill, styles.backdropLayer]}
           accessibilityRole="button"
           accessibilityLabel="Dismiss"
           onPress={() => runClose()}
@@ -119,10 +119,27 @@ export function AccountSelectorModal({
             },
           ]}
         >
-          <View style={styles.grabberWrap}>
-            <View style={styles.grabber} />
+          <View style={styles.sheetHeader}>
+            <Text style={styles.sheetTitle} numberOfLines={1}>
+              Accounts
+            </Text>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Close"
+              hitSlop={12}
+              onPress={() => runClose()}
+              style={({ pressed }) => [
+                styles.closeButton,
+                pressed && styles.closeButtonPressed,
+              ]}
+            >
+              <Ionicons
+                name="close"
+                size={18}
+                color={theme.colors.text}
+              />
+            </Pressable>
           </View>
-          <Text style={styles.sheetTitle}>Accounts</Text>
           <View style={styles.listWrap}>
             <AccountList
               data={accounts}
@@ -163,10 +180,15 @@ const styles = StyleSheet.create((theme) => ({
     flex: 1,
     justifyContent: 'flex-end',
   },
+  backdropLayer: {
+    zIndex: 0,
+  },
   backdrop: {
     backgroundColor: 'rgba(0,0,0,0.45)',
   },
   sheet: {
+    zIndex: 1,
+    elevation: 12,
     backgroundColor: theme.colors.surface,
     borderTopLeftRadius: theme.radius.card,
     borderTopRightRadius: theme.radius.card,
@@ -174,25 +196,38 @@ const styles = StyleSheet.create((theme) => ({
     borderWidth: StyleSheet.hairlineWidth,
     borderBottomWidth: 0,
     borderColor: theme.colors.border,
+    overflow: 'hidden',
   },
-  grabberWrap: {
+  sheetHeader: {
+    zIndex: 2,
+    elevation: 16,
+    flexDirection: 'row',
     alignItems: 'center',
-    paddingBottom: theme.spacing[2],
-  },
-  grabber: {
-    width: 36,
-    height: 4,
-    borderRadius: 2,
-    backgroundColor: theme.colors.border,
+    justifyContent: 'space-between',
+    gap: theme.spacing[3],
+    paddingHorizontal: theme.spacing[4],
+    paddingTop: theme.spacing[3],
+    paddingBottom: theme.spacing[3],
+    backgroundColor: theme.colors.surface,
   },
   sheetTitle: {
-    fontSize: 13,
+    flex: 1,
+    minWidth: 0,
+    fontSize: 17,
     fontWeight: '600',
-    color: theme.colors.muted,
-    textAlign: 'center',
-    marginBottom: theme.spacing[2],
-    textTransform: 'uppercase',
-    letterSpacing: 0.4,
+    color: theme.colors.text,
+    textAlign: 'left',
+  },
+  closeButton: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: theme.colors.incomingBubble,
+  },
+  closeButtonPressed: {
+    opacity: 0.65,
   },
   listWrap: {
     maxHeight: maxSheetHeight - 160,

@@ -5,7 +5,7 @@ import React from 'react';
 import { Platform, Pressable } from 'react-native';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
-function IndexHeaderAddButton() {
+function ThreadsHeaderAddButton() {
   const notify = useNotifyToast();
   const { theme } = useUnistyles();
   return (
@@ -29,7 +29,7 @@ function IndexHeaderAddButton() {
   );
 }
 
-export default function IndexTabLayout() {
+export default function ThreadsTabLayout() {
   const { theme } = useUnistyles();
   return (
     <Stack
@@ -48,7 +48,7 @@ export default function IndexTabLayout() {
       <Stack.Screen
         name="index"
         options={{
-          headerRight: () => <IndexHeaderAddButton />,
+          headerRight: () => <ThreadsHeaderAddButton />,
         }}
       />
     </Stack>

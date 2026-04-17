@@ -58,7 +58,7 @@ export default function NavigationTabs() {
           }}
         />
         <Tabs.Screen
-          name="index"
+          name="threads"
           options={{
             title: 'Threads',
             tabBarIcon: ({ color, size }) => (

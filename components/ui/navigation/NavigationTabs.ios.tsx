@@ -37,7 +37,7 @@ export default function NavigationTabs() {
           <Label>Search</Label>
         </NativeTabs.Trigger>
 
-        <NativeTabs.Trigger name="index">
+        <NativeTabs.Trigger name="threads">
           <Icon
             src={{
               default: (
