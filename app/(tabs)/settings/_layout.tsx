@@ -24,15 +24,8 @@ const styles = StyleSheet.create((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  headerButtonPressed: {
-    opacity: 0.5,
-  },
-  headerIcon: {
-    transform: [{ translateY: -1 }],
-  },
   headerButtonText: {
     ...theme.typography.headerButton,
     color: theme.colors.primary,
   },
 }));
-
