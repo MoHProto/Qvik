@@ -1,0 +1,45 @@
+---
+description: App architecture — hooks-first data, React Query, service layer
+globs: App/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# App architecture (strict)
+
+These rules apply to the `App/` project. Follow them for all new code and when touching existing code.
+
+## 1. Hooks are the only UI entry point for external data and side effects
+
+- **Requirement:** Any data or behavior that comes from outside pure local UI state (backend, local DB, device/system APIs, shared stores) must be accessed through **custom hooks** under `hooks/**/*`.
+- **Requirement:** Screen components under `screens/*Screen.tsx`, other presentational components, and **thin** route files under `app/` **must not** call services, `fetch`, database APIs, or React Query (`useQuery`, `useMutation`, `useQueryClient`) directly. They consume hooks only. (Route files in `app/` should mostly forward props into `screens/*Screen.tsx`; see the **Route files vs screen components** rule.)
+- **Requirement:** If a hook does not exist yet, **add it** under `hooks/**/*` rather than inlining logic in a component.
+- **Exception:** Truly local state (`useState`, `useReducer`, form UI, animation) and styling/layout do not require a dedicated hook file.
+
+## 2. React Query for remote or shared mutable data
+
+- **Requirement:** Data that can change over time or is shared across screens **must** go through **TanStack React Query** (`useQuery` / `useMutation` / `useInfiniteQuery` as appropriate), defined inside hooks (see §1), not in leaf components.
+- **Requirement:** Use a **stable, hierarchical query key** for every query. Extend and reuse keys from `lib/queryKeys.ts` (or add new factories there); do not scatter stringly-typed keys.
+- **Requirement:** After any mutation or action that changes server-visible data, **invalidate** (or update) the affected query keys so the UI stays consistent.
+- **Requirement:** Prefer hooks that wrap query/mutation configuration (including `queryFn` calling services) so caching and invalidation behavior stays centralized.
+
+## 3. Services abstract all I/O
+
+- **Requirement:** All network calls, persistence (e.g. local DB), and **system/native APIs** must live in **`services/`** as functions on dedicated modules (e.g. `FooService.ts`). Hooks and React Query `queryFn` / `mutationFn` **call services**; they do not embed raw HTTP or DB code.
+- **Requirement:** One clear place per domain: if code needs to “get X from somewhere,” there must be a **service function** for it; hooks orchestrate React Query + that function.
+- **Forbidden in components:** Direct `fetch`, axios, Watermelon/database calls, or Expo modules that perform I/O — use a service, then a hook.
+
+## Quick reference
+
+| Layer        | Responsibility                                      |
+|-------------|------------------------------------------------------|
+| `services/` | I/O only; no React; no hooks                         |
+| `hooks/`    | React Query + orchestration; exposes data to UI    |
+| `app/`      | Expo Router: params + thin wrappers into `screens/` |
+| `screens/`  | Screen UI + hook wiring; call hooks only             |
+| `lib/queryKeys.ts` | Canonical query keys and invalidation targets |
+
+```text
+Component → hook (hooks/**) → service (services/**) → API / DB / system
+                ↓
+         React Query (cache + invalidation via queryKeys)
+```

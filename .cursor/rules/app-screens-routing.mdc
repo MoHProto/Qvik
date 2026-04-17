@@ -1,0 +1,32 @@
+---
+description: Expo Router in app/ vs screen UI in screens/*Screen.tsx
+globs: App/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# Route files vs screen components
+
+## `app/**` — routing only (thin)
+
+- **Requirement:** Files under `app/` are for **Expo Router**: segments, groups, and layouts. Their job is to **resolve routing** — read **route and query params** (e.g. `useLocalSearchParams`, `useGlobalSearchParams`, `usePathname`, `router` from `expo-router`) and **pass them as props** into a screen component under `screens/`.
+- **Requirement:** Route files **must not** implement the main screen UI, lists, forms, or **data wiring** (hooks that load or mutate domain data). Delegate that to `screens/*Screen.tsx`.
+- **Requirement:** A typical leaf route file exports a small default component that only forwards params and renders `<FooScreen ... />`.
+- **Exception:** `*_layout.tsx` files may include navigation chrome (tabs, stacks, headers) and providers that **wrap** routes; keep them focused on shell/layout, not feature data wiring.
+
+## `screens/*Screen.tsx` — UI + data wiring
+
+- **Requirement:** Implement routable **screens** as `screens/<Name>Screen.tsx` (use **`.tsx`** for JSX). This is where **hooks** meet **UI**: layout, lists, handlers, and composing presentational pieces.
+- **Requirement:** **Wire data here** using hooks from `hooks/**/*` per the app architecture rule — not inside `app/**` route files (except layouts as noted above).
+- **Requirement:** Prefer **explicit props** for router-derived values (ids, search params) passed from the parent `app/` route file, so the screen stays easy to test and the route file stays the single place that reads those params.
+
+## Flow
+
+```text
+app/(tabs)/foo/index.tsx   →  reads params  →  <FooScreen accountId={id} />
+screens/FooScreen.tsx      →  useXxx hooks + UI
+```
+
+## Naming
+
+- Match screen file names to purpose: `HomeScreen.tsx`, `SettingsScreen.tsx`, etc.
+- One primary `*Screen.tsx` per primary route leaf unless the route intentionally shares a screen.
