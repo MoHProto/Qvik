@@ -1,5 +1,6 @@
 import { AppToast } from 'components/ui/toast';
 import { queryClient } from 'lib/queryClient';
+import { PopupProvider } from 'react-popup-manager';
 import {
   DarkTheme,
   DefaultTheme,
@@ -24,27 +25,29 @@ export default function RootLayout() {
     <SafeAreaProvider>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider value={theme}>
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen
-              name="threads/[threadId]/index"
-              options={{
-                title: 'Thread',
-                headerBackTitle: 'Back',
-                headerTitleAlign: 'center',
-              }}
-            />
-            <Stack.Screen
-              name="threads/[threadId]/messages"
-              options={{
-                title: 'Messages',
-                headerBackTitle: 'Threads',
-                headerTitleAlign: 'center',
-              }}
-            />
-          </Stack>
-          <StatusBar style="auto" />
-          <AppToast />
+          <PopupProvider>
+            <Stack>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen
+                name="threads/[threadId]/index"
+                options={{
+                  title: 'Thread',
+                  headerBackTitle: 'Back',
+                  headerTitleAlign: 'center',
+                }}
+              />
+              <Stack.Screen
+                name="threads/[threadId]/messages"
+                options={{
+                  title: 'Messages',
+                  headerBackTitle: 'Threads',
+                  headerTitleAlign: 'center',
+                }}
+              />
+            </Stack>
+            <StatusBar style="auto" />
+            <AppToast />
+          </PopupProvider>
         </ThemeProvider>
       </QueryClientProvider>
     </SafeAreaProvider>

@@ -2,6 +2,8 @@ import { StyleSheet } from 'react-native-unistyles';
 
 const colorsLight = {
   background: '#ffffff',
+  /** Grouped lists (e.g. Settings) — page tint behind inset sections */
+  groupedListBackground: '#f2f2f7',
   surface: '#ffffff',
   foreground: '#ffffff',
   text: '#111827',
@@ -19,6 +21,7 @@ const colorsLight = {
 
 const colorsDark = {
   background: '#0b1220',
+  groupedListBackground: '#0b1220',
   surface: '#111827',
   foreground: '#1f2937',
   text: '#f9fafb',
@@ -44,6 +47,7 @@ const lightTheme = {
   },
   radius: {
     pill: 999,
+    card: 12,
   },
   typography: {
     title: { fontSize: 22, fontWeight: '700' as const },
