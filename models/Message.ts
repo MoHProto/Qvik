@@ -7,4 +7,7 @@ export class Message extends Model {
   @field('thread_id') threadId!: string;
   @field('body') body!: string;
   @field('created_at') createdAt!: number;
+  @field('input') input!: string | null;
+  @field('label') label!: string | null;
+  @field('error') error!: string | null;
 }

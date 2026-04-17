@@ -6,7 +6,9 @@ export default function SearchScreen() {
   return (
     <View style={styles.screen}>
       <Text style={styles.title}>Search</Text>
-      <Text style={styles.subtitle}>Search dialogs, users, or anything else.</Text>
+      <Text style={styles.subtitle}>
+        Search dialogs, users, or anything else.
+      </Text>
     </View>
   );
 }
@@ -27,4 +29,3 @@ const styles = StyleSheet.create((theme) => ({
     color: theme.colors.muted,
   },
 }));
-

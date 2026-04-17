@@ -9,11 +9,13 @@ export default function SettingsTabLayout() {
     <Stack
       screenOptions={{
         headerTitle: 'Settings',
-        headerTintColor: Platform.select({ ios: theme.colors.primary, default: undefined }),
-      }}>
-      <Stack.Screen
-        name="index"
-      />
+        headerTintColor: Platform.select({
+          ios: theme.colors.primary,
+          default: undefined,
+        }),
+      }}
+    >
+      <Stack.Screen name="index" />
     </Stack>
   );
 }

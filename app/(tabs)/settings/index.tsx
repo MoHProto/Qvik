@@ -27,4 +27,3 @@ const styles = StyleSheet.create((theme) => ({
     color: theme.colors.muted,
   },
 }));
-

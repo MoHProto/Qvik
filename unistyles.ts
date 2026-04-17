@@ -5,9 +5,15 @@ const colorsLight = {
   surface: '#ffffff',
   text: '#111827',
   muted: '#6b7280',
+  /** Default fill for Avatar (and similar) when no custom background is set */
+  avatarFallback: '#e5e7eb',
   border: '#e5e7eb',
   // "Text-ish" tint for headers/links (instead of iOS default blue)
   primary: 'rgba(17, 24, 39, 0.82)',
+  error: '#b91c1c',
+  outgoingBubble: '#dbeafe',
+  incomingBubble: '#f3f4f6',
+  incomingBubbleError: '#fef2f2',
 } as const;
 
 const colorsDark = {
@@ -15,9 +21,13 @@ const colorsDark = {
   surface: '#111827',
   text: '#f9fafb',
   muted: '#9ca3af',
+  avatarFallback: '#ececec',
   border: '#1f2937',
-  // "Text-ish" tint for headers/links (instead of iOS default blue)
   primary: 'rgba(249, 250, 251, 0.82)',
+  error: '#f87171',
+  outgoingBubble: '#1e3a8a',
+  incomingBubble: '#1f2937',
+  incomingBubbleError: '#3f1f1f',
 } as const;
 
 const lightTheme = {
@@ -76,4 +86,3 @@ StyleSheet.configure({
   },
   breakpoints,
 });
-

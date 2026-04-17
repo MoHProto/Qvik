@@ -14,8 +14,17 @@ function IndexHeaderAddButton() {
       accessibilityRole="button"
       hitSlop={12}
       onPress={() => notify.success('Saved', 'Your change was recorded.')}
-      style={({ pressed }) => [styles.headerButton, pressed && styles.headerButtonPressed]}>
-      <Ionicons name="add" size={24} color={theme.colors.primary} style={styles.headerIcon} />
+      style={({ pressed }) => [
+        styles.headerButton,
+        pressed && styles.headerButtonPressed,
+      ]}
+    >
+      <Ionicons
+        name="add"
+        size={24}
+        color={theme.colors.primary}
+        style={styles.headerIcon}
+      />
     </Pressable>
   );
 }
@@ -26,8 +35,12 @@ export default function IndexTabLayout() {
     <Stack
       screenOptions={{
         headerTitle: 'Threads',
-        headerTintColor: Platform.select({ ios: theme.colors.primary, default: undefined }),
-      }}>
+        headerTintColor: Platform.select({
+          ios: theme.colors.primary,
+          default: undefined,
+        }),
+      }}
+    >
       <Stack.Screen
         name="index"
         options={{
@@ -52,4 +65,3 @@ const styles = StyleSheet.create((theme) => ({
     transform: [{ translateY: -4 }],
   },
 }));
-

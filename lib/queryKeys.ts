@@ -8,7 +8,8 @@ export const queryKeys = {
   },
   threads: {
     all: ['threads'] as const,
-    byAccount: (accountId: string) => ['threads', 'account', accountId] as const,
+    byAccount: (accountId: string) =>
+      ['threads', 'account', accountId] as const,
   },
   messages: {
     byThread: (threadId: string) => ['messages', 'thread', threadId] as const,

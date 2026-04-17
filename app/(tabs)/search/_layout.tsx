@@ -6,9 +6,9 @@ export default function SearchTabLayout() {
     <Stack
       screenOptions={{
         headerTitle: 'Search',
-      }}>
+      }}
+    >
       <Stack.Screen name="index" />
     </Stack>
   );
 }
-

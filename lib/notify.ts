@@ -11,7 +11,7 @@ function show(
   type: 'success' | 'error' | 'info',
   title: string,
   message?: string,
-  options?: NotifyOptions
+  options?: NotifyOptions,
 ) {
   const onPress = options?.onPress;
   Toast.show({
