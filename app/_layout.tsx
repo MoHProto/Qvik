@@ -27,10 +27,19 @@ export default function RootLayout() {
           <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen
+              name="threads/[threadId]/index"
+              options={{
+                title: 'Thread',
+                headerBackTitle: 'Back',
+                headerTitleAlign: 'center',
+              }}
+            />
+            <Stack.Screen
               name="threads/[threadId]/messages"
               options={{
                 title: 'Messages',
                 headerBackTitle: 'Threads',
+                headerTitleAlign: 'center',
               }}
             />
           </Stack>

@@ -1,6 +1,9 @@
 import { MessageList } from 'components/message/MessageList';
 import type { MessageItemData } from 'components/message/MessageItem';
-import { useLocalSearchParams, useNavigation } from 'expo-router';
+import { ThreadTitleButton } from 'components/thread/ThreadTitleButton';
+import { getExampleThreadById } from 'lib/exampleThreads';
+import type { Href } from 'expo-router';
+import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
 import React, { useLayoutEffect, useMemo } from 'react';
 import { View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
@@ -49,16 +52,27 @@ function buildExampleMessages(threadId: string): MessageItemData[] {
 
 export default function MessageListScreen() {
   const navigation = useNavigation();
+  const router = useRouter();
   const { threadId } = useLocalSearchParams<{ threadId: string }>();
   const id = threadId ?? '';
 
+  const thread = useMemo(() => getExampleThreadById(id), [id]);
   const data = useMemo(() => buildExampleMessages(id), [id]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: 'Messages',
+      // Native stack defaults to left-aligned titles on Android; center like iOS.
+      headerTitleAlign: 'center',
+      headerTitle: () => (
+        <ThreadTitleButton
+          data={thread}
+          onPress={() =>
+            router.push(`/threads/${thread.id}` as Href)
+          }
+        />
+      ),
     });
-  }, [navigation]);
+  }, [navigation, router, thread]);
 
   return (
     <View style={styles.screen}>

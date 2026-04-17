@@ -18,12 +18,20 @@ export type ThreadItemData = {
   avatarColor?: string;
 };
 
+export type ThreadItemVariant = 'row' | 'column';
+
 export type ThreadItemProps = {
   data: ThreadItemData;
   onPress?: () => void;
+  /** List row (default) or stacked layout for detail / profile-style views. */
+  variant?: ThreadItemVariant;
 };
 
-export function ThreadItem({ data, onPress }: ThreadItemProps) {
+export function ThreadItem({
+  data,
+  onPress,
+  variant = 'row',
+}: ThreadItemProps) {
   const formatDate = useDateFormatter();
   const hasUrl = Boolean(data.rootUrl && data.rootUrl.length > 0);
   const showIcon = !hasUrl && Boolean(data.iconEmoji);
@@ -31,12 +39,18 @@ export function ThreadItem({ data, onPress }: ThreadItemProps) {
   const subtitle =
     data.description ??
     (data.createdAt != null ? formatDate(data.createdAt) : '');
+  const isColumn = variant === 'column';
+  const avatarSize = isColumn ? 56 : 40;
 
   return (
     <Pressable
-      accessibilityRole="button"
+      accessibilityRole={onPress ? 'button' : undefined}
+      disabled={!onPress}
       onPress={onPress}
-      style={({ pressed }) => [styles.row, pressed && styles.rowPressed]}
+      style={({ pressed }) => [
+        isColumn ? styles.column : styles.row,
+        pressed && onPress ? styles.rowPressed : null,
+      ]}
     >
       <Avatar
         url={data.rootUrl}
@@ -44,14 +58,20 @@ export function ThreadItem({ data, onPress }: ThreadItemProps) {
         initials={initials || undefined}
         background={data.avatarBackground}
         color={data.avatarColor}
-        size={40}
+        size={avatarSize}
       />
-      <View style={styles.textCol}>
-        <Text style={styles.title} numberOfLines={1}>
+      <View style={isColumn ? styles.textColColumn : styles.textCol}>
+        <Text
+          style={isColumn ? styles.titleColumn : styles.title}
+          numberOfLines={isColumn ? 3 : 1}
+        >
           {data.title}
         </Text>
         {subtitle.length > 0 ? (
-          <Text style={styles.subtitle} numberOfLines={1}>
+          <Text
+            style={isColumn ? styles.subtitleColumn : styles.subtitle}
+            numberOfLines={isColumn ? 4 : 1}
+          >
             {subtitle}
           </Text>
         ) : null}
@@ -70,6 +90,13 @@ const styles = StyleSheet.create((theme) => ({
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: theme.colors.border,
   },
+  column: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: theme.spacing[4],
+    paddingVertical: theme.spacing[6],
+    paddingHorizontal: theme.spacing[4],
+  },
   rowPressed: {
     opacity: 0.7,
   },
@@ -78,13 +105,30 @@ const styles = StyleSheet.create((theme) => ({
     minWidth: 0,
     gap: theme.spacing[1],
   },
+  textColColumn: {
+    alignItems: 'center',
+    gap: theme.spacing[2],
+    maxWidth: 320,
+    width: '100%',
+  },
   title: {
     fontSize: 16,
     fontWeight: '600',
     color: theme.colors.text,
   },
+  titleColumn: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: theme.colors.text,
+    textAlign: 'center',
+  },
   subtitle: {
     fontSize: 14,
     color: theme.colors.muted,
+  },
+  subtitleColumn: {
+    fontSize: 15,
+    color: theme.colors.muted,
+    textAlign: 'center',
   },
 }));
