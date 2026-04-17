@@ -1,7 +1,7 @@
 import { Q } from '@nozbe/watermelondb';
 import type { Database } from '@nozbe/watermelondb';
 
-import type { Message } from '@/models';
+import type { Message } from 'models';
 
 export class MessageService {
   constructor(private readonly db: Database) {}

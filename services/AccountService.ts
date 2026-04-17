@@ -1,6 +1,6 @@
 import type { Database } from '@nozbe/watermelondb';
 
-import type { Account } from '@/models';
+import type { Account } from 'models';
 
 /**
  * Local persistence for accounts (WatermelonDB). UI should call these from

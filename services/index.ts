@@ -1,4 +1,4 @@
-import { database } from '@/lib/watermelon';
+import { database } from 'lib/watermelon';
 
 import { AccountService } from './AccountService';
 import { MessageService } from './MessageService';

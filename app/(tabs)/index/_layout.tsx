@@ -1,7 +1,8 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { notify } from 'lib/notify';
 import { Stack } from 'expo-router';
 import React from 'react';
-import { Alert, Platform, Pressable } from 'react-native';
+import { Platform, Pressable } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 
 export default function IndexTabLayout() {
@@ -19,7 +20,7 @@ export default function IndexTabLayout() {
               accessibilityLabel="Add"
               accessibilityRole="button"
               hitSlop={12}
-              onPress={() => Alert.alert('Home', 'Save')}
+              onPress={() => notify.success('Saved', 'Your change was recorded.')}
               style={({ pressed }) => [styles.headerButton, pressed && styles.headerButtonPressed]}>
               <Ionicons
                 name="add"

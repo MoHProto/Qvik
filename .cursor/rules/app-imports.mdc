@@ -1,0 +1,35 @@
+---
+description: App module imports — bare paths from project root (no @/ alias)
+globs: App/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# App module imports (strict)
+
+These rules apply to TypeScript and TSX under `App/`. **Do not merge or ship changes** that introduce forbidden import styles. When touching a file, **fix any `@/` app imports** in that file.
+
+## Requirement: bare paths from the App project root
+
+- **MUST:** Imports of app code **must** use **bare paths** anchored at the `App/` project root: `lib/...`, `components/...`, `models`, `services/...`, `hooks/...`, etc. TypeScript resolves them via `compilerOptions.baseUrl` (`"."` in `App/tsconfig.json`); Metro resolves them via `babel-plugin-module-resolver` in `App/babel.config.js`.
+
+- **MUST NOT:** The **`@/`** path alias (or any other path alias) for app modules. Do **not** write `import x from '@/lib/foo'`, `import x from '@components/...'`, or reintroduce `paths` aliases in `tsconfig.json` for this purpose.
+
+- **MAY:** Normal `npm` / `node_modules` package names (`react`, `expo-router`, `@tanstack/react-query`, etc.) and **relative** imports (`./`, `../`) when appropriate (e.g. colocated files in the same folder).
+
+## Examples
+
+```typescript
+// ❌ FORBIDDEN — app imports with @/ alias
+import { notify } from '@/lib/notify';
+import { AppToast } from '@/components/ui/toast';
+import type { Message } from '@/models';
+
+// ✅ REQUIRED — bare paths from App/ root
+import { notify } from 'lib/notify';
+import { AppToast } from 'components/ui/toast';
+import type { Message } from 'models';
+```
+
+## Rationale
+
+Keeps imports consistent with `tsconfig` `baseUrl` and Babel `module-resolver`, avoids a second alias style, and matches the rest of the repo.

@@ -1,7 +1,7 @@
 import { Q } from '@nozbe/watermelondb';
 import type { Database } from '@nozbe/watermelondb';
 
-import type { Thread } from '@/models';
+import type { Thread } from 'models';
 
 export class ThreadService {
   constructor(private readonly db: Database) {}
