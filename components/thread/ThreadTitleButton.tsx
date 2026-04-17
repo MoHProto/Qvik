@@ -7,19 +7,19 @@ import type { ThreadItemData } from './ThreadItem';
 
 const AVATAR_SIZE = 28;
 
-/** Default cap on header title row width; title text scales down to fit inside. */
+/** Default cap on header title width; title text scales down to fit inside. */
 export const THREAD_TITLE_BUTTON_MAX_WIDTH = 260;
 
 /** Largest font size before `adjustsFontSizeToFit` shrinks to fit the title cell. */
-const TITLE_FONT_SIZE_MAX = 17;
+const TITLE_FONT_SIZE_MAX = 13;
 
-/** Smallest scale applied vs `TITLE_FONT_SIZE_MAX` (about 11pt at default). */
+/** Smallest scale applied vs `TITLE_FONT_SIZE_MAX` (about 8.5pt at default). */
 const TITLE_MIN_FONT_SCALE = 0.65;
 
 export type ThreadTitleButtonProps = {
   data: ThreadItemData;
   onPress?: () => void;
-  /** Max width for the row; text uses adaptive font size to stay within this width. */
+  /** Max width for the column; text uses adaptive font size to stay within this width. */
   maxWidth?: number;
 };
 
@@ -38,9 +38,9 @@ export function ThreadTitleButton({
       onPress={onPress}
       disabled={!onPress}
       style={({ pressed }) => [
-        styles.row,
+        styles.column,
         { maxWidth },
-        pressed && onPress ? styles.rowPressed : null,
+        pressed && onPress ? styles.columnPressed : null,
       ]}
     >
       <Avatar
@@ -66,18 +66,19 @@ export function ThreadTitleButton({
 }
 
 const styles = StyleSheet.create((theme) => ({
-  row: {
-    flexDirection: 'row',
+  column: {
+    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'center',
-    gap: theme.spacing[2],
+    gap: theme.spacing[1],
     minWidth: 0,
   },
-  rowPressed: {
+  columnPressed: {
     opacity: 0.7,
   },
   titleCell: {
+    alignSelf: 'stretch',
     flexShrink: 1,
     minWidth: 0,
   },
@@ -85,5 +86,6 @@ const styles = StyleSheet.create((theme) => ({
     fontSize: TITLE_FONT_SIZE_MAX,
     fontWeight: '600',
     color: theme.colors.text,
+    textAlign: 'center',
   },
 }));
