@@ -1,14 +1,15 @@
 import { Stack } from 'expo-router';
 import React from 'react';
 import { Platform } from 'react-native';
-import { StyleSheet } from 'react-native-unistyles';
+import { useUnistyles } from 'react-native-unistyles';
 
 export default function SettingsTabLayout() {
+  const { theme } = useUnistyles();
   return (
     <Stack
       screenOptions={{
         headerTitle: 'Settings',
-        headerTintColor: Platform.select({ ios: styles.headerButtonText.color, default: undefined }),
+        headerTintColor: Platform.select({ ios: theme.colors.primary, default: undefined }),
       }}>
       <Stack.Screen
         name="index"
@@ -16,16 +17,3 @@ export default function SettingsTabLayout() {
     </Stack>
   );
 }
-
-const styles = StyleSheet.create((theme) => ({
-  headerButton: {
-    height: 44,
-    paddingHorizontal: theme.spacing[2],
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  headerButtonText: {
-    ...theme.typography.headerButton,
-    color: theme.colors.primary,
-  },
-}));

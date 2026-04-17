@@ -1,8 +1,10 @@
 import Toast from 'react-native-toast-message';
 
-type NotifyOptions = {
+export type NotifyOptions = {
   /** Defaults to 3000 ms */
   duration?: number;
+  /** Runs when the toast is pressed; the toast is dismissed afterward. */
+  onPress?: () => void;
 };
 
 function show(
@@ -11,11 +13,20 @@ function show(
   message?: string,
   options?: NotifyOptions
 ) {
+  const onPress = options?.onPress;
   Toast.show({
     type,
     text1: title,
     text2: message,
     visibilityTime: options?.duration,
+    ...(onPress
+      ? {
+          onPress: () => {
+            onPress();
+            Toast.hide();
+          },
+        }
+      : {}),
   });
 }
 

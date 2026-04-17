@@ -10,11 +10,11 @@ export default function WebTabsLayout() {
       <TabSlot />
 
       <TabList style={styles.tabList}>
-        <TabTrigger name="index" href="/" style={styles.tab}>
+        <TabTrigger name="index" href="/(tabs)/index" style={styles.tab}>
           <Text style={styles.tabLabel}>Home</Text>
         </TabTrigger>
-        <TabTrigger name="explore" href="/explore" style={styles.tab}>
-          <Text style={styles.tabLabel}>Explore</Text>
+        <TabTrigger name="search" href="/(tabs)/search" style={styles.tab}>
+          <Text style={styles.tabLabel}>Search</Text>
         </TabTrigger>
       </TabList>
     </Tabs>

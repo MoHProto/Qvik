@@ -1,35 +1,37 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { notify } from 'lib/notify';
 import { Stack } from 'expo-router';
+import { useNotifyToast } from 'hooks/notify/useNotifyToast';
 import React from 'react';
 import { Platform, Pressable } from 'react-native';
-import { StyleSheet } from 'react-native-unistyles';
+import { StyleSheet, useUnistyles } from 'react-native-unistyles';
+
+function IndexHeaderAddButton() {
+  const notify = useNotifyToast();
+  const { theme } = useUnistyles();
+  return (
+    <Pressable
+      accessibilityLabel="Add"
+      accessibilityRole="button"
+      hitSlop={12}
+      onPress={() => notify.success('Saved', 'Your change was recorded.')}
+      style={({ pressed }) => [styles.headerButton, pressed && styles.headerButtonPressed]}>
+      <Ionicons name="add" size={24} color={theme.colors.primary} style={styles.headerIcon} />
+    </Pressable>
+  );
+}
 
 export default function IndexTabLayout() {
+  const { theme } = useUnistyles();
   return (
     <Stack
       screenOptions={{
-        headerTitle: 'Home',
-        headerTintColor: Platform.select({ ios: styles.headerButtonText.color, default: undefined }),
+        headerTitle: 'Threads',
+        headerTintColor: Platform.select({ ios: theme.colors.primary, default: undefined }),
       }}>
       <Stack.Screen
         name="index"
         options={{
-          headerRight: () => (
-            <Pressable
-              accessibilityLabel="Add"
-              accessibilityRole="button"
-              hitSlop={12}
-              onPress={() => notify.success('Saved', 'Your change was recorded.')}
-              style={({ pressed }) => [styles.headerButton, pressed && styles.headerButtonPressed]}>
-              <Ionicons
-                name="add"
-                size={24}
-                color={styles.headerButtonText.color}
-                style={styles.headerIcon}
-              />
-            </Pressable>
-          ),
+          headerRight: () => <IndexHeaderAddButton />,
         }}
       />
     </Stack>
@@ -48,10 +50,6 @@ const styles = StyleSheet.create((theme) => ({
   },
   headerIcon: {
     transform: [{ translateY: -4 }],
-  },
-  headerButtonText: {
-    ...theme.typography.headerButton,
-    color: theme.colors.primary,
   },
 }));
 
