@@ -1,14 +1,7 @@
 import { MessageBody } from 'components/message/MessageBody';
-import React, { useEffect } from 'react';
+import { JumpingDots } from 'components/ui/jumping-dots/JumpingDots';
+import React from 'react';
 import { Pressable, Text, View } from 'react-native';
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withDelay,
-  withRepeat,
-  withSequence,
-  withTiming,
-} from 'react-native-reanimated';
 import { StyleSheet } from 'react-native-unistyles';
 
 /** Mirrors persisted `Message` fields plus UI-only `status` (and optional retry handler). */
@@ -29,44 +22,6 @@ export type MessageStatus = 'pending' | 'success' | 'error';
 export type MessageItemProps = {
   data: MessageItemData;
 };
-
-function JumpingDots() {
-  const d1 = useSharedValue(0);
-  const d2 = useSharedValue(0);
-  const d3 = useSharedValue(0);
-
-  useEffect(() => {
-    const bounce = withRepeat(
-      withSequence(
-        withTiming(-5, { duration: 180 }),
-        withTiming(0, { duration: 180 }),
-      ),
-      -1,
-      false,
-    );
-    d1.value = bounce;
-    d2.value = withDelay(120, bounce);
-    d3.value = withDelay(240, bounce);
-  }, [d1, d2, d3]);
-
-  const s1 = useAnimatedStyle(() => ({
-    transform: [{ translateY: d1.value }],
-  }));
-  const s2 = useAnimatedStyle(() => ({
-    transform: [{ translateY: d2.value }],
-  }));
-  const s3 = useAnimatedStyle(() => ({
-    transform: [{ translateY: d3.value }],
-  }));
-
-  return (
-    <View style={styles.dotsRow} accessibilityLabel="Loading">
-      <Animated.View style={[styles.dotCircle, s1]} />
-      <Animated.View style={[styles.dotCircle, s2]} />
-      <Animated.View style={[styles.dotCircle, s3]} />
-    </View>
-  );
-}
 
 export function MessageItem({ data }: MessageItemProps) {
   const outgoingText =
@@ -170,19 +125,6 @@ const styles = StyleSheet.create((theme) => ({
     fontSize: 15,
     lineHeight: 22,
     color: theme.colors.error,
-  },
-  dotsRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 5,
-    minHeight: 22,
-    paddingVertical: 2,
-  },
-  dotCircle: {
-    width: 7,
-    height: 7,
-    borderRadius: 4,
-    backgroundColor: theme.colors.muted,
   },
   retryButton: {
     alignSelf: 'flex-start',

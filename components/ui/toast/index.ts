@@ -1,2 +1,3 @@
 export { AppToast } from './AppToast';
-export { iosToastConfig } from './IosToastBanner';
+export { toastConfig as iosToastConfig } from './ToastBanner';
+

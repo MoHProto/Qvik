@@ -39,6 +39,10 @@ export default function IndexTabLayout() {
           ios: theme.colors.primary,
           default: undefined,
         }),
+        // Match `HeaderBackButton` horizontal inset on non-iOS (`marginHorizontal: 11`).
+        ...(Platform.OS === 'web' || Platform.OS === 'android'
+          ? { headerRightContainerStyle: { paddingEnd: 11 } }
+          : {}),
       }}
     >
       <Stack.Screen

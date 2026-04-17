@@ -34,66 +34,82 @@ function IosToastBanner({ text1, text2, onPress, variant }: BannerProps) {
   const intensity =
     Platform.OS === 'ios' ? 80 : Platform.OS === 'android' ? 50 : 65;
 
+  const inner = (
+    <View style={styles.inner}>
+      <View style={styles.iconWrap}>
+        <Ionicons
+          name={VARIANT_ICON[variant]}
+          size={24}
+          color={ACCENT[variant]}
+        />
+      </View>
+      <View style={styles.textBlock}>
+        {text1 ? (
+          <Text style={styles.title} numberOfLines={2}>
+            {text1}
+          </Text>
+        ) : null}
+        {text2 ? (
+          <Text style={styles.subtitle} numberOfLines={4}>
+            {text2}
+          </Text>
+        ) : null}
+      </View>
+    </View>
+  );
+
   return (
-    <View style={styles.shadowWrap}>
-      <Pressable
-        accessibilityRole="alert"
-        onPress={onPress}
-        style={({ pressed }) => [
-          styles.pressable,
-          pressed && styles.pressablePressed,
-        ]}
-      >
-        <BlurView intensity={intensity} tint={tint} style={styles.blur}>
-          <View style={styles.inner}>
-            <View style={styles.iconWrap}>
-              <Ionicons
-                name={VARIANT_ICON[variant]}
-                size={24}
-                color={ACCENT[variant]}
-              />
-            </View>
-            <View style={styles.textBlock}>
-              {text1 ? (
-                <Text style={styles.title} numberOfLines={2}>
-                  {text1}
-                </Text>
-              ) : null}
-              {text2 ? (
-                <Text style={styles.subtitle} numberOfLines={4}>
-                  {text2}
-                </Text>
-              ) : null}
-            </View>
-          </View>
-        </BlurView>
-      </Pressable>
+    <View style={styles.wrap}>
+      <View style={styles.cardShadow}>
+        <Pressable
+          accessibilityRole="alert"
+          onPress={onPress}
+          style={({ pressed }) => [
+            styles.pressable,
+            pressed && styles.pressablePressed,
+          ]}
+        >
+          {Platform.OS === 'web' ? (
+            <View style={styles.blur}>{inner}</View>
+          ) : (
+            <BlurView intensity={intensity} tint={tint} style={styles.blur}>
+              {inner}
+            </BlurView>
+          )}
+        </Pressable>
+      </View>
     </View>
   );
 }
 
-export const iosToastConfig: ToastConfig = {
+export const toastConfig: ToastConfig = {
   success: (props) => <IosToastBanner {...props} variant="success" />,
   error: (props) => <IosToastBanner {...props} variant="error" />,
   info: (props) => <IosToastBanner {...props} variant="info" />,
 };
 
 const styles = StyleSheet.create((theme) => ({
-  shadowWrap: {
-    marginHorizontal: theme.spacing[6],
+  wrap: {
+    paddingHorizontal: theme.spacing[4],
     maxWidth: 400,
     alignSelf: 'center',
     width: '100%',
+  },
+  cardShadow: {
+    width: '100%',
     borderRadius: 14,
     ...Platform.select({
+      android: {
+        elevation: 8,
+      },
       ios: {
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 6 },
         shadowOpacity: 0.18,
         shadowRadius: 16,
       },
-      default: {
-        elevation: 6,
+      web: {
+        boxShadow: '0 6px 16px rgba(0, 0, 0, 0.18)',
       },
     }),
   },
@@ -107,6 +123,7 @@ const styles = StyleSheet.create((theme) => ({
   blur: {
     borderRadius: 14,
     overflow: 'hidden',
+    backgroundColor: theme.colors.foreground,
   },
   inner: {
     flexDirection: 'row',

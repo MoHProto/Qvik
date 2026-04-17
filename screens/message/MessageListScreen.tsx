@@ -9,9 +9,9 @@ import { getExampleThreadById } from 'lib/exampleThreads';
 import type { Href } from 'expo-router';
 import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
 import React, { useLayoutEffect, useMemo } from 'react';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { StyleSheet } from 'react-native-unistyles';
+import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 function buildExampleMessages(threadId: string): MessageItemData[] {
   const now = Date.now();
@@ -59,14 +59,19 @@ export default function MessageListScreen() {
   const navigation = useNavigation();
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const { theme } = useUnistyles();
   const { threadId } = useLocalSearchParams<{ threadId: string }>();
   const id = threadId ?? '';
 
   const thread = useMemo(() => getExampleThreadById(id), [id]);
   const data = useMemo(() => buildExampleMessages(id), [id]);
   const listBottomInset = useMemo(
-    () => getMessageFormListInsetBottom(insets.bottom),
-    [insets.bottom],
+    () =>
+      getMessageFormListInsetBottom(
+        insets.bottom,
+        Platform.OS === 'web' ? theme.spacing[4] : 0,
+      ),
+    [insets.bottom, theme.spacing[4]],
   );
 
   useLayoutEffect(() => {

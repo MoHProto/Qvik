@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native-unistyles';
 const colorsLight = {
   background: '#ffffff',
   surface: '#ffffff',
+  foreground: '#ffffff',
   text: '#111827',
   muted: '#6b7280',
   /** Default fill for Avatar (and similar) when no custom background is set */
@@ -19,6 +20,7 @@ const colorsLight = {
 const colorsDark = {
   background: '#0b1220',
   surface: '#111827',
+  foreground: '#1f2937',
   text: '#f9fafb',
   muted: '#9ca3af',
   avatarFallback: '#ececec',

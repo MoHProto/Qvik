@@ -2,7 +2,7 @@ import { useTheme } from '@react-navigation/native';
 import React from 'react';
 import { Platform, Pressable, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { StyleSheet } from 'react-native-unistyles';
+import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 /** Vertical padding inside the floating footer (excluding safe area). */
 const FOOTER_VERTICAL_PADDING = 12;
@@ -17,11 +17,15 @@ const CONTROL_MIN_HEIGHT = 48;
 export function MessageForm({ onStartPress }: { onStartPress?: () => void }) {
   const insets = useSafeAreaInsets();
   const { colors } = useTheme();
+  const { theme } = useUnistyles();
+  const paddingBottom =
+    insets.bottom +
+    (Platform.OS === 'web' ? theme.spacing[4] : 0);
 
   return (
     <View
       pointerEvents="box-none"
-      style={[styles.wrap, { paddingBottom: insets.bottom }]}
+      style={[styles.wrap, { paddingBottom }]}
     >
       <Pressable
         accessibilityRole="button"
@@ -44,9 +48,20 @@ export function MessageForm({ onStartPress }: { onStartPress?: () => void }) {
   );
 }
 
-/** Extra bottom padding for scroll content so rows clear the floating footer. */
-export function getMessageFormListInsetBottom(safeBottom: number): number {
-  return FOOTER_VERTICAL_PADDING * 2 + CONTROL_MIN_HEIGHT + safeBottom;
+/**
+ * Extra bottom padding for scroll content so rows clear the floating footer.
+ * Pass `theme.spacing[4]` as `additionalBottom` on web so it matches the footer’s bottom inset.
+ */
+export function getMessageFormListInsetBottom(
+  safeBottom: number,
+  additionalBottom = 0,
+): number {
+  return (
+    FOOTER_VERTICAL_PADDING * 2 +
+    CONTROL_MIN_HEIGHT +
+    safeBottom +
+    additionalBottom
+  );
 }
 
 const styles = StyleSheet.create((theme) => ({
