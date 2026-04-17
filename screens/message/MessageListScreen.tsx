@@ -2,12 +2,12 @@ import {
   getMessageFormListInsetBottom,
   MessageForm,
 } from 'components/message/MessageForm';
-import { MessageList } from 'components/message/MessageList';
 import type { MessageItemData } from 'components/message/MessageItem';
+import { MessageList } from 'components/message/MessageList';
 import { ThreadTitleButton } from 'components/thread/ThreadTitleButton';
-import { getExampleThreadById } from 'lib/exampleThreads';
 import type { Href } from 'expo-router';
 import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
+import { getExampleThreadById } from 'lib/exampleThreads';
 import React, { useLayoutEffect, useMemo } from 'react';
 import { Platform, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -48,9 +48,6 @@ function buildExampleMessages(threadId: string): MessageItemData[] {
       body: '',
       error: 'The compliance service timed out. Please try again.',
       status: 'error',
-      onRetry: () => {
-        // Example only — wire to real retry when available
-      },
     },
   ];
 }
@@ -71,7 +68,7 @@ export default function MessageListScreen() {
         insets.bottom,
         Platform.OS === 'web' ? theme.spacing[4] : 0,
       ),
-    [insets.bottom, theme.spacing[4]],
+    [insets.bottom, theme.spacing],
   );
 
   useLayoutEffect(() => {

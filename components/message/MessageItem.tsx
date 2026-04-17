@@ -4,7 +4,7 @@ import React from 'react';
 import { Pressable, Text, View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 
-/** Mirrors persisted `Message` fields plus UI-only `status` (and optional retry handler). */
+/** Mirrors persisted `Message` fields plus UI-only `status`. */
 export type MessageItemData = {
   id: string;
   threadId: string;
@@ -14,16 +14,23 @@ export type MessageItemData = {
   input?: string;
   error?: string;
   status: MessageStatus;
-  onRetry?: () => void;
 };
 
 export type MessageStatus = 'pending' | 'success' | 'error';
 
 export type MessageItemProps = {
   data: MessageItemData;
+  onRetry?: (item: MessageItemData) => void;
 };
 
-export function MessageItem({ data }: MessageItemProps) {
+function formatBubbleTime(createdAtMs: number): string {
+  return new Date(createdAtMs).toLocaleTimeString(undefined, {
+    hour: 'numeric',
+    minute: '2-digit',
+  });
+}
+
+export function MessageItem({ data, onRetry }: MessageItemProps) {
   const outgoingText =
     data.label != null && data.label.length > 0
       ? data.label
@@ -41,6 +48,9 @@ export function MessageItem({ data }: MessageItemProps) {
         <View style={styles.outgoingWrap}>
           <View style={styles.outgoingBubble}>
             <Text style={styles.outgoingText}>{outgoingText}</Text>
+            <Text style={[styles.bubbleTime, styles.bubbleTimeOutgoing]}>
+              {formatBubbleTime(data.createdAt)}
+            </Text>
           </View>
         </View>
       ) : null}
@@ -63,12 +73,17 @@ export function MessageItem({ data }: MessageItemProps) {
           ) : (
             <MessageBody markdown={data.body} />
           )}
+          {!secondIsPending ? (
+            <Text style={[styles.bubbleTime, styles.bubbleTimeIncoming]}>
+              {formatBubbleTime(data.createdAt)}
+            </Text>
+          ) : null}
         </View>
         {secondIsError ? (
           <Pressable
             accessibilityRole="button"
             accessibilityLabel="Retry"
-            onPress={data.onRetry ?? (() => {})}
+            onPress={() => onRetry?.(data)}
             style={({ pressed }) => [
               styles.retryButton,
               pressed && styles.retryButtonPressed,
@@ -95,7 +110,8 @@ const styles = StyleSheet.create((theme) => ({
   outgoingBubble: {
     backgroundColor: theme.colors.outgoingBubble,
     paddingHorizontal: theme.spacing[4],
-    paddingVertical: theme.spacing[3],
+    paddingTop: theme.spacing[3],
+    paddingBottom: theme.spacing[2],
     borderRadius: 18,
     borderBottomRightRadius: 4,
   },
@@ -111,11 +127,24 @@ const styles = StyleSheet.create((theme) => ({
   incomingBubble: {
     backgroundColor: theme.colors.incomingBubble,
     paddingHorizontal: theme.spacing[4],
-    paddingVertical: theme.spacing[3],
+    paddingTop: theme.spacing[3],
+    paddingBottom: theme.spacing[2],
     borderRadius: 18,
     borderBottomLeftRadius: 4,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: theme.colors.border,
+  },
+  bubbleTime: {
+    fontSize: 10,
+    lineHeight: 12,
+    marginTop: theme.spacing[1],
+    color: theme.colors.muted,
+  },
+  bubbleTimeOutgoing: {
+    alignSelf: 'flex-end',
+  },
+  bubbleTimeIncoming: {
+    alignSelf: 'flex-start',
   },
   incomingBubbleError: {
     backgroundColor: theme.colors.incomingBubbleError,

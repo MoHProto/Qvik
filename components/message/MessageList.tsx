@@ -10,12 +10,15 @@ export type MessageListProps = {
   emptyMessage: React.ComponentProps<typeof EmptyMessage>;
   /** Extra bottom padding (e.g. for a floating footer over the list). */
   contentPaddingBottom?: number;
+  /** Called when the user taps Retry on a failed message row. */
+  onRetry?: (item: MessageItemData) => void;
 };
 
 export function MessageList({
   data,
   emptyMessage,
   contentPaddingBottom = 0,
+  onRetry,
 }: MessageListProps) {
   const contentStyle =
     data.length === 0
@@ -26,7 +29,9 @@ export function MessageList({
     <FlatList
       data={data}
       keyExtractor={(item) => item.id}
-      renderItem={({ item }) => <MessageItem data={item} />}
+      renderItem={({ item }) => (
+        <MessageItem data={item} onRetry={onRetry} />
+      )}
       ListEmptyComponent={
         <View style={styles.emptyWrap}>
           <EmptyMessage

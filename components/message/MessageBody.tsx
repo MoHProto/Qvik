@@ -1,9 +1,31 @@
-import Markdown from 'react-native-markdown-display';
+import Markdown, { type RenderRules } from 'react-native-markdown-display';
 import React, { useMemo } from 'react';
+import { View } from 'react-native';
 import { useUnistyles } from 'react-native-unistyles';
 
 export type MessageBodyProps = {
   markdown: string;
+};
+
+const markdownRules: RenderRules = {
+  paragraph: (node, children, parent, styles) => {
+    const parentNode = parent[0];
+    const siblings = parentNode?.children ?? [];
+    const isLastChild =
+      siblings.length > 0 && siblings[siblings.length - 1] === node;
+
+    return (
+      <View
+        key={node.key}
+        style={[
+          styles._VIEW_SAFE_paragraph,
+          isLastChild && { marginBottom: 0 },
+        ]}
+      >
+        {children}
+      </View>
+    );
+  },
 };
 
 export function MessageBody({ markdown }: MessageBodyProps) {
@@ -44,5 +66,9 @@ export function MessageBody({ markdown }: MessageBodyProps) {
     [theme],
   );
 
-  return <Markdown style={mdStyles}>{markdown}</Markdown>;
+  return (
+    <Markdown rules={markdownRules} style={mdStyles}>
+      {markdown}
+    </Markdown>
+  );
 }
