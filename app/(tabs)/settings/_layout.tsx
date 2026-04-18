@@ -10,7 +10,7 @@ export default function SettingsTabLayout() {
       screenOptions={{
         headerTitle: 'Settings',
         headerTintColor: Platform.select({
-          ios: theme.colors.primary,
+          ios: theme.colors.text,
           default: undefined,
         }),
       }}

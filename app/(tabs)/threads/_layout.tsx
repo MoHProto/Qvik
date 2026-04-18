@@ -22,7 +22,7 @@ function ThreadsHeaderAddButton() {
       <Ionicons
         name="add"
         size={24}
-        color={theme.colors.primary}
+        color={theme.colors.text}
         style={styles.headerIcon}
       />
     </Pressable>
@@ -36,7 +36,7 @@ export default function ThreadsTabLayout() {
       screenOptions={{
         headerTitle: 'Threads',
         headerTintColor: Platform.select({
-          ios: theme.colors.primary,
+          ios: theme.colors.text,
           default: undefined,
         }),
         // Match `HeaderBackButton` horizontal inset on non-iOS (`marginHorizontal: 11`).

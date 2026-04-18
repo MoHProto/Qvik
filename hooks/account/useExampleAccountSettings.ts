@@ -1,7 +1,11 @@
+import type { AccountItemData } from 'components/account/AccountItem';
 import { EXAMPLE_ACCOUNTS } from 'lib/exampleAccounts';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 export function useExampleAccountSettings() {
+  const [accounts, setAccounts] = useState<AccountItemData[]>(
+    () => [...EXAMPLE_ACCOUNTS],
+  );
   const [activeAccountId, setActiveAccountId] = useState(
     () => EXAMPLE_ACCOUNTS[0]!.id,
   );
@@ -10,15 +14,20 @@ export function useExampleAccountSettings() {
 
   const currentAccount = useMemo(() => {
     return (
-      EXAMPLE_ACCOUNTS.find((a) => a.id === activeAccountId) ??
-      EXAMPLE_ACCOUNTS[0]!
+      accounts.find((a) => a.id === activeAccountId) ?? accounts[0]!
     );
-  }, [activeAccountId]);
+  }, [accounts, activeAccountId]);
+
+  const addAccount = useCallback((account: AccountItemData) => {
+    setAccounts((prev) => [...prev, account]);
+    setActiveAccountId(account.id);
+  }, []);
 
   return {
-    accounts: EXAMPLE_ACCOUNTS,
+    accounts,
     activeAccountId,
     setActiveAccountId,
+    addAccount,
     languageLabel,
     currentAccount,
   };

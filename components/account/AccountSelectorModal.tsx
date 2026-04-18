@@ -1,28 +1,29 @@
 import type { PopupProps } from 'react-popup-manager';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  Animated,
-  Dimensions,
-  Modal,
-  Pressable,
-  Text,
-  View,
-} from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import React from 'react';
+import { Dimensions, Pressable, Text, View } from 'react-native';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
+import { OverlaySheetModal } from 'components/ui/Modal';
 import { AccountList } from './AccountList';
 import type { AccountItemData } from './AccountItem';
 
-const SHEET_ANIM_MS = 240;
 const maxSheetHeight = Math.round(Dimensions.get('window').height * 0.78);
 
-export type AccountSelectorModalOwnProps = {
+export type AccountSelectorModalData = {
   accounts: AccountItemData[];
   activeAccountId: string;
-  onSelectAccount?: (id: string) => void;
-  onAddAccount?: () => void;
+};
+
+export type AccountSelectorModalResult =
+  | undefined
+  | null
+  | { action: 'select'; accountId: string }
+  /** Selector closed; caller should open create-account flow (e.g. `AccountFormModal`). */
+  | { action: 'create' };
+
+export type AccountSelectorModalOwnProps = {
+  data: AccountSelectorModalData;
 };
 
 export type AccountSelectorModalProps = AccountSelectorModalOwnProps &
@@ -31,94 +32,19 @@ export type AccountSelectorModalProps = AccountSelectorModalOwnProps &
 export function AccountSelectorModal({
   isOpen: _isOpen,
   onClose,
-  accounts,
-  activeAccountId,
-  onSelectAccount,
-  onAddAccount,
+  data,
 }: AccountSelectorModalProps) {
-  const insets = useSafeAreaInsets();
+  const { accounts, activeAccountId } = data;
   const { theme } = useUnistyles();
-  const backdropOpacity = useRef(new Animated.Value(0)).current;
-  const sheetTranslateY = useRef(new Animated.Value(maxSheetHeight)).current;
-  const [modalShown, setModalShown] = useState(true);
-  const closingRef = useRef(false);
-
-  const runClose = useCallback(
-    (...args: unknown[]) => {
-      if (closingRef.current) return;
-      closingRef.current = true;
-      Animated.parallel([
-        Animated.timing(backdropOpacity, {
-          toValue: 0,
-          duration: SHEET_ANIM_MS,
-          useNativeDriver: true,
-        }),
-        Animated.timing(sheetTranslateY, {
-          toValue: maxSheetHeight,
-          duration: SHEET_ANIM_MS,
-          useNativeDriver: false,
-        }),
-      ]).start(() => {
-        setModalShown(false);
-        onClose?.(...args);
-      });
-    },
-    [backdropOpacity, onClose, sheetTranslateY],
-  );
-
-  useEffect(() => {
-    Animated.parallel([
-      Animated.timing(backdropOpacity, {
-        toValue: 1,
-        duration: SHEET_ANIM_MS,
-        useNativeDriver: true,
-      }),
-      Animated.timing(sheetTranslateY, {
-        toValue: 0,
-        duration: SHEET_ANIM_MS,
-        useNativeDriver: false,
-      }),
-    ]).start();
-  }, [backdropOpacity, sheetTranslateY]);
-
-  const handleSelect = (item: AccountItemData) => {
-    onSelectAccount?.(item.id);
-    runClose();
-  };
 
   return (
-    <Modal
-      transparent
-      visible={modalShown}
-      animationType="none"
-      onRequestClose={() => runClose()}
+    <OverlaySheetModal<AccountSelectorModalResult>
+      maxSheetHeight={maxSheetHeight}
+      onClose={onClose}
+      sheetSize="intrinsic"
     >
-      <View style={styles.root}>
-        <Pressable
-          style={[StyleSheet.absoluteFill, styles.backdropLayer]}
-          accessibilityRole="button"
-          accessibilityLabel="Dismiss"
-          onPress={() => runClose()}
-        >
-          <Animated.View
-            style={[
-              StyleSheet.absoluteFill,
-              styles.backdrop,
-              { opacity: backdropOpacity },
-            ]}
-          />
-        </Pressable>
-
-        <Animated.View
-          style={[
-            styles.sheet,
-            {
-              paddingBottom: Math.max(insets.bottom, theme.spacing[4]),
-              maxHeight: maxSheetHeight,
-              transform: [{ translateY: sheetTranslateY }],
-            },
-          ]}
-        >
+      {({ finish }) => (
+        <>
           <View style={styles.sheetHeader}>
             <Text style={styles.sheetTitle} numberOfLines={1}>
               Accounts
@@ -127,7 +53,7 @@ export function AccountSelectorModal({
               accessibilityRole="button"
               accessibilityLabel="Close"
               hitSlop={12}
-              onPress={() => runClose()}
+              onPress={() => finish(null)}
               style={({ pressed }) => [
                 styles.closeButton,
                 pressed && styles.closeButtonPressed,
@@ -144,7 +70,9 @@ export function AccountSelectorModal({
             <AccountList
               data={accounts}
               activeAccountId={activeAccountId}
-              onItemPress={handleSelect}
+              onItemPress={(item) =>
+                finish({ action: 'select', accountId: item.id })
+              }
               emptyMessage={{
                 icon: 'person-outline',
                 message: 'No accounts yet.',
@@ -153,10 +81,7 @@ export function AccountSelectorModal({
           </View>
           <Pressable
             accessibilityRole="button"
-            onPress={() => {
-              onAddAccount?.();
-              runClose();
-            }}
+            onPress={() => finish({ action: 'create' })}
             style={({ pressed }) => [
               styles.addButton,
               pressed && styles.addButtonPressed,
@@ -169,35 +94,13 @@ export function AccountSelectorModal({
             />
             <Text style={styles.addLabel}>Add new account</Text>
           </Pressable>
-        </Animated.View>
-      </View>
-    </Modal>
+        </>
+      )}
+    </OverlaySheetModal>
   );
 }
 
 const styles = StyleSheet.create((theme) => ({
-  root: {
-    flex: 1,
-    justifyContent: 'flex-end',
-  },
-  backdropLayer: {
-    zIndex: 0,
-  },
-  backdrop: {
-    backgroundColor: 'rgba(0,0,0,0.45)',
-  },
-  sheet: {
-    zIndex: 1,
-    elevation: 12,
-    backgroundColor: theme.colors.surface,
-    borderTopLeftRadius: theme.radius.card,
-    borderTopRightRadius: theme.radius.card,
-    paddingTop: theme.spacing[2],
-    borderWidth: StyleSheet.hairlineWidth,
-    borderBottomWidth: 0,
-    borderColor: theme.colors.border,
-    overflow: 'hidden',
-  },
   sheetHeader: {
     zIndex: 2,
     elevation: 16,

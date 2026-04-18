@@ -1,14 +1,13 @@
 import { AppToast } from 'components/ui/toast';
 import { queryClient } from 'lib/queryClient';
+import { getAppNavigationTheme } from 'lib/navigationTheme';
 import { PopupProvider } from 'react-popup-manager';
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from '@react-navigation/native';
+import { ThemeProvider } from '@react-navigation/native';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import { warmTabBarIonRasterSources } from 'lib/tabBarIonRasterSources';
+import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
 import 'react-native-reanimated';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -19,7 +18,11 @@ export const unstable_settings = {
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
-  const theme = colorScheme === 'dark' ? DarkTheme : DefaultTheme;
+  const theme = getAppNavigationTheme(colorScheme);
+
+  useEffect(() => {
+    void warmTabBarIonRasterSources();
+  }, []);
 
   return (
     <SafeAreaProvider>
@@ -27,6 +30,7 @@ export default function RootLayout() {
         <ThemeProvider value={theme}>
           <PopupProvider>
             <Stack>
+              <Stack.Screen name="index" options={{ headerShown: false }} />
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
               <Stack.Screen
                 name="threads/[threadId]/index"

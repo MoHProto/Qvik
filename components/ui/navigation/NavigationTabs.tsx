@@ -1,30 +1,27 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from '@react-navigation/native';
+import { ThemeProvider } from '@react-navigation/native';
 import { Tabs } from 'expo-router';
+import { getAppNavigationTheme } from 'lib/navigationTheme';
+import { getSystemAccentColor } from 'lib/systemAccent';
 import React from 'react';
 import { Platform, useColorScheme } from 'react-native';
 
 /**
- * Classic bottom tabs (JS navigator) for Android and web — avoids NativeTabs +
- * VectorIcon, which relies on expo-font rendering that is not available on web.
- * iOS uses `NavigationTabs.ios.tsx` (native tabs) instead.
+ * Bottom tabs via Expo Router `Tabs` (JS navigator) for Android and web.
+ * iOS uses `NavigationTabs.ios.tsx` (`NativeTabs` + native UITabBar).
  */
 export default function NavigationTabs() {
   const colorScheme = useColorScheme();
-  const navigationTheme = colorScheme === 'dark' ? DarkTheme : DefaultTheme;
+  const navigationTheme = getAppNavigationTheme(colorScheme);
   const tabIconColorDefault = navigationTheme.colors.text;
-  const tabIconColorSelected = navigationTheme.colors.primary;
+  const tabIconColorSelected = getSystemAccentColor();
 
   return (
     <ThemeProvider value={navigationTheme}>
       <Tabs
         screenOptions={{
           headerShown: false,
-          tabBarActiveTintColor: tabIconColorSelected,
+          tabBarActiveTintColor: tabIconColorSelected as string,
           tabBarInactiveTintColor: tabIconColorDefault,
           // Web: default tab logic uses "beside-icon" for wide viewports (≥768px), which
           // packs icon + label into a 49px-tall bar and often clips labels on RN-web.

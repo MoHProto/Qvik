@@ -14,6 +14,9 @@ export type AccountItemData = {
   avatarColor?: string;
 };
 
+/** Alias for full account shape (lists, forms). */
+export type Account = AccountItemData;
+
 export type AccountItemProps = {
   data: AccountItemData;
   onPress?: () => void;

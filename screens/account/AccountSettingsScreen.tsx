@@ -1,6 +1,8 @@
 import { AccountSettings } from 'components/account/AccountSettings';
-import { useAccountSelectorPopup } from 'hooks/account/useAccountSelectorPopup';
+import { useAccountFormModal } from 'hooks/account/useAccountFormModal';
+import { useAccountSelectorModal } from 'hooks/account/useAccountSelectorModal';
 import { useExampleAccountSettings } from 'hooks/account/useExampleAccountSettings';
+import { waitForPopupHandoff } from 'lib/waitForPopupHandoff';
 import React, { useCallback } from 'react';
 import { View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
@@ -10,23 +12,39 @@ export function AccountSettingsScreen() {
     accounts,
     activeAccountId,
     setActiveAccountId,
+    addAccount,
     languageLabel,
     currentAccount,
   } = useExampleAccountSettings();
-  const openAccountSelector = useAccountSelectorPopup();
+  const openAccountSelectorModal = useAccountSelectorModal();
+  const openAccountFormModal = useAccountFormModal();
 
   const openPicker = useCallback(() => {
-    openAccountSelector({
-      accounts,
-      activeAccountId,
-      onSelectAccount: (id) => {
-        setActiveAccountId(id);
-      },
-      onAddAccount: () => {
-        // Example: wire to add-account flow when available.
-      },
-    });
-  }, [accounts, activeAccountId, openAccountSelector, setActiveAccountId]);
+    void (async () => {
+      const selectorResult = await openAccountSelectorModal({
+        data: { accounts, activeAccountId },
+      });
+      if (selectorResult === undefined || selectorResult === null) {
+        return;
+      }
+      if (selectorResult.action === 'select') {
+        setActiveAccountId(selectorResult.accountId);
+        return;
+      }
+      await waitForPopupHandoff();
+      const created = await openAccountFormModal({ data: {} });
+      if (created !== undefined && created !== null) {
+        addAccount(created);
+      }
+    })();
+  }, [
+    accounts,
+    activeAccountId,
+    addAccount,
+    openAccountFormModal,
+    openAccountSelectorModal,
+    setActiveAccountId,
+  ]);
 
   return (
     <View style={styles.fill}>

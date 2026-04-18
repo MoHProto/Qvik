@@ -1,4 +1,3 @@
-import { useTheme } from '@react-navigation/native';
 import React from 'react';
 import { Platform, Pressable, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -16,7 +15,6 @@ const CONTROL_MIN_HEIGHT = 48;
  */
 export function MessageForm({ onStartPress }: { onStartPress?: () => void }) {
   const insets = useSafeAreaInsets();
-  const { colors } = useTheme();
   const { theme } = useUnistyles();
   const paddingBottom =
     insets.bottom +
@@ -39,7 +37,7 @@ export function MessageForm({ onStartPress }: { onStartPress?: () => void }) {
         style={[
           styles.control,
           styles.controlShadow,
-          { backgroundColor: colors.primary },
+          { backgroundColor: theme.colors.primary },
         ]}
       >
         <Text style={styles.controlLabel}>Start</Text>
