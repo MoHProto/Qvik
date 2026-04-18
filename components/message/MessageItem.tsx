@@ -1,36 +1,50 @@
 import { MessageBody } from 'components/message/MessageBody';
 import { JumpingDots } from 'components/ui/jumping-dots/JumpingDots';
 import React from 'react';
-import { Pressable, Text, View } from 'react-native';
+import {
+  Platform,
+  PlatformColor,
+  Pressable,
+  Text,
+  useColorScheme,
+  View,
+} from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 
-/** Mirrors persisted `Message` fields plus UI-only `status`. */
-export type MessageItemData = {
-  id: string;
-  threadId: string;
-  body: string;
-  createdAt: number;
-  label?: string;
-  input?: string;
-  error?: string;
-  status: MessageStatus;
-};
+import { formatBubbleTime, type MessageItemProps } from './messageItemShared';
 
-export type MessageStatus = 'pending' | 'success' | 'error';
+export type { MessageItemData, MessageItemProps, MessageStatus } from './messageItemShared';
 
-export type MessageItemProps = {
-  data: MessageItemData;
-  onRetry?: (item: MessageItemData) => void;
-};
+const OUTGOING_TIME = 'rgba(255, 255, 255, 0.65)';
 
-function formatBubbleTime(createdAtMs: number): string {
-  return new Date(createdAtMs).toLocaleTimeString(undefined, {
-    hour: 'numeric',
-    minute: '2-digit',
-  });
+/** iOS: semantic colors. Other platforms: iOS-like hex (light/dark). */
+function useIosLikeBubblePalette() {
+  const colorScheme = useColorScheme();
+  const isDark = colorScheme === 'dark';
+
+  if (Platform.OS === 'ios') {
+    return {
+      outgoingBubble: PlatformColor('systemBlue'),
+      incomingTime: PlatformColor('secondaryLabel'),
+    };
+  }
+
+  if (isDark) {
+    return {
+      outgoingBubble: '#0A84FF',
+      incomingTime: 'rgba(235, 235, 245, 0.6)',
+    };
+  }
+
+  return {
+    outgoingBubble: '#007AFF',
+    incomingTime: '#8E8E93',
+  };
 }
 
 export function MessageItem({ data, onRetry }: MessageItemProps) {
+  const bubble = useIosLikeBubblePalette();
+
   const outgoingText =
     data.label != null && data.label.length > 0
       ? data.label
@@ -46,9 +60,21 @@ export function MessageItem({ data, onRetry }: MessageItemProps) {
     <View style={styles.row}>
       {showOutgoing ? (
         <View style={styles.outgoingWrap}>
-          <View style={styles.outgoingBubble}>
-            <Text style={styles.outgoingText}>{outgoingText}</Text>
-            <Text style={[styles.bubbleTime, styles.bubbleTimeOutgoing]}>
+          <View
+            style={[
+              styles.outgoingBubble,
+              styles.bubbleShadow,
+              { backgroundColor: bubble.outgoingBubble },
+            ]}
+          >
+            <Text style={styles.outgoingBubbleText}>{outgoingText}</Text>
+            <Text
+              style={[
+                styles.bubbleTime,
+                styles.bubbleTimeOutgoing,
+                { color: OUTGOING_TIME },
+              ]}
+            >
               {formatBubbleTime(data.createdAt)}
             </Text>
           </View>
@@ -59,6 +85,7 @@ export function MessageItem({ data, onRetry }: MessageItemProps) {
         <View
           style={[
             styles.incomingBubble,
+            styles.bubbleShadow,
             secondIsError && styles.incomingBubbleError,
           ]}
         >
@@ -74,7 +101,13 @@ export function MessageItem({ data, onRetry }: MessageItemProps) {
             <MessageBody markdown={data.body} />
           )}
           {!secondIsPending ? (
-            <Text style={[styles.bubbleTime, styles.bubbleTimeIncoming]}>
+            <Text
+              style={[
+                styles.bubbleTime,
+                styles.bubbleTimeIncoming,
+                { color: bubble.incomingTime },
+              ]}
+            >
               {formatBubbleTime(data.createdAt)}
             </Text>
           ) : null}
@@ -107,17 +140,33 @@ const styles = StyleSheet.create((theme) => ({
     alignSelf: 'flex-end',
     maxWidth: '88%',
   },
+  /** Barely-there lift; shadow on same view as fill (RN + iOS). */
+  bubbleShadow: {
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.06,
+        shadowRadius: 3,
+      },
+      android: {
+        elevation: 1,
+      },
+      default: {
+        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.06)',
+      },
+    }),
+  },
   outgoingBubble: {
-    backgroundColor: theme.colors.outgoingBubble,
     paddingHorizontal: theme.spacing[4],
     paddingTop: theme.spacing[3],
     paddingBottom: theme.spacing[2],
     borderRadius: 18,
     borderBottomRightRadius: 4,
   },
-  outgoingText: {
+  outgoingBubbleText: {
     fontSize: 15,
-    color: theme.colors.text,
+    color: '#ffffff',
   },
   incomingWrap: {
     alignSelf: 'flex-start',
@@ -125,14 +174,12 @@ const styles = StyleSheet.create((theme) => ({
     gap: theme.spacing[2],
   },
   incomingBubble: {
-    backgroundColor: theme.colors.incomingBubble,
+    backgroundColor: theme.colors.surface,
     paddingHorizontal: theme.spacing[4],
     paddingTop: theme.spacing[3],
     paddingBottom: theme.spacing[2],
     borderRadius: 18,
     borderBottomLeftRadius: 4,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: theme.colors.border,
   },
   bubbleTime: {
     fontSize: 10,
@@ -148,7 +195,6 @@ const styles = StyleSheet.create((theme) => ({
   },
   incomingBubbleError: {
     backgroundColor: theme.colors.incomingBubbleError,
-    borderColor: theme.colors.error,
   },
   errorText: {
     fontSize: 15,

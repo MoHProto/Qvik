@@ -9,6 +9,7 @@ import { StatusBar } from 'expo-status-bar';
 import { warmTabBarIonRasterSources } from 'lib/tabBarIonRasterSources';
 import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
+import { useUnistyles } from 'react-native-unistyles';
 import 'react-native-reanimated';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
@@ -19,6 +20,7 @@ export const unstable_settings = {
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const theme = getAppNavigationTheme(colorScheme);
+  const { theme: appTheme } = useUnistyles();
 
   useEffect(() => {
     void warmTabBarIonRasterSources();
@@ -38,6 +40,9 @@ export default function RootLayout() {
                   title: 'Thread',
                   headerBackTitle: 'Back',
                   headerTitleAlign: 'center',
+                  contentStyle: {
+                    backgroundColor: appTheme.colors.background,
+                  },
                 }}
               />
               <Stack.Screen
@@ -46,6 +51,9 @@ export default function RootLayout() {
                   title: 'Messages',
                   headerBackTitle: 'Threads',
                   headerTitleAlign: 'center',
+                  contentStyle: {
+                    backgroundColor: appTheme.colors.background,
+                  },
                 }}
               />
             </Stack>

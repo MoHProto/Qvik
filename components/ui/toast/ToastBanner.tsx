@@ -123,7 +123,7 @@ const styles = StyleSheet.create((theme) => ({
   blur: {
     borderRadius: 14,
     overflow: 'hidden',
-    backgroundColor: theme.colors.foreground,
+    backgroundColor: theme.colors.surface,
   },
   inner: {
     flexDirection: 'row',

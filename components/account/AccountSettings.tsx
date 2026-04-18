@@ -93,7 +93,7 @@ export function AccountSettings({
 const styles = StyleSheet.create((theme) => ({
   screen: {
     flex: 1,
-    backgroundColor: theme.colors.groupedListBackground,
+    backgroundColor: theme.colors.background,
   },
   scrollContent: {
     paddingHorizontal: theme.spacing[4],

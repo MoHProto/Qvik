@@ -62,6 +62,6 @@ export function AccountSettingsScreen() {
 const styles = StyleSheet.create((theme) => ({
   fill: {
     flex: 1,
-    backgroundColor: theme.colors.groupedListBackground,
+    backgroundColor: theme.colors.background,
   },
 }));

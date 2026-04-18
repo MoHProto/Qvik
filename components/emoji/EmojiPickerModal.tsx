@@ -45,7 +45,7 @@ export function EmojiPickerModal({
     () => ({
       colors: {
         background: theme.colors.surface,
-        backgroundSecondary: theme.colors.groupedListBackground,
+        backgroundSecondary: theme.colors.background,
         searchBackground: theme.colors.incomingBubble,
         tabBackground: theme.colors.surface,
         tabActiveBackground: theme.colors.incomingBubble,

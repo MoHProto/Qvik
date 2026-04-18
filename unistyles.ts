@@ -4,11 +4,8 @@ import { StyleSheet } from 'react-native-unistyles';
 const systemAccent = getSystemAccentColor();
 
 const colorsLight = {
-  background: '#ffffff',
-  /** Grouped lists (e.g. Settings) — page tint behind inset sections */
-  groupedListBackground: '#f2f2f7',
+  background: '#f2f2f7',
   surface: '#ffffff',
-  foreground: '#ffffff',
   text: '#111827',
   muted: '#6b7280',
   /** Default fill for Avatar (and similar) when no custom background is set */
@@ -21,14 +18,14 @@ const colorsLight = {
   error: '#b91c1c',
   outgoingBubble: '#dbeafe',
   incomingBubble: '#f3f4f6',
+  /** Reply bubble: same warm tint family as `incomingBubbleError`, but lighter / airier. */
+  incomingBubbleReply: '#fff7f7',
   incomingBubbleError: '#fef2f2',
 } as const;
 
 const colorsDark = {
   background: '#0b1220',
-  groupedListBackground: '#0b1220',
   surface: '#111827',
-  foreground: '#1f2937',
   text: '#f9fafb',
   muted: '#9ca3af',
   avatarFallback: '#ececec',
@@ -38,6 +35,8 @@ const colorsDark = {
   error: '#f87171',
   outgoingBubble: '#1e3a8a',
   incomingBubble: '#1f2937',
+  /** Same red family as error bubble, lifted so it reads less heavy than `incomingBubbleError`. */
+  incomingBubbleReply: '#4a3333',
   incomingBubbleError: '#3f1f1f',
 } as const;
 

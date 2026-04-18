@@ -27,6 +27,7 @@ export function MessageList({
 
   return (
     <FlatList
+      style={styles.listRoot}
       data={data}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
@@ -46,6 +47,10 @@ export function MessageList({
 }
 
 const styles = StyleSheet.create((theme) => ({
+  listRoot: {
+    flex: 1,
+    backgroundColor: theme.colors.background,
+  },
   list: {
     flexGrow: 1,
   },

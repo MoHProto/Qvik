@@ -1,11 +1,9 @@
 import { AvatarInput } from 'components/ui/AvatarInput';
+import { Formik } from 'formik';
 import {
   ACCOUNT_AVATAR_EMOJIS,
   DEFAULT_ACCOUNT_AVATAR_EMOJI,
 } from 'lib/accountAvatarEmojis';
-import { accountFormSchema } from 'validation/accountFormSchema';
-import { avatarTintFromName } from 'utils/avatarTintFromName';
-import { Formik } from 'formik';
 import React, { useMemo } from 'react';
 import {
   Keyboard,
@@ -16,6 +14,8 @@ import {
   View,
 } from 'react-native';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
+import { avatarTintFromName } from 'utils/avatarTintFromName';
+import { accountFormSchema } from 'validation/accountFormSchema';
 
 import type { Account } from './AccountItem';
 
@@ -230,6 +230,6 @@ const styles = StyleSheet.create((theme) => ({
   submitLabel: {
     fontSize: 17,
     fontWeight: '600',
-    color: theme.colors.foreground,
+    color: '#ffffff',
   },
 }));
