@@ -1,5 +1,6 @@
 import { MessageBubbleTail } from 'components/message/MessageBubbleTail';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import type { ComponentType } from 'react';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   AccessibilityInfo,
@@ -14,12 +15,21 @@ import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 const ICON_CIRCLE_SIZE = 120;
 const ICON_SIZE = 56;
 
+export type OnboardingSlideSvgIllustrationProps = {
+  width?: number;
+  color?: string;
+};
+
 export type OnboardingSlideData = {
   id: string;
-  icon: keyof typeof Ionicons.glyphMap;
   title: string;
   description: string;
-};
+} & (
+  | { icon: keyof typeof Ionicons.glyphMap }
+  | {
+      SvgIllustration: ComponentType<OnboardingSlideSvgIllustrationProps>;
+    }
+);
 
 export type OnboardingSlideProps = {
   data: OnboardingSlideData;
@@ -100,11 +110,15 @@ export function OnboardingSlide({ data }: OnboardingSlideProps) {
             style={[styles.iconCircle, iconTransformStyle]}
             accessibilityElementsHidden
           >
-            <Ionicons
-              name={data.icon}
-              size={ICON_SIZE}
-              color="#ffffff"
-            />
+            {'SvgIllustration' in data ? (
+              <data.SvgIllustration width={ICON_SIZE} color="#ffffff" />
+            ) : (
+              <Ionicons
+                name={data.icon}
+                size={ICON_SIZE}
+                color="#ffffff"
+              />
+            )}
           </Animated.View>
           <Text style={styles.title}>{data.title}</Text>
           <Text style={styles.description}>{data.description}</Text>

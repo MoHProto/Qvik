@@ -48,6 +48,8 @@ export default function ThreadsTabLayout() {
       <Stack.Screen
         name="index"
         options={{
+          headerBackVisible: false,
+          headerLeft: () => null,
           headerRight: () => <ThreadsHeaderAddButton />,
         }}
       />

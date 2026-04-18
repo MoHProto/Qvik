@@ -4,6 +4,7 @@ import {
 } from 'assets/backgrounds/messagesPattern';
 import type { OnboardingSlideData } from 'components/onboarding/OnboardingSlide';
 import { OnboardingSlider } from 'components/onboarding/OnboardingSlider';
+import { OnboardingWhatIsPlainChatIcon } from 'components/onboarding/OnboardingWhatIsPlainChatIcon';
 import { Background } from 'components/ui/background';
 import React from 'react';
 import { View } from 'react-native';
@@ -11,25 +12,25 @@ import { StyleSheet } from 'react-native-unistyles';
 
 const ONBOARDING_SLIDES: OnboardingSlideData[] = [
   {
-    id: 'what-is-marchat',
-    icon: 'globe-outline',
-    title: 'What is Marchat?',
+    id: 'what-is-plainchat',
+    SvgIllustration: OnboardingWhatIsPlainChatIcon,
+    title: 'What is PlainChat?',
     description:
-      'Marchat is text-first chat for the web — where “the web” is a web of Markdown files. Short, clear answers instead of heavy design, busy pages, and annoying ads.',
+      "It's chat for Plain Web. For the web without heavy design or annoying ads.",
   },
   {
     id: 'threads',
     icon: 'chatbubbles-outline',
-    title: 'Threads',
+    title: 'What is a thread?',
     description:
-      'Each thread is one ongoing conversation with a single site or service. The full history lives in your message timeline, so you can scroll back anytime.',
+      "It's like visiting a website, but the whole history stays in one timeline. You can come back to it anytime.",
   },
   {
     id: 'account',
-    icon: 'person-outline',
-    title: 'Account',
+    icon: 'id-card-outline',
+    title: 'Is it private?',
     description:
-      'Your account and related data stay on this device. When you switch devices, you can transfer your information when you are ready.',
+      'Yes. Your account stays on this device. Move it over when you switch to a new one.',
   },
 ];
 

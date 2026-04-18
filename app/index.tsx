@@ -5,10 +5,11 @@ import { createPrefilledNewAccountFormData } from 'lib/createPrefilledNewAccount
 import { ensureTabBarRasterReady, warmTabBarIonRasterSources } from 'lib/tabBarIonRasterSources';
 import { warmAppIonIcons } from 'lib/warmAppIonIcons';
 import React, { useCallback, useEffect } from 'react';
-import { InteractionManager } from 'react-native';
+import { InteractionManager, Platform } from 'react-native';
 import { OnboardingScreen } from 'screens/onboarding/OnboardingScreen';
 
 function deferUntilAfterInteractions(): Promise<void> {
+  if (Platform.OS === 'web') return Promise.resolve();
   return new Promise((resolve) => {
     InteractionManager.runAfterInteractions(() => resolve());
   });

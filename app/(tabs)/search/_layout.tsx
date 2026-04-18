@@ -15,7 +15,13 @@ export default function SearchTabLayout() {
         }),
       }}
     >
-      <Stack.Screen name="index" />
+      <Stack.Screen
+        name="index"
+        options={{
+          headerBackVisible: false,
+          headerLeft: () => null,
+        }}
+      />
     </Stack>
   );
 }

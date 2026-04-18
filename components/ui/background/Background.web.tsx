@@ -4,8 +4,8 @@ import { type ImageSourcePropType, StyleSheet, useColorScheme, View } from 'reac
 
 import type { BackgroundProps } from './background.types';
 
-const DEFAULT_OPACITY_LIGHT = 0.75;
-const DEFAULT_OPACITY_DARK = 0.06;
+const DEFAULT_OPACITY_LIGHT = 0.25;
+const DEFAULT_OPACITY_DARK = 0.25;
 
 /**
  * Web: `react-native-web` `Image` pins intrinsic asset size (~tile), so tiling via `repeat`
