@@ -41,9 +41,9 @@ function Dot({ delayMs }: { delayMs: number }) {
   }, [translateY, delayMs]);
 
   return (
-    <Animated.View
-      style={[styles.dotCircle, { transform: [{ translateY }] }]}
-    />
+    <Animated.View style={{ transform: [{ translateY }] }}>
+      <View style={styles.dotCircle} />
+    </Animated.View>
   );
 }
 
@@ -70,6 +70,6 @@ const styles = StyleSheet.create((theme) => ({
     width: 7,
     height: 7,
     borderRadius: 4,
-    backgroundColor: theme.colors.muted,
+    backgroundColor: theme.colors.primary,
   },
 }));

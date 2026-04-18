@@ -1,5 +1,6 @@
+import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
-import { Platform, Pressable, Text, View } from 'react-native';
+import { Platform, Pressable, StyleSheet as RNStyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
@@ -8,6 +9,15 @@ const FOOTER_VERTICAL_PADDING = 12;
 
 /** Min height of the primary control (pill). */
 const CONTROL_MIN_HEIGHT = 48;
+
+/** Fade from `transparent` uses black RGB; interpolate from same hue at α=0 to avoid a dark band. */
+function hexToRgba(hex: string, alpha: number): string {
+  const h = hex.replace('#', '');
+  const r = parseInt(h.slice(0, 2), 16);
+  const g = parseInt(h.slice(2, 4), 16);
+  const b = parseInt(h.slice(4, 6), 16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
 
 /**
  * Floating footer over message content: transparent chrome, no border.
@@ -25,6 +35,13 @@ export function MessageForm({ onStartPress }: { onStartPress?: () => void }) {
       pointerEvents="box-none"
       style={[styles.wrap, { paddingBottom }]}
     >
+      <LinearGradient
+        colors={[hexToRgba(theme.colors.background, 0), theme.colors.background]}
+        end={{ x: 0.5, y: 1 }}
+        pointerEvents="none"
+        start={{ x: 0.5, y: 0 }}
+        style={RNStyleSheet.absoluteFill}
+      />
       <Pressable
         accessibilityRole="button"
         accessibilityLabel="Start"
@@ -34,11 +51,7 @@ export function MessageForm({ onStartPress }: { onStartPress?: () => void }) {
             : undefined
         }
         onPress={onStartPress}
-        style={[
-          styles.control,
-          styles.controlShadow,
-          { backgroundColor: theme.colors.primary },
-        ]}
+        style={[styles.control, { backgroundColor: theme.colors.primary }]}
       >
         <Text style={styles.controlLabel}>Start</Text>
       </Pressable>
@@ -71,15 +84,15 @@ const styles = StyleSheet.create((theme) => ({
     zIndex: 1,
     paddingHorizontal: theme.spacing[4],
     paddingTop: FOOTER_VERTICAL_PADDING,
-    backgroundColor: 'transparent',
     borderWidth: 0,
     overflow: 'visible',
   },
-  /**
-   * Shadow/elevation must sit on the same view as the opaque fill (RN + iOS).
-   * Values align with `IosToastBanner` shadowWrap.
-   */
-  controlShadow: {
+  control: {
+    minHeight: CONTROL_MIN_HEIGHT,
+    borderRadius: theme.radius.pill,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: theme.spacing[4],
     ...Platform.select({
       ios: {
         shadowColor: '#000',
@@ -90,18 +103,8 @@ const styles = StyleSheet.create((theme) => ({
       android: {
         elevation: 8,
       },
-      default: {
-        // Web / fallback
-        boxShadow: '0 6px 16px rgba(0, 0, 0, 0.18)',
-      },
+      default: {},
     }),
-  },
-  control: {
-    minHeight: CONTROL_MIN_HEIGHT,
-    borderRadius: theme.radius.pill,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: theme.spacing[4],
   },
   controlLabel: {
     fontSize: 17,

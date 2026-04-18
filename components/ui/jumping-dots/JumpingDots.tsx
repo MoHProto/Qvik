@@ -55,9 +55,15 @@ export function JumpingDots() {
 
   return (
     <View style={styles.dotsRow} accessibilityLabel="Loading">
-      <Animated.View style={[styles.dotCircle, s1]} />
-      <Animated.View style={[styles.dotCircle, s2]} />
-      <Animated.View style={[styles.dotCircle, s3]} />
+      <Animated.View style={s1}>
+        <View style={styles.dotCircle} />
+      </Animated.View>
+      <Animated.View style={s2}>
+        <View style={styles.dotCircle} />
+      </Animated.View>
+      <Animated.View style={s3}>
+        <View style={styles.dotCircle} />
+      </Animated.View>
     </View>
   );
 }
@@ -74,6 +80,6 @@ const styles = StyleSheet.create((theme) => ({
     width: 7,
     height: 7,
     borderRadius: 4,
-    backgroundColor: theme.colors.muted,
+    backgroundColor: theme.colors.primary,
   },
 }));

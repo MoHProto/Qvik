@@ -15,6 +15,8 @@ const colorsLight = {
   border: '#e5e7eb',
   /** Links, tab accents, controls — follows system / Material primary. */
   primary: systemAccent,
+  /** Translucent primary wash for small chips (e.g. bubble actions). */
+  primaryMuted: 'rgba(0, 122, 255, 0.14)',
   error: '#b91c1c',
   outgoingBubble: '#dbeafe',
   incomingBubble: '#f3f4f6',
@@ -33,6 +35,7 @@ const colorsDark = {
   onboardingIconCircle: 'rgba(255, 255, 255, 0.16)',
   border: '#1f2937',
   primary: systemAccent,
+  primaryMuted: 'rgba(10, 132, 255, 0.22)',
   error: '#f87171',
   outgoingBubble: '#1e3a8a',
   incomingBubble: '#1f2937',
