@@ -64,6 +64,7 @@ export function MessageItem({ data, onRetry }: MessageItemProps) {
             style={[
               styles.outgoingBubble,
               styles.bubbleShadow,
+              styles.bubbleOutline,
               { backgroundColor: bubble.outgoingBubble },
             ]}
           >
@@ -86,6 +87,7 @@ export function MessageItem({ data, onRetry }: MessageItemProps) {
           style={[
             styles.incomingBubble,
             styles.bubbleShadow,
+            styles.bubbleOutline,
             secondIsError && styles.incomingBubbleError,
           ]}
         >
@@ -140,22 +142,27 @@ const styles = StyleSheet.create((theme) => ({
     alignSelf: 'flex-end',
     maxWidth: '88%',
   },
-  /** Barely-there lift; shadow on same view as fill (RN + iOS). */
+  /** Subtle lift; same view as fill (RN + iOS). Kept lighter than Settings cards. */
   bubbleShadow: {
     ...Platform.select({
       ios: {
         shadowColor: '#000',
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.06,
-        shadowRadius: 3,
+        shadowOffset: { width: 0, height: 0.5 },
+        shadowOpacity: 0.03,
+        shadowRadius: 1.5,
       },
       android: {
-        elevation: 1,
+        elevation: 0,
       },
       default: {
-        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.06)',
+        boxShadow: '0 0.5px 1.5px rgba(0, 0, 0, 0.04)',
       },
     }),
+  },
+  /** Matches `AccountSettings` grouped rows (`styles.card`). */
+  bubbleOutline: {
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: theme.colors.border,
   },
   outgoingBubble: {
     paddingHorizontal: theme.spacing[4],

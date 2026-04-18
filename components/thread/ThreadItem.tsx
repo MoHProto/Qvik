@@ -87,6 +87,7 @@ const styles = StyleSheet.create((theme) => ({
     gap: theme.spacing[3],
     paddingVertical: theme.spacing[3],
     paddingHorizontal: theme.spacing[4],
+    backgroundColor: theme.colors.surface,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: theme.colors.border,
   },
@@ -96,6 +97,7 @@ const styles = StyleSheet.create((theme) => ({
     gap: theme.spacing[4],
     paddingVertical: theme.spacing[6],
     paddingHorizontal: theme.spacing[4],
+    backgroundColor: theme.colors.surface,
   },
   rowPressed: {
     opacity: 0.7,

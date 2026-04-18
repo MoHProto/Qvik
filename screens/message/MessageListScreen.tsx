@@ -1,3 +1,5 @@
+import { HeaderBackButton } from '@react-navigation/elements';
+import type { NativeStackHeaderBackProps } from '@react-navigation/native-stack';
 import {
   getMessageFormListInsetBottom,
   MessageForm,
@@ -75,13 +77,39 @@ export default function MessageListScreen() {
     navigation.setOptions({
       // Native stack defaults to left-aligned titles on Android; center like iOS.
       headerTitleAlign: 'center',
+      /**
+       * iOS native stack stacks the center title view above the default system back control.
+       * A custom center title can make the back affordance look visible while taps hit the
+       * title layer instead. Hide the default back and use an explicit left `HeaderBackButton`
+       * so the control is fully pressable (see react-navigation/native-stack header layout).
+       */
+      headerBackVisible: false,
+      headerLeft: (props: NativeStackHeaderBackProps) =>
+        props.canGoBack ? (
+          <HeaderBackButton
+            {...props}
+            /**
+             * `HeaderBackButton` applies letterSpacing 0.35 on the label; UIKit’s navigation
+             * back title does not, so the label can look like a different weight than
+             * ThreadViewScreen’s native back. Reset tracking on iOS to match.
+             */
+            labelStyle={Platform.OS === 'ios' ? { letterSpacing: 0, fontWeight: '500' } : undefined}
+            onPress={() => router.back()}
+          />
+        ) : null,
+      /**
+       * Without `pointerEvents="box-none"`, the header center subview can still swallow taps
+       * beside the title on some platforms.
+       */
       headerTitle: () => (
-        <ThreadTitleButton
-          data={thread}
-          onPress={() =>
-            router.push(`/threads/${thread.id}` as Href)
-          }
-        />
+        <View pointerEvents="box-none" style={{ alignItems: 'center' }}>
+          <ThreadTitleButton
+            data={thread}
+            onPress={() =>
+              router.push(`/threads/${thread.id}` as Href)
+            }
+          />
+        </View>
       ),
     });
   }, [navigation, router, thread]);
