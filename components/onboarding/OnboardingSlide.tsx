@@ -1,7 +1,14 @@
 import { MessageBubbleTail } from 'components/message/MessageBubbleTail';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import React from 'react';
-import { Platform, Text, View } from 'react-native';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import {
+  AccessibilityInfo,
+  Animated,
+  Easing,
+  Platform,
+  Text,
+  View,
+} from 'react-native';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 const ICON_CIRCLE_SIZE = 120;
@@ -20,17 +27,85 @@ export type OnboardingSlideProps = {
 
 export function OnboardingSlide({ data }: OnboardingSlideProps) {
   const { theme } = useUnistyles();
+  const [reduceMotion, setReduceMotion] = useState(false);
+  const floatAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    let mounted = true;
+    void (async () => {
+      const enabled = await AccessibilityInfo.isReduceMotionEnabled();
+      if (mounted) {
+        setReduceMotion(enabled);
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (reduceMotion) {
+      floatAnim.setValue(0);
+      return;
+    }
+
+    const anim = Animated.loop(
+      Animated.sequence([
+        Animated.timing(floatAnim, {
+          toValue: 1,
+          duration: 1350,
+          easing: Easing.inOut(Easing.quad),
+          useNativeDriver: true,
+        }),
+        Animated.timing(floatAnim, {
+          toValue: 0,
+          duration: 1350,
+          easing: Easing.inOut(Easing.quad),
+          useNativeDriver: true,
+        }),
+      ]),
+    );
+
+    anim.start();
+    return () => {
+      anim.stop();
+    };
+  }, [floatAnim, reduceMotion]);
+
+  const iconTransformStyle = useMemo(() => {
+    if (reduceMotion) {
+      return undefined;
+    }
+
+    const translateY = floatAnim.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, -6],
+    });
+
+    const rotate = floatAnim.interpolate({
+      inputRange: [0, 1],
+      outputRange: ['-1.5deg', '1.5deg'],
+    });
+
+    return {
+      transform: [{ translateY }, { rotate }],
+    } as const;
+  }, [floatAnim, reduceMotion]);
+
   return (
     <View style={styles.root}>
       <View style={styles.bubbleOuter}>
         <View style={styles.bubbleCard}>
-          <View style={styles.iconCircle} accessibilityElementsHidden>
+          <Animated.View
+            style={[styles.iconCircle, iconTransformStyle]}
+            accessibilityElementsHidden
+          >
             <Ionicons
               name={data.icon}
               size={ICON_SIZE}
-              color={theme.colors.primary}
+              color="#ffffff"
             />
-          </View>
+          </Animated.View>
           <Text style={styles.title}>{data.title}</Text>
           <Text style={styles.description}>{data.description}</Text>
         </View>
@@ -87,7 +162,7 @@ const styles = StyleSheet.create((theme) => ({
     borderRadius: ICON_CIRCLE_SIZE / 2,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: theme.colors.onboardingIconCircle,
+    backgroundColor: theme.colors.primary,
   },
   title: {
     ...theme.typography.title,

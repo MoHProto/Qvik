@@ -1,5 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react';
 import {
+  Animated,
   FlatList,
   type LayoutChangeEvent,
   ListRenderItemInfo,
@@ -38,6 +39,7 @@ export function OnboardingSlider({ data, onGetStarted }: OnboardingSliderProps) 
   const { theme } = useUnistyles();
   const listRef = useRef<FlatList<OnboardingSlideData>>(null);
   const [index, setIndex] = useState(0);
+  const scrollX = useRef(new Animated.Value(0)).current;
   /** Horizontal `FlatList` rows use content height unless the cell height is explicit. */
   const [slideViewportHeight, setSlideViewportHeight] = useState(0);
   /** Page width must match the list viewport — `useWindowDimensions` can disagree with `pagingEnabled`. */
@@ -112,12 +114,46 @@ export function OnboardingSlider({ data, onGetStarted }: OnboardingSliderProps) 
   );
 
   const renderItem = useCallback(
-    ({ item }: ListRenderItemInfo<OnboardingSlideData>) => (
-      <View style={{ width: pageWidth, height: slideCellHeight }}>
-        <OnboardingSlide data={item} />
-      </View>
-    ),
-    [pageWidth, slideCellHeight],
+    ({ item, index: itemIndex }: ListRenderItemInfo<OnboardingSlideData>) => {
+      const inputRange = [
+        (itemIndex - 1) * pageWidth,
+        itemIndex * pageWidth,
+        (itemIndex + 1) * pageWidth,
+      ];
+
+      const translateY = scrollX.interpolate({
+        inputRange,
+        outputRange: [14, 0, 14],
+        extrapolate: 'clamp',
+      });
+
+      const scale = scrollX.interpolate({
+        inputRange,
+        outputRange: [0.965, 1, 0.965],
+        extrapolate: 'clamp',
+      });
+
+      const opacity = scrollX.interpolate({
+        inputRange,
+        outputRange: [0.75, 1, 0.75],
+        extrapolate: 'clamp',
+      });
+
+      return (
+        <View style={{ width: pageWidth, height: slideCellHeight }}>
+          <Animated.View
+            style={{
+              flex: 1,
+              opacity,
+              transform: [{ translateY }, { scale }],
+            }}
+          >
+            <OnboardingSlide data={item} />
+          </Animated.View>
+        </View>
+      );
+    },
+    [pageWidth, scrollX, slideCellHeight],
   );
 
   const keyExtractor = useCallback((item: OnboardingSlideData) => item.id, []);
@@ -161,7 +197,7 @@ export function OnboardingSlider({ data, onGetStarted }: OnboardingSliderProps) 
   return (
     <View style={styles.root}>
       <View style={styles.listViewport} onLayout={onSlideViewportLayout}>
-        <FlatList
+        <Animated.FlatList
           ref={listRef}
           data={data}
           renderItem={renderItem}
@@ -172,6 +208,11 @@ export function OnboardingSlider({ data, onGetStarted }: OnboardingSliderProps) 
           bounces={false}
           viewabilityConfig={viewabilityConfig}
           onViewableItemsChanged={onViewableItemsChanged}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+            { useNativeDriver: true },
+          )}
+          scrollEventThrottle={16}
           onMomentumScrollEnd={onMomentumScrollEnd}
           onScrollEndDrag={onScrollEndDrag}
           onScrollToIndexFailed={onScrollToIndexFailed}
@@ -204,15 +245,39 @@ export function OnboardingSlider({ data, onGetStarted }: OnboardingSliderProps) 
             ) : null}
           </View>
           <View style={styles.dotsWrap}>
-            {data.map((slide, i) => (
-              <View
-                key={slide.id}
-                style={[
-                  styles.dot,
-                  i === index ? styles.dotActive : styles.dotInactive,
-                ]}
-              />
-            ))}
+            {data.map((slide, i) => {
+              const inputRange = [
+                (i - 1) * pageWidth,
+                i * pageWidth,
+                (i + 1) * pageWidth,
+              ];
+
+              const scale = scrollX.interpolate({
+                inputRange,
+                outputRange: [1, 1.35, 1],
+                extrapolate: 'clamp',
+              });
+
+              const opacity = scrollX.interpolate({
+                inputRange,
+                outputRange: [0.35, 1, 0.35],
+                extrapolate: 'clamp',
+              });
+
+              return (
+                <Animated.View
+                  key={slide.id}
+                  style={[
+                    styles.dot,
+                    i === index ? styles.dotActive : styles.dotInactive,
+                    {
+                      opacity,
+                      transform: [{ scale }],
+                    },
+                  ]}
+                />
+              );
+            })}
           </View>
           <View
             style={[
