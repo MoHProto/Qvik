@@ -20,7 +20,8 @@ const colorsLight = {
   incomingBubble: '#f3f4f6',
   /** Reply bubble: same warm tint family as `incomingBubbleError`, but lighter / airier. */
   incomingBubbleReply: '#fff7f7',
-  incomingBubbleError: '#fef2f2',
+  /** Stronger red wash than red-50 so failed rows read clearly at a glance. */
+  incomingBubbleError: '#fecaca',
 } as const;
 
 const colorsDark = {
@@ -37,7 +38,8 @@ const colorsDark = {
   incomingBubble: '#1f2937',
   /** Same red family as error bubble, lifted so it reads less heavy than `incomingBubbleError`. */
   incomingBubbleReply: '#4a3333',
-  incomingBubbleError: '#3f1f1f',
+  /** Deeper, more saturated red than before so errors stand out on dark surfaces. */
+  incomingBubbleError: '#5c2222',
 } as const;
 
 const lightTheme = {

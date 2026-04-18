@@ -1,4 +1,5 @@
 import { MessageBody } from 'components/message/MessageBody';
+import { MessageBubbleTail } from 'components/message/MessageBubbleTail';
 import { JumpingDots } from 'components/ui/jumping-dots/JumpingDots';
 import React from 'react';
 import {
@@ -9,7 +10,7 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-import { StyleSheet } from 'react-native-unistyles';
+import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 import { formatBubbleTime, type MessageItemProps } from './messageItemShared';
 
@@ -43,6 +44,7 @@ function useIosLikeBubblePalette() {
 }
 
 export function MessageItem({ data, onRetry }: MessageItemProps) {
+  const { theme } = useUnistyles();
   const bubble = useIosLikeBubblePalette();
 
   const outgoingText =
@@ -56,63 +58,79 @@ export function MessageItem({ data, onRetry }: MessageItemProps) {
   const secondIsError = data.status === 'error';
   const secondIsPending = data.status === 'pending';
 
+  const incomingTailColor = secondIsError
+    ? theme.colors.incomingBubbleError
+    : theme.colors.surface;
+
   return (
     <View style={styles.row}>
       {showOutgoing ? (
         <View style={styles.outgoingWrap}>
-          <View
-            style={[
-              styles.outgoingBubble,
-              styles.bubbleShadow,
-              styles.bubbleOutline,
-              { backgroundColor: bubble.outgoingBubble },
-            ]}
-          >
-            <Text style={styles.outgoingBubbleText}>{outgoingText}</Text>
-            <Text
+          <View style={styles.bubbleOuterOutgoing}>
+            <View
               style={[
-                styles.bubbleTime,
-                styles.bubbleTimeOutgoing,
-                { color: OUTGOING_TIME },
+                styles.outgoingBubble,
+                styles.bubbleShadow,
+                { backgroundColor: bubble.outgoingBubble },
               ]}
             >
-              {formatBubbleTime(data.createdAt)}
-            </Text>
+              <Text style={styles.outgoingBubbleText}>{outgoingText}</Text>
+              <Text
+                style={[
+                  styles.bubbleTime,
+                  styles.bubbleTimeOutgoing,
+                  { color: OUTGOING_TIME },
+                ]}
+              >
+                {formatBubbleTime(data.createdAt)}
+              </Text>
+            </View>
+            <MessageBubbleTail
+              bubbleColor={bubble.outgoingBubble}
+              canvasColor={theme.colors.background}
+              side="right"
+            />
           </View>
         </View>
       ) : null}
 
       <View style={styles.incomingWrap}>
-        <View
-          style={[
-            styles.incomingBubble,
-            styles.bubbleShadow,
-            styles.bubbleOutline,
-            secondIsError && styles.incomingBubbleError,
-          ]}
-        >
-          {secondIsPending ? (
-            <JumpingDots />
-          ) : secondIsError ? (
-            <Text style={styles.errorText}>
-              {data.error != null && data.error.length > 0
-                ? data.error
-                : 'Something went wrong.'}
-            </Text>
-          ) : (
-            <MessageBody markdown={data.body} />
-          )}
-          {!secondIsPending ? (
-            <Text
-              style={[
-                styles.bubbleTime,
-                styles.bubbleTimeIncoming,
-                { color: bubble.incomingTime },
-              ]}
-            >
-              {formatBubbleTime(data.createdAt)}
-            </Text>
-          ) : null}
+        <View style={styles.bubbleOuterIncoming}>
+          <View
+            style={[
+              styles.incomingBubble,
+              styles.bubbleShadow,
+              secondIsError && styles.incomingBubbleError,
+            ]}
+          >
+            {secondIsPending ? (
+              <JumpingDots />
+            ) : secondIsError ? (
+              <Text style={styles.errorText}>
+                {data.error != null && data.error.length > 0
+                  ? data.error
+                  : 'Something went wrong.'}
+              </Text>
+            ) : (
+              <MessageBody markdown={data.body} />
+            )}
+            {!secondIsPending ? (
+              <Text
+                style={[
+                  styles.bubbleTime,
+                  styles.bubbleTimeIncoming,
+                  { color: bubble.incomingTime },
+                ]}
+              >
+                {formatBubbleTime(data.createdAt)}
+              </Text>
+            ) : null}
+          </View>
+          <MessageBubbleTail
+            bubbleColor={incomingTailColor}
+            canvasColor={theme.colors.background}
+            side="left"
+          />
         </View>
         {secondIsError ? (
           <Pressable
@@ -142,6 +160,16 @@ const styles = StyleSheet.create((theme) => ({
     alignSelf: 'flex-end',
     maxWidth: '88%',
   },
+  bubbleOuterOutgoing: {
+    position: 'relative',
+    alignSelf: 'stretch',
+  },
+  bubbleOuterIncoming: {
+    position: 'relative',
+    alignSelf: 'stretch',
+    /** Tail extends below the bubble; keep clear of the next list row */
+    marginBottom: 8,
+  },
   /** Subtle lift; same view as fill (RN + iOS). Kept lighter than Settings cards. */
   bubbleShadow: {
     ...Platform.select({
@@ -159,17 +187,11 @@ const styles = StyleSheet.create((theme) => ({
       },
     }),
   },
-  /** Matches `AccountSettings` grouped rows (`styles.card`). */
-  bubbleOutline: {
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: theme.colors.border,
-  },
   outgoingBubble: {
     paddingHorizontal: theme.spacing[4],
     paddingTop: theme.spacing[3],
     paddingBottom: theme.spacing[2],
     borderRadius: 18,
-    borderBottomRightRadius: 4,
   },
   outgoingBubbleText: {
     fontSize: 15,
@@ -178,7 +200,6 @@ const styles = StyleSheet.create((theme) => ({
   incomingWrap: {
     alignSelf: 'flex-start',
     maxWidth: '92%',
-    gap: theme.spacing[2],
   },
   incomingBubble: {
     backgroundColor: theme.colors.surface,
@@ -186,7 +207,6 @@ const styles = StyleSheet.create((theme) => ({
     paddingTop: theme.spacing[3],
     paddingBottom: theme.spacing[2],
     borderRadius: 18,
-    borderBottomLeftRadius: 4,
   },
   bubbleTime: {
     fontSize: 10,
@@ -218,7 +238,7 @@ const styles = StyleSheet.create((theme) => ({
   },
   retryLabel: {
     fontSize: 15,
-    fontWeight: '600',
+    fontWeight: '500',
     color: theme.colors.primary,
   },
 }));
