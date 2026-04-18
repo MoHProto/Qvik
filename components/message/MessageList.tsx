@@ -60,7 +60,7 @@ export function MessageList({
 const styles = StyleSheet.create((theme) => ({
   listRoot: {
     flex: 1,
-    backgroundColor: theme.colors.background,
+    backgroundColor: theme.colors.backgroundAlt,
   },
   listFill: {
     flex: 1,

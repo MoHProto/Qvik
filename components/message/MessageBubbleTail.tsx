@@ -4,9 +4,9 @@ import Svg, { G, Path } from 'react-native-svg';
 
 /** Single-path bubble tail (vector asset). */
 const TAIL_PATH =
-  'M17 3C17 11.2843 10.2843 18 2 18H0C5.52285 18 10 13.5228 10 8V0H17V3Z';
+  'M14 7C14 13.0751 9.07513 18 3 18H0C3.86599 18 7 14.866 7 11V0H14V7Z';
 
-const VIEW_W = 17;
+const VIEW_W = 14;
 const VIEW_H = 18;
 
 export type MessageBubbleTailProps = {
@@ -27,9 +27,9 @@ export function MessageBubbleTail({
       pointerEvents="none"
       style={[styles.host, isRight ? styles.hostRight : styles.hostLeft]}
     >
-      <Svg width={VIEW_W} height={VIEW_H} viewBox="0 0 17 18">
+      <Svg width={VIEW_W} height={VIEW_H} viewBox="0 0 14 18">
         {isRight ? (
-          <G transform="translate(17, 0) scale(-1, 1)">
+          <G transform="translate(14, 0) scale(-1, 1)">
             <Path d={TAIL_PATH} fill={bubbleColor} />
           </G>
         ) : (
@@ -49,9 +49,9 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
   hostLeft: {
-    left: -10,
+    left: -7,
   },
   hostRight: {
-    right: -10,
+    right: -7,
   },
 });

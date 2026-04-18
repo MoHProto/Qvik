@@ -6,8 +6,8 @@ import type { BackgroundProps } from './background.types';
 
 export type { BackgroundProps } from './background.types';
 
-const DEFAULT_OPACITY_LIGHT = 0.75;
-const DEFAULT_OPACITY_DARK = 0.06;
+const DEFAULT_OPACITY_LIGHT = 0.25;
+const DEFAULT_OPACITY_DARK = 0.25;
 
 /**
  * Repeating SVG texture layer. On iOS, core `Image` does not render SVG; this uses `expo-image`

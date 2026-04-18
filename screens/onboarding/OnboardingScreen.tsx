@@ -11,11 +11,11 @@ import { StyleSheet } from 'react-native-unistyles';
 
 const ONBOARDING_SLIDES: OnboardingSlideData[] = [
   {
-    id: 'what-is-qvik',
+    id: 'what-is-marchat',
     icon: 'globe-outline',
-    title: 'What is Qvik?',
+    title: 'What is Marchat?',
     description:
-      'Qvik is text-first chat for the web: short, clear answers instead of busy pages. Wikipedia and similar services sit in that same simple flow — without ad clutter.',
+      'Marchat is text-first chat for the web — where “the web” is a web of Markdown files. Short, clear answers instead of heavy design, busy pages, and annoying ads.',
   },
   {
     id: 'threads',
@@ -53,6 +53,6 @@ export function OnboardingScreen({ onGetStarted }: OnboardingScreenProps) {
 const styles = StyleSheet.create((theme) => ({
   fill: {
     flex: 1,
-    backgroundColor: theme.colors.background,
+    backgroundColor: theme.colors.backgroundAlt,
   },
 }));

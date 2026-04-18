@@ -129,8 +129,9 @@ export default function MessageListScreen() {
   );
 }
 
-const styles = StyleSheet.create(() => ({
+const styles = StyleSheet.create((theme) => ({
   screen: {
     flex: 1,
+    backgroundColor: theme.colors.backgroundAlt,
   },
 }));

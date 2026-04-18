@@ -36,7 +36,10 @@ export function MessageForm({ onStartPress }: { onStartPress?: () => void }) {
       style={[styles.wrap, { paddingBottom }]}
     >
       <LinearGradient
-        colors={[hexToRgba(theme.colors.background, 0), theme.colors.background]}
+        colors={[
+          hexToRgba(theme.colors.backgroundAlt, 0),
+          theme.colors.backgroundAlt,
+        ]}
         end={{ x: 0.5, y: 1 }}
         pointerEvents="none"
         start={{ x: 0.5, y: 0 }}

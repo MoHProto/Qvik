@@ -5,6 +5,8 @@ const systemAccent = getSystemAccentColor();
 
 const colorsLight = {
   background: '#f2f2f7',
+  /** Alternative page/sheet surface (e.g. onboarding, message thread). */
+  backgroundAlt: '#d4e0b8',
   surface: '#ffffff',
   text: '#111827',
   muted: '#6b7280',
@@ -21,13 +23,14 @@ const colorsLight = {
   outgoingBubble: '#dbeafe',
   incomingBubble: '#f3f4f6',
   /** Reply bubble: same warm tint family as `incomingBubbleError`, but lighter / airier. */
-  incomingBubbleReply: '#fff7f7',
-  /** Stronger red wash than red-50 so failed rows read clearly at a glance. */
-  incomingBubbleError: '#fecaca',
+  incomingBubbleReply: '#f5ebe8',
+  /** Failed incoming bubble — saturated red wash for strong contrast on `backgroundAlt`. */
+  incomingBubbleError: '#fca5a5',
 } as const;
 
 const colorsDark = {
   background: '#0b1220',
+  backgroundAlt: '#121f14',
   surface: '#111827',
   text: '#f9fafb',
   muted: '#9ca3af',
@@ -40,9 +43,9 @@ const colorsDark = {
   outgoingBubble: '#1e3a8a',
   incomingBubble: '#1f2937',
   /** Same red family as error bubble, lifted so it reads less heavy than `incomingBubbleError`. */
-  incomingBubbleReply: '#4a3333',
-  /** Deeper, more saturated red than before so errors stand out on dark surfaces. */
-  incomingBubbleError: '#5c2222',
+  incomingBubbleReply: '#3d302e',
+  /** Failed incoming bubble — deep vivid red, reads clearly on `backgroundAlt`. */
+  incomingBubbleError: '#6e1b1b',
 } as const;
 
 const lightTheme = {

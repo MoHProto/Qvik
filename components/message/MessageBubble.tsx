@@ -235,7 +235,7 @@ const styles = StyleSheet.create((theme) => ({
   actionButton: {
     paddingVertical: theme.spacing[2],
     paddingHorizontal: theme.spacing[3],
-    backgroundColor: theme.colors.primaryMuted,
+    backgroundColor: theme.colors.surface,
     borderRadius: theme.radius.pill,
   },
   actionButtonPressed: {
