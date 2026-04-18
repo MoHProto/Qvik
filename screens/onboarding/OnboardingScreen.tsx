@@ -1,5 +1,10 @@
+import {
+  MESSAGES_PATTERN_TILE_PX,
+  messagesPatternSource,
+} from 'assets/backgrounds/messagesPattern';
 import type { OnboardingSlideData } from 'components/onboarding/OnboardingSlide';
 import { OnboardingSlider } from 'components/onboarding/OnboardingSlider';
+import { Background } from 'components/ui/background';
 import React from 'react';
 import { View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
@@ -36,6 +41,10 @@ export type OnboardingScreenProps = {
 export function OnboardingScreen({ onGetStarted }: OnboardingScreenProps) {
   return (
     <View style={styles.fill}>
+      <Background
+        source={messagesPatternSource}
+        tileSize={MESSAGES_PATTERN_TILE_PX}
+      />
       <OnboardingSlider data={ONBOARDING_SLIDES} onGetStarted={onGetStarted} />
     </View>
   );

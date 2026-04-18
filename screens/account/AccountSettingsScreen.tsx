@@ -2,6 +2,7 @@ import { AccountSettings } from 'components/account/AccountSettings';
 import { useAccountFormModal } from 'hooks/account/useAccountFormModal';
 import { useAccountSelectorModal } from 'hooks/account/useAccountSelectorModal';
 import { useExampleAccountSettings } from 'hooks/account/useExampleAccountSettings';
+import { createPrefilledNewAccountFormData } from 'lib/createPrefilledNewAccountFormData';
 import { waitForPopupHandoff } from 'lib/waitForPopupHandoff';
 import React, { useCallback } from 'react';
 import { View } from 'react-native';
@@ -32,7 +33,9 @@ export function AccountSettingsScreen() {
         return;
       }
       await waitForPopupHandoff();
-      const created = await openAccountFormModal({ data: {} });
+      const created = await openAccountFormModal({
+        data: { initialAccount: createPrefilledNewAccountFormData() },
+      });
       if (created !== undefined && created !== null) {
         addAccount(created);
       }

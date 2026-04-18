@@ -1,3 +1,8 @@
+import {
+  MESSAGES_PATTERN_TILE_PX,
+  messagesPatternSource,
+} from 'assets/backgrounds/messagesPattern';
+import { Background } from 'components/ui/background';
 import { EmptyMessage } from 'components/ui/EmptyMessage';
 import React from 'react';
 import { FlatList, View } from 'react-native';
@@ -26,23 +31,29 @@ export function MessageList({
       : [styles.list, { paddingBottom: contentPaddingBottom }];
 
   return (
-    <FlatList
-      style={styles.listRoot}
-      data={data}
-      keyExtractor={(item) => item.id}
-      renderItem={({ item }) => (
-        <MessageItem data={item} onRetry={onRetry} />
-      )}
-      ListEmptyComponent={
-        <View style={styles.emptyWrap}>
-          <EmptyMessage
-            icon={emptyMessage.icon}
-            message={emptyMessage.message}
-          />
-        </View>
-      }
-      contentContainerStyle={contentStyle}
-    />
+    <View style={styles.listRoot}>
+      <Background
+        source={messagesPatternSource}
+        tileSize={MESSAGES_PATTERN_TILE_PX}
+      />
+      <FlatList
+        style={styles.listFill}
+        data={data}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <MessageItem data={item} onRetry={onRetry} />
+        )}
+        ListEmptyComponent={
+          <View style={styles.emptyWrap}>
+            <EmptyMessage
+              icon={emptyMessage.icon}
+              message={emptyMessage.message}
+            />
+          </View>
+        }
+        contentContainerStyle={contentStyle}
+      />
+    </View>
   );
 }
 
@@ -50,6 +61,10 @@ const styles = StyleSheet.create((theme) => ({
   listRoot: {
     flex: 1,
     backgroundColor: theme.colors.background,
+  },
+  listFill: {
+    flex: 1,
+    backgroundColor: 'transparent',
   },
   list: {
     flexGrow: 1,

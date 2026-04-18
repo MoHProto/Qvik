@@ -92,11 +92,7 @@ export function MessageBubble({
               </Text>
             ) : null}
           </View>
-          <MessageBubbleTail
-            bubbleColor={bubble.outgoingBubble}
-            canvasColor={theme.colors.background}
-            side="right"
-          />
+          <MessageBubbleTail bubbleColor={bubble.outgoingBubble} side="right" />
         </View>
       </View>
     );
@@ -135,11 +131,7 @@ export function MessageBubble({
             </Text>
           ) : null}
         </View>
-        <MessageBubbleTail
-          bubbleColor={incomingTailColor}
-          canvasColor={theme.colors.background}
-          side="left"
-        />
+        <MessageBubbleTail bubbleColor={incomingTailColor} side="left" />
       </View>
       {actions.length > 0 ? (
         <View style={styles.actionsRow}>

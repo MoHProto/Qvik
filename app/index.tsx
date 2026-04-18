@@ -1,6 +1,7 @@
 import { useRouter } from 'expo-router';
 import { useAccountFormModal } from 'hooks/account/useAccountFormModal';
 import { THREADS_TAB_HREF } from 'lib/appRoutes';
+import { createPrefilledNewAccountFormData } from 'lib/createPrefilledNewAccountFormData';
 import { ensureTabBarRasterReady, warmTabBarIonRasterSources } from 'lib/tabBarIonRasterSources';
 import { warmAppIonIcons } from 'lib/warmAppIonIcons';
 import React, { useCallback, useEffect } from 'react';
@@ -32,7 +33,9 @@ export default function RootIndex() {
 
   const onGetStarted = useCallback(() => {
     void (async () => {
-      const result = await openAccountFormModal({ data: {} });
+      const result = await openAccountFormModal({
+        data: { initialAccount: createPrefilledNewAccountFormData() },
+      });
       if (result !== undefined && result !== null) {
         await warmAppIonIcons();
         await ensureTabBarRasterReady();

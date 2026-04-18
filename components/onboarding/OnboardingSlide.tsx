@@ -1,6 +1,7 @@
+import { MessageBubbleTail } from 'components/message/MessageBubbleTail';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Platform, Text, View } from 'react-native';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 const ICON_CIRCLE_SIZE = 120;
@@ -21,18 +22,25 @@ export function OnboardingSlide({ data }: OnboardingSlideProps) {
   const { theme } = useUnistyles();
   return (
     <View style={styles.root}>
-      <View style={styles.iconCircle} accessibilityElementsHidden>
-        <Ionicons
-          name={data.icon}
-          size={ICON_SIZE}
-          color={theme.colors.primary}
-        />
+      <View style={styles.bubbleOuter}>
+        <View style={styles.bubbleCard}>
+          <View style={styles.iconCircle} accessibilityElementsHidden>
+            <Ionicons
+              name={data.icon}
+              size={ICON_SIZE}
+              color={theme.colors.primary}
+            />
+          </View>
+          <Text style={styles.title}>{data.title}</Text>
+          <Text style={styles.description}>{data.description}</Text>
+        </View>
+        <MessageBubbleTail bubbleColor={theme.colors.surface} side="left" />
       </View>
-      <Text style={styles.title}>{data.title}</Text>
-      <Text style={styles.description}>{data.description}</Text>
     </View>
   );
 }
+
+const BUBBLE_RADIUS = 18;
 
 const styles = StyleSheet.create((theme) => ({
   root: {
@@ -40,7 +48,38 @@ const styles = StyleSheet.create((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: theme.spacing[6],
+  },
+  bubbleOuter: {
+    position: 'relative',
+    width: '100%',
+    maxWidth: 400,
+    alignSelf: 'center',
+    /** Space below the bubble so the iMessage-style tail is not clipped. */
+    marginBottom: theme.spacing[2],
+  },
+  /** Centered onboarding card; shadow matches `MessageBubble` `bubbleShadow`. */
+  bubbleCard: {
+    width: '100%',
+    alignItems: 'center',
+    backgroundColor: theme.colors.surface,
+    borderRadius: BUBBLE_RADIUS,
+    paddingHorizontal: theme.spacing[5],
+    paddingVertical: theme.spacing[6],
     gap: theme.spacing[4],
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 0.5 },
+        shadowOpacity: 0.03,
+        shadowRadius: 1.5,
+      },
+      android: {
+        elevation: 0,
+      },
+      default: {
+        boxShadow: '0 0.5px 1.5px rgba(0, 0, 0, 0.04)',
+      },
+    }),
   },
   iconCircle: {
     width: ICON_CIRCLE_SIZE,
