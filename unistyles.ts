@@ -24,8 +24,8 @@ const colorsLight = {
   incomingBubble: '#f3f4f6',
   /** Reply bubble: same warm tint family as `incomingBubbleError`, but lighter / airier. */
   incomingBubbleReply: '#f5ebe8',
-  /** Failed incoming bubble — saturated red wash for strong contrast on `backgroundAlt`. */
-  incomingBubbleError: '#fca5a5',
+  /** Failed incoming bubble — pale red wash (near-white) so it reads softer on `backgroundAlt`. */
+  incomingBubbleError: '#fee2e2',
 } as const;
 
 const colorsDark = {
@@ -44,8 +44,8 @@ const colorsDark = {
   incomingBubble: '#1f2937',
   /** Same red family as error bubble, lifted so it reads less heavy than `incomingBubbleError`. */
   incomingBubbleReply: '#3d302e',
-  /** Failed incoming bubble — deep vivid red, reads clearly on `backgroundAlt`. */
-  incomingBubbleError: '#6e1b1b',
+  /** Failed incoming bubble — muted rose-gray, lighter / less chroma than before. */
+  incomingBubbleError: '#3a3234',
 } as const;
 
 const lightTheme = {

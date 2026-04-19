@@ -3,14 +3,15 @@ import { StyleSheet as RNStyleSheet, useWindowDimensions, View } from 'react-nat
 import { useUnistyles } from 'react-native-unistyles';
 
 /**
- * Circle center sits on the bottom screen edge at horizontal center (half the disk is below, clipped).
+ * Large surface disk behind onboarding; horizontally centered.
+ * Center y is −1.5× viewport height; diameter is 1.5× viewport width.
  */
 export function OnboardingCircle() {
   const { width: windowWidth, height: windowHeight } = useWindowDimensions();
   const { theme } = useUnistyles();
 
-  const bottomSurfaceRadius = windowHeight / 2;
-  const bottomSurfaceDiameter = bottomSurfaceRadius * 2;
+  const bottomSurfaceDiameter = windowWidth * 1.5;
+  const bottomSurfaceRadius = bottomSurfaceDiameter / 2;
 
   return (
     <View pointerEvents="none" style={RNStyleSheet.absoluteFill}>
@@ -18,10 +19,10 @@ export function OnboardingCircle() {
         style={{
           position: 'absolute',
           left: windowWidth / 2 - bottomSurfaceRadius,
-          top: windowHeight - bottomSurfaceRadius,
+          top: windowHeight / 2 - 50,
           width: bottomSurfaceDiameter,
           height: bottomSurfaceDiameter,
-          borderRadius: bottomSurfaceRadius,
+          borderRadius: '100%',
           backgroundColor: theme.colors.surface,
         }}
       />

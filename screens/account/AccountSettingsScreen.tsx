@@ -16,6 +16,7 @@ export function AccountSettingsScreen() {
     activeAccountId,
     setActiveAccountId,
     addAccount,
+    updateAccount,
     languageLabel,
     currentAccount,
   } = useExampleAccountSettings();
@@ -65,6 +66,17 @@ export function AccountSettingsScreen() {
     setActiveAccountId,
   ]);
 
+  const onAccountSettingPress = useCallback(() => {
+    void (async () => {
+      const saved = await openAccountFormModal({
+        data: { initialAccount: currentAccount },
+      });
+      if (saved !== undefined && saved !== null) {
+        updateAccount(saved);
+      }
+    })();
+  }, [currentAccount, openAccountFormModal, updateAccount]);
+
   return (
     <View style={styles.fill}>
       <AccountSettings
@@ -72,7 +84,7 @@ export function AccountSettingsScreen() {
         languageLabel={languageLabel}
         onAccountHeaderPress={openPicker}
         onLanguagePress={onLanguagePress}
-        onAccountSettingPress={openPicker}
+        onAccountSettingPress={onAccountSettingPress}
       />
     </View>
   );

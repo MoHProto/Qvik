@@ -28,11 +28,19 @@ export function useExampleAccountSettings() {
     setActiveAccountId(account.id);
   }, []);
 
+  const updateAccount = useCallback((account: AccountItemData) => {
+    setAccounts((prev) =>
+      prev.map((a) => (a.id === account.id ? { ...a, ...account } : a)),
+    );
+    setActiveAccountId(account.id);
+  }, []);
+
   return {
     accounts,
     activeAccountId,
     setActiveAccountId,
     addAccount,
+    updateAccount,
     languageLabel,
     currentAccount,
   };

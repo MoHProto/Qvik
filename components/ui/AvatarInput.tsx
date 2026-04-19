@@ -510,7 +510,7 @@ const styles = StyleSheet.create((theme) => ({
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.06,
-    shadowRadius: 6,
+    shadowRadius: 4,
     elevation: 4,
   },
   circleEmoji: {
