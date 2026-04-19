@@ -46,7 +46,7 @@ export function MessageForm({ onStartPress }: { onStartPress?: () => void }) {
             : undefined
         }
         onPress={onStartPress}
-        style={[styles.control, { backgroundColor: theme.colors.primary }]}
+        style={({ pressed }) => [styles.control, { backgroundColor: theme.colors.primary }, pressed && styles.controlPressed]}
       >
         <Text style={styles.controlLabel}>Start</Text>
       </Pressable>
@@ -92,6 +92,9 @@ const styles = StyleSheet.create((theme) => ({
       },
       default: {},
     }),
+  },
+  controlPressed: {
+    opacity: 0.85,
   },
   controlLabel: {
     fontSize: 17,
