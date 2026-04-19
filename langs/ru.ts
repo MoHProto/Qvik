@@ -81,5 +81,8 @@ export const ru: Record<string, string> = {
   'demo.message.3.body': 'Мы целимся в **следующую пятницу** для мобильной сборки.',
   'demo.message.4.input': 'Запустить проверку соответствия',
   'demo.message.4.error': 'Сервис соответствия не ответил вовремя. Попробуйте ещё раз.',
+
+  'supportUkraine.banner.title': 'Поддержите Украину',
+  'supportUkraine.banner.body': 'Нажмите, чтобы открыть UNITED24 и поддержать гуманитарную помощь.',
 };
 
