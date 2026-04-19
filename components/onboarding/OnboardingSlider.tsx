@@ -1,3 +1,4 @@
+import Ionicons from '@expo/vector-icons/Ionicons';
 import React, { useCallback, useRef, useState } from 'react';
 import {
   Animated,
@@ -8,15 +9,16 @@ import {
   NativeSyntheticEvent,
   Pressable,
   Text,
-  type ViewToken,
   useWindowDimensions,
   View,
+  type ViewToken,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 import { OnboardingSlide, type OnboardingSlideData } from 'components/onboarding/OnboardingSlide';
 import { useI18n } from 'hooks/i18n/I18nProvider';
+import { useLanguagePickerModal } from 'hooks/i18n/useLanguagePickerModal';
 
 export type OnboardingSliderProps = {
   data: OnboardingSlideData[];
@@ -35,7 +37,8 @@ export function OnboardingSlider({ data, onGetStarted }: OnboardingSliderProps) 
   const { width: windowWidth, height: windowHeight } = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const { theme } = useUnistyles();
-  const { t } = useI18n();
+  const { t, locale, setLocale } = useI18n();
+  const openLanguagePickerModal = useLanguagePickerModal();
   const listRef = useRef<FlatList<OnboardingSlideData>>(null);
   const [index, setIndex] = useState(0);
   const scrollX = useRef(new Animated.Value(0)).current;
@@ -53,7 +56,8 @@ export function OnboardingSlider({ data, onGetStarted }: OnboardingSliderProps) 
   }, []);
 
   /** Until `onLayout`, approximate the flex region above the footer so slides center sensibly. */
-  const slideHeightFallback = Math.max(200, windowHeight - insets.top - insets.bottom - 132);
+  /** Reserve space for language row + Back/Next + safe area (see `styles.footer`). */
+  const slideHeightFallback = Math.max(200, windowHeight - insets.top - insets.bottom - 196);
   const slideCellHeight = slideViewportHeight > 0 ? slideViewportHeight : slideHeightFallback;
 
   const lastIndex = Math.max(0, data.length - 1);
@@ -183,6 +187,17 @@ export function OnboardingSlider({ data, onGetStarted }: OnboardingSliderProps) 
     goTo(index - 1);
   }, [goTo, index, isFirst]);
 
+  const onLanguagePress = useCallback(() => {
+    void (async () => {
+      const result = await openLanguagePickerModal({
+        data: { currentLocale: locale },
+      });
+      if (result !== undefined && result !== null) {
+        setLocale(result.locale);
+      }
+    })();
+  }, [locale, openLanguagePickerModal, setLocale]);
+
   if (data.length === 0) {
     return null;
   }
@@ -222,6 +237,15 @@ export function OnboardingSlider({ data, onGetStarted }: OnboardingSliderProps) 
           },
         ]}
       >
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={t('settings.language')}
+          onPress={onLanguagePress}
+          style={({ pressed }) => [styles.languageRow, pressed && styles.languageRowPressed]}
+        >
+          <Ionicons name="language-outline" size={20} color={theme.colors.primary} />
+          <Text style={styles.languageLabel}>{t('settings.language')}</Text>
+        </Pressable>
         <View style={styles.controlsRow}>
           <View style={[styles.sideSlot, { width: SIDE_SLOT_WIDTH }]}>
             {!isFirst ? (
@@ -292,6 +316,7 @@ const styles = StyleSheet.create((theme) => ({
   },
   listViewport: {
     flex: 1,
+    marginBottom: - theme.spacing[5],
   },
   list: {
     flex: 1,
@@ -300,6 +325,23 @@ const styles = StyleSheet.create((theme) => ({
     /** Keep Back / Next comfortably inset from screen edges (beyond default screen padding). */
     paddingHorizontal: theme.spacing[5] + theme.spacing[4],
     paddingTop: theme.spacing[3],
+    gap: theme.spacing[4],
+  },
+  languageRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: theme.spacing[2],
+    alignSelf: 'center',
+    paddingVertical: theme.spacing[2],
+    paddingHorizontal: theme.spacing[3],
+  },
+  languageRowPressed: {
+    opacity: 0.65,
+  },
+  languageLabel: {
+    fontSize: 17,
+    color: theme.colors.primary,
   },
   controlsRow: {
     flexDirection: 'row',
@@ -318,6 +360,7 @@ const styles = StyleSheet.create((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
     gap: theme.spacing[2],
+    maxWidth: 50,
   },
   dot: {
     borderRadius: 999,

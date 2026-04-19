@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { catalog, LOCALE_STORAGE_KEY, type AppLocale } from 'lib/i18n/catalog';
+import { catalog, isAppLocale, LOCALE_STORAGE_KEY, type AppLocale } from 'lib/i18n/catalog';
 import { pickSupportedLocale } from 'lib/i18n/pickSupportedLocale';
 import { getLocales } from 'expo-localization';
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
@@ -24,7 +24,7 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
     void (async () => {
       try {
         const raw = await AsyncStorage.getItem(LOCALE_STORAGE_KEY);
-        if (!cancelled && (raw === 'en' || raw === 'uk')) {
+        if (!cancelled && isAppLocale(raw)) {
           setLocaleState(raw);
         }
       } catch {

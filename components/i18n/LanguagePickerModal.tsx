@@ -1,7 +1,7 @@
 import type { PopupProps } from 'react-popup-manager';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { OverlaySheetModal } from 'components/ui/Modal';
-import type { AppLocale } from 'lib/i18n/catalog';
+import { APP_LOCALES, type AppLocale } from 'lib/i18n/catalog';
 import { useI18n } from 'hooks/i18n/I18nProvider';
 import React from 'react';
 import { Pressable, Text, View } from 'react-native';
@@ -24,7 +24,7 @@ export function LanguagePickerModal({ isOpen: _isOpen, onClose, data }: Language
 
   return (
     <OverlaySheetModal<LanguagePickerModalResult>
-      maxSheetHeight={360}
+      maxSheetHeight={580}
       onClose={onClose}
       sheetSize="intrinsic"
     >
@@ -45,7 +45,7 @@ export function LanguagePickerModal({ isOpen: _isOpen, onClose, data }: Language
             </Pressable>
           </View>
           <View style={styles.listWrap}>
-            {(['en', 'uk'] as const).map((code, index) => {
+            {APP_LOCALES.map((code, index) => {
               const selected = currentLocale === code;
               return (
                 <React.Fragment key={code}>

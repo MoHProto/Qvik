@@ -19,7 +19,7 @@ export function OnboardingCircle() {
         style={{
           position: 'absolute',
           left: windowWidth / 2 - bottomSurfaceRadius,
-          top: windowHeight / 2 - 50,
+          top: windowHeight / 2 - 100,
           width: bottomSurfaceDiameter,
           height: bottomSurfaceDiameter,
           borderRadius: '100%',

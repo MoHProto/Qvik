@@ -1,15 +1,14 @@
-import { MessageBubbleTail } from 'components/message/MessageBubbleTail';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { MessageBubbleTail } from 'components/message/MessageBubbleTail';
 import type { ComponentType } from 'react';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   AccessibilityInfo,
   Animated,
   Easing,
-  type ColorValue,
-  Platform,
   Text,
   View,
+  type ColorValue
 } from 'react-native';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
@@ -120,13 +119,13 @@ export function OnboardingSlide({ data }: OnboardingSlideProps) {
           <Text style={styles.title}>{data.title}</Text>
           <Text style={styles.description}>{data.description}</Text>
         </View>
-        <MessageBubbleTail bubbleColor={theme.colors.primary} side="left" />
+        <MessageBubbleTail bubbleColor={theme.colors.primary} side="left" scale={3} zIndex={0} />
       </View>
     </View>
   );
 }
 
-const BUBBLE_RADIUS = 18;
+const BUBBLE_RADIUS = 40;
 
 const styles = StyleSheet.create((theme) => ({
   root: {
@@ -141,7 +140,7 @@ const styles = StyleSheet.create((theme) => ({
     maxWidth: 400,
     alignSelf: 'center',
     /** Space below the bubble so the iMessage-style tail is not clipped. */
-    marginBottom: theme.spacing[2],
+    marginBottom: theme.spacing[5],
   },
   /** Centered onboarding card; shadow matches `MessageBubble` `bubbleShadow`. */
   bubbleCard: {
@@ -149,23 +148,10 @@ const styles = StyleSheet.create((theme) => ({
     alignItems: 'center',
     backgroundColor: theme.colors.primary,
     borderRadius: BUBBLE_RADIUS,
-    paddingHorizontal: theme.spacing[5],
-    paddingVertical: theme.spacing[6],
+    paddingHorizontal: theme.spacing[6],
+    paddingVertical: theme.spacing[6] + theme.spacing[3],
     gap: theme.spacing[4],
-    ...Platform.select({
-      ios: {
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 0.5 },
-        shadowOpacity: 0.03,
-        shadowRadius: 1.5,
-      },
-      android: {
-        elevation: 0,
-      },
-      default: {
-        boxShadow: '0 0.5px 1.5px rgba(0, 0, 0, 0.04)',
-      },
-    }),
+    zIndex: 1,
   },
   iconCircle: {
     width: ICON_CIRCLE_SIZE,
@@ -183,9 +169,10 @@ const styles = StyleSheet.create((theme) => ({
   },
   description: {
     ...theme.typography.subtitle,
+    fontSize: 16,
     color: theme.colors.surface,
     opacity: 0.88,
     textAlign: 'center',
-    lineHeight: 22,
+    lineHeight: 24,
   },
 }));

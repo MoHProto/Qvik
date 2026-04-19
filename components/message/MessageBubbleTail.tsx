@@ -9,18 +9,42 @@ const VIEW_W = 14;
 const VIEW_H = 18;
 
 export type MessageBubbleTailProps = {
-  side: 'left' | 'right';
+  side: 'left' | 'right' | 'center';
   bubbleColor: ColorValue;
   /** @deprecated Unused; kept for call-site compatibility. */
   canvasColor?: ColorValue;
+  /** Visual scale factor (1 = default asset size). */
+  scale?: number;
+  /** Override stacking order when needed. */
+  zIndex?: number;
 };
 
-export function MessageBubbleTail({ side, bubbleColor }: MessageBubbleTailProps) {
+export function MessageBubbleTail({
+  side,
+  bubbleColor,
+  scale = 1,
+  zIndex,
+}: MessageBubbleTailProps) {
   const isRight = side === 'right';
+  const isCenter = side === 'center';
+  const w = VIEW_W * scale;
+  const h = VIEW_H * scale;
 
   return (
-    <View pointerEvents="none" style={[styles.host, isRight ? styles.hostRight : styles.hostLeft]}>
-      <Svg width={VIEW_W} height={VIEW_H} viewBox="0 0 14 18">
+    <View
+      pointerEvents="none"
+      style={[
+        styles.host,
+        { width: w, height: h },
+        zIndex === undefined ? null : { zIndex },
+        isCenter
+          ? { left: '50%', marginLeft: -w / 2 - 10, bottom: -7 * scale }
+          : isRight
+            ? styles.hostRight
+            : { ...styles.hostLeft, left: -7 * scale },
+      ]}
+    >
+      <Svg width={w} height={h} viewBox="0 0 14 18">
         {isRight ? (
           <G transform="translate(14, 0) scale(-1, 1)">
             <Path d={TAIL_PATH} fill={bubbleColor} />
@@ -36,8 +60,6 @@ export function MessageBubbleTail({ side, bubbleColor }: MessageBubbleTailProps)
 const styles = StyleSheet.create({
   host: {
     position: 'absolute',
-    width: VIEW_W,
-    height: VIEW_H,
     bottom: 0,
     zIndex: 2,
   },
