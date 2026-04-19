@@ -78,7 +78,6 @@ const styles = StyleSheet.create((theme) => ({
     gap: theme.spacing[3],
     paddingVertical: theme.spacing[3],
     paddingHorizontal: theme.spacing[4],
-    backgroundColor: theme.colors.surface,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: theme.colors.border,
   },

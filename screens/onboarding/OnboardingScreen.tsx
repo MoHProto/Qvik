@@ -28,8 +28,8 @@ export function OnboardingScreen({ onGetStarted }: OnboardingScreenProps) {
         description: t('onboarding.slide0.body'),
       },
       {
-        id: 'markdown-core',
-        icon: 'document-text-outline',
+        id: 'browse-in-threads',
+        icon: 'chatbubbles-outline',
         title: t('onboarding.slide1.title'),
         description: t('onboarding.slide1.body'),
       },

@@ -13,12 +13,12 @@ const en: Record<string, string> = {
   'onboarding.slide0.title': 'A web without noise',
   'onboarding.slide0.body':
     'Content without ads, trackers, or unnecessary scripts. Just text and structure that belong to you and work fast on any device.',
-  'onboarding.slide1.title': 'Markdown at the core',
+  'onboarding.slide1.title': 'Browse in threads',
   'onboarding.slide1.body':
-    'The entire web is built from simple Markdown files. Easy to read, edit, and store — no special tools or complex formats required.',
+    'Every visit becomes a readable thread — a sequence of pages you opened. Like a conversation with the web, where context is preserved and navigation feels natural.',
   'onboarding.slide2.title': 'Always with you',
   'onboarding.slide2.body':
-    'Save sites locally, access them offline, and return to your history anytime. Your data stays available regardless of your connection.',
+    'Sites you visit are saved as threads on your device, available offline with full browsing history — ready to revisit anytime.',
   'onboarding.back': 'Back',
   'onboarding.next': 'Next',
   'onboarding.getStarted': 'Get started',
@@ -84,12 +84,12 @@ const uk: Record<string, string> = {
   'onboarding.slide0.title': 'Простий веб без шуму',
   'onboarding.slide0.body':
     'Контент без реклами, трекерів і зайвих скриптів. Лише текст і структура, які належать вам і працюють швидко на будь-якому пристрої.',
-  'onboarding.slide1.title': 'Markdown як основа',
+  'onboarding.slide1.title': 'Перегляд у тредах',
   'onboarding.slide1.body':
-    'Увесь веб складається з простих Markdown-файлів. Їх легко читати, редагувати й зберігати без спеціальних інструментів чи складних форматів.',
+    'Кожен візит стає зручним для читання тредом — послідовністю сторінок, які ви відкривали. Як розмова з вебом: контекст зберігається, а навігація відчувається природно.',
   'onboarding.slide2.title': 'Завжди з вами',
   'onboarding.slide2.body':
-    'Сайти можна зберігати локально, переглядати офлайн і повертатися до історії. Ваші дані залишаються доступними незалежно від підключення.',
+    'Сайти, які ви відвідуєте, зберігаються як треди на пристрої — доступні офлайн із повною історією перегляду, щоб повернутися до них будь-коли.',
   'onboarding.back': 'Назад',
   'onboarding.next': 'Далі',
   'onboarding.getStarted': 'Почати',

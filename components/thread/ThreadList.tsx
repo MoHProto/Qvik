@@ -14,6 +14,7 @@ export type ThreadListProps = {
 export function ThreadList({ data, emptyMessage, onItemPress }: ThreadListProps) {
   return (
     <FlatList
+      style={styles.listContainer}
       data={data}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
@@ -33,6 +34,10 @@ export function ThreadList({ data, emptyMessage, onItemPress }: ThreadListProps)
 }
 
 const styles = StyleSheet.create((theme) => ({
+  listContainer: {
+    flex: 1,
+    backgroundColor: theme.colors.surface,
+  },
   list: {
     flexGrow: 1,
   },

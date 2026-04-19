@@ -33,9 +33,5 @@ const styles = StyleSheet.create((theme) => ({
     paddingBottom: theme.spacing[6],
   },
   card: {
-    padding: theme.spacing[4],
-    backgroundColor: theme.colors.surface,
-    borderRadius: theme.radius.card,
-    overflow: 'hidden',
   },
 }));
