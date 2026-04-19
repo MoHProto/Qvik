@@ -64,10 +64,7 @@ const AccountFormModalBody = React.memo(function AccountFormModalBody({
           : `acc-${Date.now()}`;
       const account = { ...values, id };
       const label = values.name.trim();
-      notify.success(
-        t('account.toast.savedTitle'),
-        label.length > 0 ? label : undefined,
-      );
+      notify.success(t('account.toast.savedTitle'), label.length > 0 ? label : undefined);
       finish(account);
     },
     [finish, notify, t],
@@ -86,35 +83,21 @@ const AccountFormModalBody = React.memo(function AccountFormModalBody({
           accessibilityLabel={t('a11y.close')}
           hitSlop={12}
           onPress={() => finish(null)}
-          style={({ pressed }) => [
-            styles.closeButton,
-            pressed && styles.closeButtonPressed,
-          ]}
+          style={({ pressed }) => [styles.closeButton, pressed && styles.closeButtonPressed]}
         >
           <Ionicons name="close" size={18} color={theme.colors.text} />
         </Pressable>
       </View>
 
       <View style={[styles.formHost, { maxHeight: formMaxHeight }]}>
-        <AccountForm
-          data={formData}
-          onSubmit={handleFormSubmit}
-          centeredText
-        />
+        <AccountForm data={formData} onSubmit={handleFormSubmit} centeredText />
       </View>
     </>
   );
 });
 
-export function AccountFormModal({
-  isOpen: _isOpen,
-  onClose,
-  data,
-}: AccountFormModalProps) {
-  const formData = useMemo(
-    () => mergeInitial(data?.initialAccount),
-    [data?.initialAccount],
-  );
+export function AccountFormModal({ isOpen: _isOpen, onClose, data }: AccountFormModalProps) {
+  const formData = useMemo(() => mergeInitial(data?.initialAccount), [data?.initialAccount]);
 
   return (
     <OverlaySheetModal<Account | null | undefined>
@@ -123,9 +106,7 @@ export function AccountFormModal({
       onClose={onClose}
       sheetSize="intrinsic"
     >
-      {({ finish }) => (
-        <AccountFormModalBody finish={finish} formData={formData} />
-      )}
+      {({ finish }) => <AccountFormModalBody finish={finish} formData={formData} />}
     </OverlaySheetModal>
   );
 }

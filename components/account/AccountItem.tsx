@@ -26,27 +26,18 @@ export type AccountItemProps = {
   selected?: boolean;
 };
 
-export function AccountItem({
-  data,
-  onPress,
-  showChevron,
-  selected,
-}: AccountItemProps) {
+export function AccountItem({ data, onPress, showChevron, selected }: AccountItemProps) {
   const { theme } = useUnistyles();
   const hasUrl = Boolean(data.avatarUrl && data.avatarUrl.length > 0);
   const showIcon = !hasUrl && Boolean(data.avatarIcon);
-  const initials =
-    !hasUrl && !showIcon ? formatInitials(data.name) : '';
+  const initials = !hasUrl && !showIcon ? formatInitials(data.name) : '';
 
   return (
     <Pressable
       accessibilityRole={onPress ? 'button' : undefined}
       disabled={!onPress}
       onPress={onPress}
-      style={({ pressed }) => [
-        styles.row,
-        pressed && onPress ? styles.rowPressed : null,
-      ]}
+      style={({ pressed }) => [styles.row, pressed && onPress ? styles.rowPressed : null]}
     >
       <Avatar
         url={data.avatarUrl}

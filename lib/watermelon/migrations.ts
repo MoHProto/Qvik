@@ -1,8 +1,4 @@
-import {
-  addColumns,
-  createTable,
-  schemaMigrations,
-} from '@nozbe/watermelondb/Schema/migrations';
+import { addColumns, createTable, schemaMigrations } from '@nozbe/watermelondb/Schema/migrations';
 
 export const migrations = schemaMigrations({
   migrations: [

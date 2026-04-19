@@ -11,9 +11,6 @@ export class ThreadService {
   }
 
   async listByAccount(accountId: string): Promise<Thread[]> {
-    return this.db
-      .get<Thread>('threads')
-      .query(Q.where('account_id', accountId))
-      .fetch();
+    return this.db.get<Thread>('threads').query(Q.where('account_id', accountId)).fetch();
   }
 }

@@ -11,20 +11,13 @@ export type LanguagePickerModalData = {
   currentLocale: AppLocale;
 };
 
-export type LanguagePickerModalResult =
-  | undefined
-  | null
-  | { locale: AppLocale };
+export type LanguagePickerModalResult = undefined | null | { locale: AppLocale };
 
 export type LanguagePickerModalProps = {
   data: LanguagePickerModalData;
 } & PopupProps;
 
-export function LanguagePickerModal({
-  isOpen: _isOpen,
-  onClose,
-  data,
-}: LanguagePickerModalProps) {
+export function LanguagePickerModal({ isOpen: _isOpen, onClose, data }: LanguagePickerModalProps) {
   const { theme } = useUnistyles();
   const { t } = useI18n();
   const { currentLocale } = data;
@@ -46,10 +39,7 @@ export function LanguagePickerModal({
               accessibilityLabel={t('a11y.close')}
               hitSlop={12}
               onPress={() => finish(null)}
-              style={({ pressed }) => [
-                styles.closeButton,
-                pressed && styles.closeButtonPressed,
-              ]}
+              style={({ pressed }) => [styles.closeButton, pressed && styles.closeButtonPressed]}
             >
               <Ionicons name="close" size={18} color={theme.colors.text} />
             </Pressable>
@@ -64,10 +54,7 @@ export function LanguagePickerModal({
                     accessibilityRole="button"
                     accessibilityState={{ selected }}
                     onPress={() => finish({ locale: code })}
-                    style={({ pressed }) => [
-                      styles.row,
-                      pressed && styles.rowPressed,
-                    ]}
+                    style={({ pressed }) => [styles.row, pressed && styles.rowPressed]}
                   >
                     <Text style={styles.rowLabel} numberOfLines={1}>
                       {t(`language.name.${code}`)}

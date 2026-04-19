@@ -24,10 +24,7 @@ export function ThreadList({ data, emptyMessage, onItemPress }: ThreadListProps)
       )}
       ListEmptyComponent={
         <View style={styles.emptyWrap}>
-          <EmptyMessage
-            icon={emptyMessage.icon}
-            message={emptyMessage.message}
-          />
+          <EmptyMessage icon={emptyMessage.icon} message={emptyMessage.message} />
         </View>
       }
       contentContainerStyle={data.length === 0 ? styles.listEmpty : styles.list}

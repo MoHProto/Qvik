@@ -1,18 +1,8 @@
 import { AvatarInput } from 'components/ui/AvatarInput';
 import { Formik } from 'formik';
-import {
-  ACCOUNT_AVATAR_EMOJIS,
-  DEFAULT_ACCOUNT_AVATAR_EMOJI,
-} from 'lib/accountAvatarEmojis';
+import { ACCOUNT_AVATAR_EMOJIS, DEFAULT_ACCOUNT_AVATAR_EMOJI } from 'lib/accountAvatarEmojis';
 import React, { useMemo } from 'react';
-import {
-  Keyboard,
-  Pressable,
-  ScrollView,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import { Keyboard, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 import { useI18n } from 'hooks/i18n/I18nProvider';
 import { avatarTintFromName } from 'utils/avatarTintFromName';
@@ -27,11 +17,7 @@ export type AccountFormProps = {
   centeredText?: boolean;
 };
 
-export function AccountForm({
-  data,
-  onSubmit,
-  centeredText = false,
-}: AccountFormProps) {
+export function AccountForm({ data, onSubmit, centeredText = false }: AccountFormProps) {
   const { theme } = useUnistyles();
   const { t } = useI18n();
   const validationSchema = useMemo(() => createAccountFormSchema(t), [t]);
@@ -84,9 +70,7 @@ export function AccountForm({
                     emojis={emojiChoices}
                     value={values.avatarIcon ?? DEFAULT_ACCOUNT_AVATAR_EMOJI}
                     onChange={(emoji) => setFieldValue('avatarIcon', emoji)}
-                    circleBackgroundColor={
-                      values.avatarBackground ?? theme.colors.avatarFallback
-                    }
+                    circleBackgroundColor={values.avatarBackground ?? theme.colors.avatarFallback}
                     emojiColor={values.avatarColor}
                   />
                   <Text style={styles.avatarHint}>{t('accountForm.avatarHint')}</Text>

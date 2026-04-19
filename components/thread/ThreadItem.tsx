@@ -27,18 +27,12 @@ export type ThreadItemProps = {
   variant?: ThreadItemVariant;
 };
 
-export function ThreadItem({
-  data,
-  onPress,
-  variant = 'row',
-}: ThreadItemProps) {
+export function ThreadItem({ data, onPress, variant = 'row' }: ThreadItemProps) {
   const formatDate = useDateFormatter();
   const hasUrl = Boolean(data.rootUrl && data.rootUrl.length > 0);
   const showIcon = !hasUrl && Boolean(data.iconEmoji);
   const initials = !hasUrl && !showIcon ? formatInitials(data.title) : '';
-  const subtitle =
-    data.description ??
-    (data.createdAt != null ? formatDate(data.createdAt) : '');
+  const subtitle = data.description ?? (data.createdAt != null ? formatDate(data.createdAt) : '');
   const isColumn = variant === 'column';
   const avatarSize = isColumn ? 56 : 40;
 
@@ -61,10 +55,7 @@ export function ThreadItem({
         size={avatarSize}
       />
       <View style={isColumn ? styles.textColColumn : styles.textCol}>
-        <Text
-          style={isColumn ? styles.titleColumn : styles.title}
-          numberOfLines={isColumn ? 3 : 1}
-        >
+        <Text style={isColumn ? styles.titleColumn : styles.title} numberOfLines={isColumn ? 3 : 1}>
           {data.title}
         </Text>
         {subtitle.length > 0 ? (
@@ -97,7 +88,7 @@ const styles = StyleSheet.create((theme) => ({
     gap: theme.spacing[4],
     paddingVertical: theme.spacing[6],
     paddingHorizontal: theme.spacing[4],
-    backgroundColor: theme.colors.surface,
+    backgroundColor: 'transparent',
   },
   rowPressed: {
     opacity: 0.7,

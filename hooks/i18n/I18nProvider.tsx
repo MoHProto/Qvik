@@ -1,19 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {
-  catalog,
-  LOCALE_STORAGE_KEY,
-  type AppLocale,
-} from 'lib/i18n/catalog';
+import { catalog, LOCALE_STORAGE_KEY, type AppLocale } from 'lib/i18n/catalog';
 import { pickSupportedLocale } from 'lib/i18n/pickSupportedLocale';
 import { getLocales } from 'expo-localization';
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 export type I18nContextValue = {
   locale: AppLocale;
@@ -52,19 +41,11 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
     void AsyncStorage.setItem(LOCALE_STORAGE_KEY, next);
   }, []);
 
-  const t = useCallback(
-    (key: string) => catalog[locale][key] ?? catalog.en[key] ?? key,
-    [locale],
-  );
+  const t = useCallback((key: string) => catalog[locale][key] ?? catalog.en[key] ?? key, [locale]);
 
-  const value = useMemo(
-    () => ({ locale, setLocale, t }),
-    [locale, setLocale, t],
-  );
+  const value = useMemo(() => ({ locale, setLocale, t }), [locale, setLocale, t]);
 
-  return (
-    <I18nContext.Provider value={value}>{children}</I18nContext.Provider>
-  );
+  return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
 }
 
 export function useI18n(): I18nContextValue {

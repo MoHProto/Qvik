@@ -15,10 +15,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
-import {
-  OnboardingSlide,
-  type OnboardingSlideData,
-} from 'components/onboarding/OnboardingSlide';
+import { OnboardingSlide, type OnboardingSlideData } from 'components/onboarding/OnboardingSlide';
 import { useI18n } from 'hooks/i18n/I18nProvider';
 
 export type OnboardingSliderProps = {
@@ -56,12 +53,8 @@ export function OnboardingSlider({ data, onGetStarted }: OnboardingSliderProps) 
   }, []);
 
   /** Until `onLayout`, approximate the flex region above the footer so slides center sensibly. */
-  const slideHeightFallback = Math.max(
-    200,
-    windowHeight - insets.top - insets.bottom - 132,
-  );
-  const slideCellHeight =
-    slideViewportHeight > 0 ? slideViewportHeight : slideHeightFallback;
+  const slideHeightFallback = Math.max(200, windowHeight - insets.top - insets.bottom - 132);
+  const slideCellHeight = slideViewportHeight > 0 ? slideViewportHeight : slideHeightFallback;
 
   const lastIndex = Math.max(0, data.length - 1);
   const isFirst = index === 0;
@@ -69,14 +62,12 @@ export function OnboardingSlider({ data, onGetStarted }: OnboardingSliderProps) 
 
   const pageWidth = listViewportWidth > 0 ? listViewportWidth : windowWidth;
 
-  const onViewableItemsChanged = useRef(
-    ({ viewableItems }: { viewableItems: ViewToken[] }) => {
-      const next = viewableItems[0]?.index;
-      if (typeof next === 'number') {
-        setIndex((prev) => (prev === next ? prev : next));
-      }
-    },
-  ).current;
+  const onViewableItemsChanged = useRef(({ viewableItems }: { viewableItems: ViewToken[] }) => {
+    const next = viewableItems[0]?.index;
+    if (typeof next === 'number') {
+      setIndex((prev) => (prev === next ? prev : next));
+    }
+  }).current;
 
   const syncIndexFromOffset = useCallback(
     (offsetX: number) => {
@@ -210,10 +201,9 @@ export function OnboardingSlider({ data, onGetStarted }: OnboardingSliderProps) 
           bounces={false}
           viewabilityConfig={viewabilityConfig}
           onViewableItemsChanged={onViewableItemsChanged}
-          onScroll={Animated.event(
-            [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-            { useNativeDriver: true },
-          )}
+          onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], {
+            useNativeDriver: true,
+          })}
           scrollEventThrottle={16}
           onMomentumScrollEnd={onMomentumScrollEnd}
           onScrollEndDrag={onScrollEndDrag}
@@ -228,8 +218,7 @@ export function OnboardingSlider({ data, onGetStarted }: OnboardingSliderProps) 
         style={[
           styles.footer,
           {
-            paddingBottom:
-              insets.bottom + theme.spacing[5] + theme.spacing[4],
+            paddingBottom: insets.bottom + theme.spacing[5] + theme.spacing[4],
           },
         ]}
       >
@@ -242,19 +231,13 @@ export function OnboardingSlider({ data, onGetStarted }: OnboardingSliderProps) 
                 onPress={handleBack}
                 hitSlop={12}
               >
-                <Text style={[styles.navButton, styles.backLabel]}>
-                  {t('onboarding.back')}
-                </Text>
+                <Text style={[styles.navButton, styles.backLabel]}>{t('onboarding.back')}</Text>
               </Pressable>
             ) : null}
           </View>
           <View style={styles.dotsWrap}>
             {data.map((slide, i) => {
-              const inputRange = [
-                (i - 1) * pageWidth,
-                i * pageWidth,
-                (i + 1) * pageWidth,
-              ];
+              const inputRange = [(i - 1) * pageWidth, i * pageWidth, (i + 1) * pageWidth];
 
               const scale = scrollX.interpolate({
                 inputRange,
@@ -283,19 +266,11 @@ export function OnboardingSlider({ data, onGetStarted }: OnboardingSliderProps) 
               );
             })}
           </View>
-          <View
-            style={[
-              styles.sideSlot,
-              styles.sideSlotEnd,
-              { width: SIDE_SLOT_WIDTH },
-            ]}
-          >
+          <View style={[styles.sideSlot, styles.sideSlotEnd, { width: SIDE_SLOT_WIDTH }]}>
             <Pressable
               accessibilityRole="button"
               accessibilityLabel={
-                isLast
-                  ? t('onboarding.a11y.getStarted')
-                  : t('onboarding.a11y.next')
+                isLast ? t('onboarding.a11y.getStarted') : t('onboarding.a11y.next')
               }
               onPress={handleNext}
               hitSlop={12}

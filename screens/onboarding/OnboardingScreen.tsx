@@ -46,10 +46,7 @@ export function OnboardingScreen({ onGetStarted }: OnboardingScreenProps) {
 
   return (
     <View style={styles.fill}>
-      <Background
-        source={messagesPatternSource}
-        tileSize={MESSAGES_PATTERN_TILE_PX}
-      />
+      <Background source={messagesPatternSource} tileSize={MESSAGES_PATTERN_TILE_PX} />
       <OnboardingCircle />
       <OnboardingSlider data={slides} onGetStarted={onGetStarted} />
     </View>

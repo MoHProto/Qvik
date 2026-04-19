@@ -1,11 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { ThemeProvider } from '@react-navigation/native';
-import {
-  Icon,
-  Label,
-  NativeTabs,
-  VectorIcon,
-} from 'expo-router/unstable-native-tabs';
+import { Icon, Label, NativeTabs, VectorIcon } from 'expo-router/unstable-native-tabs';
 import { usePathname, useRouter, type Href } from 'expo-router';
 import { useI18n } from 'hooks/i18n/I18nProvider';
 import { getTabBarIonRasterSources, warmTabBarIonRasterSources } from 'lib/tabBarIonRasterSources';
@@ -95,18 +90,8 @@ export default function NavigationTabsNativeIos() {
                     selected: raster.threads,
                   }
                 : {
-                    default: (
-                      <VectorIcon
-                        family={Ionicons}
-                        name="chatbubble-ellipses-outline"
-                      />
-                    ),
-                    selected: (
-                      <VectorIcon
-                        family={Ionicons}
-                        name="chatbubble-ellipses-outline"
-                      />
-                    ),
+                    default: <VectorIcon family={Ionicons} name="chatbubble-ellipses-outline" />,
+                    selected: <VectorIcon family={Ionicons} name="chatbubble-ellipses-outline" />,
                   }
             }
           />
@@ -123,9 +108,7 @@ export default function NavigationTabsNativeIos() {
                   }
                 : {
                     default: <VectorIcon family={Ionicons} name="settings-outline" />,
-                    selected: (
-                      <VectorIcon family={Ionicons} name="settings-outline" />
-                    ),
+                    selected: <VectorIcon family={Ionicons} name="settings-outline" />,
                   }
             }
           />

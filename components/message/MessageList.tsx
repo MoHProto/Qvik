@@ -32,23 +32,15 @@ export function MessageList({
 
   return (
     <View style={styles.listRoot}>
-      <Background
-        source={messagesPatternSource}
-        tileSize={MESSAGES_PATTERN_TILE_PX}
-      />
+      <Background source={messagesPatternSource} tileSize={MESSAGES_PATTERN_TILE_PX} />
       <FlatList
         style={styles.listFill}
         data={data}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <MessageItem data={item} onRetry={onRetry} />
-        )}
+        renderItem={({ item }) => <MessageItem data={item} onRetry={onRetry} />}
         ListEmptyComponent={
           <View style={styles.emptyWrap}>
-            <EmptyMessage
-              icon={emptyMessage.icon}
-              message={emptyMessage.message}
-            />
+            <EmptyMessage icon={emptyMessage.icon} message={emptyMessage.message} />
           </View>
         }
         contentContainerStyle={contentStyle}

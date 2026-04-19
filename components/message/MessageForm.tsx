@@ -26,20 +26,12 @@ function hexToRgba(hex: string, alpha: number): string {
 export function MessageForm({ onStartPress }: { onStartPress?: () => void }) {
   const insets = useSafeAreaInsets();
   const { theme } = useUnistyles();
-  const paddingBottom =
-    insets.bottom +
-    (Platform.OS === 'web' ? theme.spacing[4] : 0);
+  const paddingBottom = insets.bottom + (Platform.OS === 'web' ? theme.spacing[4] : 0);
 
   return (
-    <View
-      pointerEvents="box-none"
-      style={[styles.wrap, { paddingBottom }]}
-    >
+    <View pointerEvents="box-none" style={[styles.wrap, { paddingBottom }]}>
       <LinearGradient
-        colors={[
-          hexToRgba(theme.colors.backgroundAlt, 0),
-          theme.colors.backgroundAlt,
-        ]}
+        colors={[hexToRgba(theme.colors.backgroundAlt, 0), theme.colors.backgroundAlt]}
         end={{ x: 0.5, y: 1 }}
         pointerEvents="none"
         start={{ x: 0.5, y: 0 }}
@@ -66,16 +58,8 @@ export function MessageForm({ onStartPress }: { onStartPress?: () => void }) {
  * Extra bottom padding for scroll content so rows clear the floating footer.
  * Pass `theme.spacing[4]` as `additionalBottom` on web so it matches the footer’s bottom inset.
  */
-export function getMessageFormListInsetBottom(
-  safeBottom: number,
-  additionalBottom = 0,
-): number {
-  return (
-    FOOTER_VERTICAL_PADDING * 2 +
-    CONTROL_MIN_HEIGHT +
-    safeBottom +
-    additionalBottom
-  );
+export function getMessageFormListInsetBottom(safeBottom: number, additionalBottom = 0): number {
+  return FOOTER_VERTICAL_PADDING * 2 + CONTROL_MIN_HEIGHT + safeBottom + additionalBottom;
 }
 
 const styles = StyleSheet.create((theme) => ({

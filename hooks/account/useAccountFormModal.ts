@@ -1,7 +1,4 @@
-import {
-  AccountFormModal,
-  type AccountFormModalData,
-} from 'components/account/AccountFormModal';
+import { AccountFormModal, type AccountFormModalData } from 'components/account/AccountFormModal';
 import type { Account } from 'components/account/AccountItem';
 import { useCallback } from 'react';
 import { usePopupManager } from 'react-popup-manager';

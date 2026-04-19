@@ -102,13 +102,7 @@ export function OverlaySheetModal<TResult = unknown>({
         }
       });
     },
-    [
-      animationDurationMs,
-      backdropOpacity,
-      maxSheetHeight,
-      onClose,
-      sheetTranslateY,
-    ],
+    [animationDurationMs, backdropOpacity, maxSheetHeight, onClose, sheetTranslateY],
   );
 
   useEffect(() => {
@@ -149,17 +143,11 @@ export function OverlaySheetModal<TResult = unknown>({
         onPress={() => finish(backdropDismissValue)}
       >
         <Animated.View
-          style={[
-            RNStyleSheet.absoluteFill,
-            styles.backdrop,
-            { opacity: backdropOpacity },
-          ]}
+          style={[RNStyleSheet.absoluteFill, styles.backdrop, { opacity: backdropOpacity }]}
         />
       </Pressable>
 
-      <Animated.View
-        style={[styles.sheet, sheetLayoutStyle, sheetStyle, viewportCapStyle]}
-      >
+      <Animated.View style={[styles.sheet, sheetLayoutStyle, sheetStyle, viewportCapStyle]}>
         {children({ finish })}
       </Animated.View>
     </View>

@@ -114,11 +114,7 @@ export function OnboardingSlide({ data }: OnboardingSlideProps) {
             {'SvgIllustration' in data ? (
               <data.SvgIllustration width={ICON_SIZE} color={theme.colors.primary} />
             ) : (
-              <Ionicons
-                name={data.icon}
-                size={ICON_SIZE}
-                color={theme.colors.primary}
-              />
+              <Ionicons name={data.icon} size={ICON_SIZE} color={theme.colors.primary} />
             )}
           </Animated.View>
           <Text style={styles.title}>{data.title}</Text>

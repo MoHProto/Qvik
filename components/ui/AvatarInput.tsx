@@ -36,11 +36,7 @@ const SNAP_SPRING = {
 } as const;
 
 /** Preview ring diameter never exceeds the measured track (minus small horizontal margin). */
-function effectiveCircleDiameter(
-  trackWidth: number,
-  preferred: number,
-  edgeMargin = 8,
-): number {
+function effectiveCircleDiameter(trackWidth: number, preferred: number, edgeMargin = 8): number {
   if (trackWidth <= 0) {
     return preferred;
   }
@@ -51,11 +47,7 @@ function effectiveCircleDiameter(
   return Math.min(preferred, inner);
 }
 
-function indexFromOffset(
-  offsetX: number,
-  itemWidth: number,
-  length: number,
-): number {
+function indexFromOffset(offsetX: number, itemWidth: number, length: number): number {
   if (length <= 0) return 0;
   return Math.min(length - 1, Math.max(0, Math.round(offsetX / itemWidth)));
 }
@@ -95,8 +87,7 @@ function AvatarInputWeb({
   circleSize = DEFAULT_CIRCLE_SIZE,
 }: AvatarInputProps) {
   const { theme } = useUnistyles();
-  const circleBackgroundColor =
-    circleBackgroundColorProp ?? theme.colors.avatarFallback;
+  const circleBackgroundColor = circleBackgroundColorProp ?? theme.colors.avatarFallback;
   const scrollRef = useRef<ScrollView>(null);
   const [trackWidth, setTrackWidth] = useState(0);
   const valueIndex = useMemo(() => {
@@ -249,8 +240,7 @@ function AvatarInputNative({
   circleSize = DEFAULT_CIRCLE_SIZE,
 }: AvatarInputProps) {
   const { theme } = useUnistyles();
-  const circleBackgroundColor =
-    circleBackgroundColorProp ?? theme.colors.avatarFallback;
+  const circleBackgroundColor = circleBackgroundColorProp ?? theme.colors.avatarFallback;
 
   const valueIndex = useMemo(() => {
     const i = emojis.indexOf(value);
@@ -265,9 +255,7 @@ function AvatarInputNative({
 
   const scrollX = useSharedValue(valueIndex * itemWidth);
   const panOriginScroll = useSharedValue(0);
-  const maxScrollSV = useSharedValue(
-    Math.max(0, (emojis.length - 1) * itemWidth),
-  );
+  const maxScrollSV = useSharedValue(Math.max(0, (emojis.length - 1) * itemWidth));
   const emojiCountSV = useSharedValue(emojis.length);
 
   const [centerIndex, setCenterIndex] = useState(valueIndex);
@@ -301,9 +289,7 @@ function AvatarInputNative({
       const maxI = Math.max(0, emojiCountSV.value - 1);
       const clamped = Math.min(maxI, Math.max(0, idx));
       const prevClamped =
-        prev === null || prev === undefined
-          ? null
-          : Math.min(maxI, Math.max(0, prev));
+        prev === null || prev === undefined ? null : Math.min(maxI, Math.max(0, prev));
       if (prevClamped === null || clamped !== prevClamped) {
         runOnJS(setCenterIndex)(clamped);
       }

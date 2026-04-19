@@ -1,9 +1,6 @@
 import { HeaderBackButton } from '@react-navigation/elements';
 import type { NativeStackHeaderBackProps } from '@react-navigation/native-stack';
-import {
-  getMessageFormListInsetBottom,
-  MessageForm,
-} from 'components/message/MessageForm';
+import { getMessageFormListInsetBottom, MessageForm } from 'components/message/MessageForm';
 import type { MessageItemData } from 'components/message/MessageItem';
 import { MessageList } from 'components/message/MessageList';
 import { ThreadTitleButton } from 'components/thread/ThreadTitleButton';
@@ -16,10 +13,7 @@ import { Platform, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
-function buildExampleMessages(
-  threadId: string,
-  t: (key: string) => string,
-): MessageItemData[] {
+function buildExampleMessages(threadId: string, t: (key: string) => string): MessageItemData[] {
   const now = Date.now();
   return [
     {
@@ -71,10 +65,7 @@ export default function MessageListScreen() {
   const data = useMemo(() => buildExampleMessages(id, t), [id, t]);
   const listBottomInset = useMemo(
     () =>
-      getMessageFormListInsetBottom(
-        insets.bottom,
-        Platform.OS === 'web' ? theme.spacing[4] : 0,
-      ),
+      getMessageFormListInsetBottom(insets.bottom, Platform.OS === 'web' ? theme.spacing[4] : 0),
     [insets.bottom, theme.spacing],
   );
 
@@ -110,9 +101,7 @@ export default function MessageListScreen() {
         <View pointerEvents="box-none" style={{ alignItems: 'center' }}>
           <ThreadTitleButton
             data={thread}
-            onPress={() =>
-              router.push(`/threads/${thread.id}` as Href)
-            }
+            onPress={() => router.push(`/threads/${thread.id}` as Href)}
           />
         </View>
       ),

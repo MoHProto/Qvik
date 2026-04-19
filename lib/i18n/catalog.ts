@@ -70,8 +70,7 @@ const en: Record<string, string> = {
   'demo.message.3.label': 'Draft reply',
   'demo.message.3.body': 'We are targeting **next Friday** for the mobile build.',
   'demo.message.4.input': 'Run compliance check',
-  'demo.message.4.error':
-    'The compliance service timed out. Please try again.',
+  'demo.message.4.error': 'The compliance service timed out. Please try again.',
 };
 
 const uk: Record<string, string> = {
@@ -142,8 +141,7 @@ const uk: Record<string, string> = {
   'demo.message.3.label': 'Чернетка відповіді',
   'demo.message.3.body': 'Орієнтуємося на **наступну п’ятницю** для мобільної збірки.',
   'demo.message.4.input': 'Запусти перевірку відповідності',
-  'demo.message.4.error':
-    'Служба перевірки не відповіла вчасно. Спробуйте ще раз.',
+  'demo.message.4.error': 'Служба перевірки не відповіла вчасно. Спробуйте ще раз.',
 };
 
 export const catalog: Record<AppLocale, Record<string, string>> = { en, uk };

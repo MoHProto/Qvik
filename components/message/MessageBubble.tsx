@@ -2,14 +2,7 @@ import { MessageBody } from 'components/message/MessageBody';
 import { MessageBubbleTail } from 'components/message/MessageBubbleTail';
 import { JumpingDots } from 'components/ui/jumping-dots/JumpingDots';
 import React from 'react';
-import {
-  Platform,
-  PlatformColor,
-  Pressable,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import { Platform, PlatformColor, Pressable, Text, useColorScheme, View } from 'react-native';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 const OUTGOING_TIME = 'rgba(255, 255, 255, 0.65)';
@@ -82,11 +75,7 @@ export function MessageBubble({
             <Text style={styles.outgoingBubbleText}>{data.text}</Text>
             {data.time != null && data.time.length > 0 ? (
               <Text
-                style={[
-                  styles.bubbleTime,
-                  styles.bubbleTimeOutgoing,
-                  { color: OUTGOING_TIME },
-                ]}
+                style={[styles.bubbleTime, styles.bubbleTimeOutgoing, { color: OUTGOING_TIME }]}
               >
                 {data.time}
               </Text>
@@ -98,19 +87,13 @@ export function MessageBubble({
     );
   }
 
-  const incomingTailColor = error
-    ? theme.colors.incomingBubbleError
-    : theme.colors.surface;
+  const incomingTailColor = error ? theme.colors.incomingBubbleError : theme.colors.surface;
 
   return (
     <View style={styles.incomingWrap}>
       <View style={styles.bubbleOuterIncoming}>
         <View
-          style={[
-            styles.incomingBubble,
-            styles.bubbleShadow,
-            error && styles.incomingBubbleError,
-          ]}
+          style={[styles.incomingBubble, styles.bubbleShadow, error && styles.incomingBubbleError]}
         >
           {pending ? (
             <JumpingDots />
@@ -121,11 +104,7 @@ export function MessageBubble({
           )}
           {!pending && data.time != null && data.time.length > 0 ? (
             <Text
-              style={[
-                styles.bubbleTime,
-                styles.bubbleTimeIncoming,
-                { color: bubble.incomingTime },
-              ]}
+              style={[styles.bubbleTime, styles.bubbleTimeIncoming, { color: bubble.incomingTime }]}
             >
               {data.time}
             </Text>
@@ -141,10 +120,7 @@ export function MessageBubble({
               accessibilityRole="button"
               accessibilityLabel={label}
               onPress={() => onAction?.(label, data)}
-              style={({ pressed }) => [
-                styles.actionButton,
-                pressed && styles.actionButtonPressed,
-              ]}
+              style={({ pressed }) => [styles.actionButton, pressed && styles.actionButtonPressed]}
             >
               <Text style={styles.actionLabel}>{label}</Text>
             </Pressable>

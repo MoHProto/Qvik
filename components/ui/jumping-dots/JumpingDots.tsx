@@ -11,11 +11,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { StyleSheet } from 'react-native-unistyles';
 
-import {
-  JUMPING_DOT_AMPLITUDE_PX,
-  JUMPING_DOT_HALF_MS,
-  JUMPING_DOT_STAGGER_MS,
-} from './timing';
+import { JUMPING_DOT_AMPLITUDE_PX, JUMPING_DOT_HALF_MS, JUMPING_DOT_STAGGER_MS } from './timing';
 
 const timingConfig = {
   duration: JUMPING_DOT_HALF_MS,

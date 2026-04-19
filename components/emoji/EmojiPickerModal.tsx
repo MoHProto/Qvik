@@ -30,11 +30,7 @@ function colorString(value: unknown, fallback: string): string {
   return typeof value === 'string' ? value : fallback;
 }
 
-export function EmojiPickerModal({
-  isOpen: _isOpen,
-  onClose,
-  data,
-}: EmojiPickerModalProps) {
+export function EmojiPickerModal({ isOpen: _isOpen, onClose, data }: EmojiPickerModalProps) {
   const title = data?.title ?? 'Choose emoji';
   const insets = useSafeAreaInsets();
   const { theme } = useUnistyles();
@@ -97,16 +93,9 @@ export function EmojiPickerModal({
               accessibilityLabel="Close"
               hitSlop={12}
               onPress={() => finish(null)}
-              style={({ pressed }) => [
-                styles.closeButton,
-                pressed && styles.closeButtonPressed,
-              ]}
+              style={({ pressed }) => [styles.closeButton, pressed && styles.closeButtonPressed]}
             >
-              <Ionicons
-                name="close"
-                size={18}
-                color={theme.colors.text}
-              />
+              <Ionicons name="close" size={18} color={theme.colors.text} />
             </Pressable>
           </View>
 

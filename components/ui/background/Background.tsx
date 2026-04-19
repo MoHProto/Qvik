@@ -42,10 +42,7 @@ export function Background({
   }, [width, height, tileSize]);
 
   const pattern = (
-    <View
-      pointerEvents="none"
-      style={[StyleSheet.absoluteFill, styles.clip]}
-    >
+    <View pointerEvents="none" style={[StyleSheet.absoluteFill, styles.clip]}>
       {tiles.map(({ key, left, top }) => (
         <Image
           key={key}

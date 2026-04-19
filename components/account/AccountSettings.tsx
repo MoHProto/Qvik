@@ -22,22 +22,14 @@ type SettingsRowProps = {
   showSeparator?: boolean;
 };
 
-function SettingsRow({
-  title,
-  value,
-  onPress,
-  showSeparator,
-}: SettingsRowProps) {
+function SettingsRow({ title, value, onPress, showSeparator }: SettingsRowProps) {
   const { theme } = useUnistyles();
   return (
     <>
       <Pressable
         accessibilityRole="button"
         onPress={onPress}
-        style={({ pressed }) => [
-          styles.settingsRow,
-          pressed && styles.settingsRowPressed,
-        ]}
+        style={({ pressed }) => [styles.settingsRow, pressed && styles.settingsRowPressed]}
       >
         <Text style={styles.settingsTitle}>{title}</Text>
         <View style={styles.settingsRight}>
@@ -46,11 +38,7 @@ function SettingsRow({
               {value}
             </Text>
           ) : null}
-          <Ionicons
-            name="chevron-forward"
-            size={20}
-            color={theme.colors.muted}
-          />
+          <Ionicons name="chevron-forward" size={20} color={theme.colors.muted} />
         </View>
       </Pressable>
       {showSeparator ? <View style={styles.rowSeparator} /> : null}
@@ -73,11 +61,7 @@ export function AccountSettings({
       keyboardShouldPersistTaps="handled"
     >
       <View style={styles.card}>
-        <AccountItem
-          data={account}
-          onPress={onAccountHeaderPress}
-          showChevron
-        />
+        <AccountItem data={account} onPress={onAccountHeaderPress} showChevron />
       </View>
 
       <View style={styles.card}>

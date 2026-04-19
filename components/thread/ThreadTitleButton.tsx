@@ -51,11 +51,7 @@ export function ThreadTitleButton({
         size={AVATAR_SIZE}
       />
       <View style={[styles.titleCell, { maxWidth: titleMaxWidth }]}>
-        <Text
-          style={styles.title}
-          numberOfLines={1}
-          ellipsizeMode="tail"
-        >
+        <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
           {data.title}
         </Text>
       </View>

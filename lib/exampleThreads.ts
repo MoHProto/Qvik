@@ -1,9 +1,6 @@
 import type { ThreadItemData } from 'components/thread/ThreadItem';
 
-const THREAD_I18N: Record<
-  string,
-  { titleKey: string; descriptionKey?: string }
-> = {
+const THREAD_I18N: Record<string, { titleKey: string; descriptionKey?: string }> = {
   '1': { titleKey: 'demo.thread.1.title', descriptionKey: 'demo.thread.1.desc' },
   '2': { titleKey: 'demo.thread.2.title' },
   '3': { titleKey: 'demo.thread.3.title', descriptionKey: 'demo.thread.3.desc' },
@@ -23,9 +20,7 @@ export function localizeThreadItem(
   return {
     ...item,
     title: t(map.titleKey),
-    description: map.descriptionKey
-      ? t(map.descriptionKey)
-      : item.description,
+    description: map.descriptionKey ? t(map.descriptionKey) : item.description,
   };
 }
 
@@ -79,10 +74,7 @@ export const EXAMPLE_THREADS: ThreadItemData[] = [
   },
 ];
 
-export function getExampleThreadById(
-  threadId: string,
-  t: (key: string) => string,
-): ThreadItemData {
+export function getExampleThreadById(threadId: string, t: (key: string) => string): ThreadItemData {
   const found = EXAMPLE_THREADS.find((row) => row.id === threadId);
   if (found) {
     return localizeThreadItem(found, t);
@@ -96,8 +88,6 @@ export function getExampleThreadById(
   };
 }
 
-export function getLocalizedExampleThreads(
-  t: (key: string) => string,
-): ThreadItemData[] {
+export function getLocalizedExampleThreads(t: (key: string) => string): ThreadItemData[] {
   return EXAMPLE_THREADS.map((row) => localizeThreadItem(row, t));
 }

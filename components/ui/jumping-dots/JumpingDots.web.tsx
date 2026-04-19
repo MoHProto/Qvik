@@ -2,11 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Animated, Easing, View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 
-import {
-  JUMPING_DOT_AMPLITUDE_PX,
-  JUMPING_DOT_HALF_MS,
-  JUMPING_DOT_STAGGER_MS,
-} from './timing';
+import { JUMPING_DOT_AMPLITUDE_PX, JUMPING_DOT_HALF_MS, JUMPING_DOT_STAGGER_MS } from './timing';
 
 const easing = Easing.inOut(Easing.cubic);
 

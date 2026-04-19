@@ -1,7 +1,4 @@
-import {
-  EmojiPickerModal,
-  type EmojiPickerModalData,
-} from 'components/emoji/EmojiPickerModal';
+import { EmojiPickerModal, type EmojiPickerModalData } from 'components/emoji/EmojiPickerModal';
 import { useCallback } from 'react';
 import { usePopupManager } from 'react-popup-manager';
 

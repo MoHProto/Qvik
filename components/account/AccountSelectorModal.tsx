@@ -27,8 +27,7 @@ export type AccountSelectorModalOwnProps = {
   data: AccountSelectorModalData;
 };
 
-export type AccountSelectorModalProps = AccountSelectorModalOwnProps &
-  PopupProps;
+export type AccountSelectorModalProps = AccountSelectorModalOwnProps & PopupProps;
 
 export function AccountSelectorModal({
   isOpen: _isOpen,
@@ -56,25 +55,16 @@ export function AccountSelectorModal({
               accessibilityLabel={t('a11y.close')}
               hitSlop={12}
               onPress={() => finish(null)}
-              style={({ pressed }) => [
-                styles.closeButton,
-                pressed && styles.closeButtonPressed,
-              ]}
+              style={({ pressed }) => [styles.closeButton, pressed && styles.closeButtonPressed]}
             >
-              <Ionicons
-                name="close"
-                size={18}
-                color={theme.colors.text}
-              />
+              <Ionicons name="close" size={18} color={theme.colors.text} />
             </Pressable>
           </View>
           <View style={styles.listWrap}>
             <AccountList
               data={accounts}
               activeAccountId={activeAccountId}
-              onItemPress={(item) =>
-                finish({ action: 'select', accountId: item.id })
-              }
+              onItemPress={(item) => finish({ action: 'select', accountId: item.id })}
               emptyMessage={{
                 icon: 'person-outline',
                 message: t('accountSelector.empty'),
@@ -84,16 +74,9 @@ export function AccountSelectorModal({
           <Pressable
             accessibilityRole="button"
             onPress={() => finish({ action: 'create' })}
-            style={({ pressed }) => [
-              styles.addButton,
-              pressed && styles.addButtonPressed,
-            ]}
+            style={({ pressed }) => [styles.addButton, pressed && styles.addButtonPressed]}
           >
-            <Ionicons
-              name="add-circle-outline"
-              size={22}
-              color={theme.colors.primary}
-            />
+            <Ionicons name="add-circle-outline" size={22} color={theme.colors.primary} />
             <Text style={styles.addLabel}>{t('accountSelector.addNew')}</Text>
           </Pressable>
         </>

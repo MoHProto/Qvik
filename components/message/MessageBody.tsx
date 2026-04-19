@@ -11,16 +11,12 @@ const markdownRules: RenderRules = {
   paragraph: (node, children, parent, styles) => {
     const parentNode = parent[0];
     const siblings = parentNode?.children ?? [];
-    const isLastChild =
-      siblings.length > 0 && siblings[siblings.length - 1] === node;
+    const isLastChild = siblings.length > 0 && siblings[siblings.length - 1] === node;
 
     return (
       <View
         key={node.key}
-        style={[
-          styles._VIEW_SAFE_paragraph,
-          isLastChild && { marginBottom: 0 },
-        ]}
+        style={[styles._VIEW_SAFE_paragraph, isLastChild && { marginBottom: 0 }]}
       >
         {children}
       </View>

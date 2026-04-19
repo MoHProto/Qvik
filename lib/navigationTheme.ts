@@ -10,14 +10,9 @@ const headerChromePrimary = {
   dark: 'rgba(249, 250, 251, 0.82)',
 } as const;
 
-export function getAppNavigationTheme(
-  colorScheme: 'light' | 'dark' | null | undefined,
-): Theme {
+export function getAppNavigationTheme(colorScheme: 'light' | 'dark' | null | undefined): Theme {
   const base = colorScheme === 'dark' ? DarkTheme : DefaultTheme;
-  const primary =
-    colorScheme === 'dark'
-      ? headerChromePrimary.dark
-      : headerChromePrimary.light;
+  const primary = colorScheme === 'dark' ? headerChromePrimary.dark : headerChromePrimary.light;
   return {
     ...base,
     colors: {

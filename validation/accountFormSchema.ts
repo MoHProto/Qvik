@@ -16,6 +16,4 @@ export function createAccountFormSchema(t: (key: string) => string) {
   });
 }
 
-export type AccountFormSchemaValues = yup.InferType<
-  ReturnType<typeof createAccountFormSchema>
->;
+export type AccountFormSchemaValues = yup.InferType<ReturnType<typeof createAccountFormSchema>>;

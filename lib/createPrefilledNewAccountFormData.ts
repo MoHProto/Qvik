@@ -4,9 +4,7 @@ import type { AppLocale } from 'lib/i18n/catalog';
 import { avatarTintFromName } from 'utils/avatarTintFromName';
 
 /** Prefill for `AccountFormModal` `initialAccount` (call before opening the modal). */
-export function createPrefilledNewAccountFormData(
-  locale: AppLocale = 'en',
-): {
+export function createPrefilledNewAccountFormData(locale: AppLocale = 'en'): {
   name: string;
   avatarIcon: string;
   avatarBackground?: string;

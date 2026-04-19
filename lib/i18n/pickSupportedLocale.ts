@@ -1,8 +1,6 @@
 import type { AppLocale } from 'lib/i18n/catalog';
 
-export function pickSupportedLocale(
-  languageCode: string | null | undefined,
-): AppLocale {
+export function pickSupportedLocale(languageCode: string | null | undefined): AppLocale {
   if (!languageCode) {
     return 'en';
   }

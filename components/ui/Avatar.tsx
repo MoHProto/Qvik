@@ -12,14 +12,7 @@ export type AvatarProps = {
   size?: number;
 };
 
-export function Avatar({
-  url,
-  icon,
-  initials,
-  background,
-  color,
-  size = 40,
-}: AvatarProps) {
+export function Avatar({ url, icon, initials, background, color, size = 40 }: AvatarProps) {
   const { theme } = useUnistyles();
   const hasUrl = Boolean(url && url.length > 0);
   const initialsText = initials?.trim() ?? '';
@@ -46,22 +39,11 @@ export function Avatar({
           contentFit="cover"
         />
       ) : icon ? (
-        <Text
-          style={[
-            styles.emoji,
-            { fontSize: s * 0.45, color: color ?? theme.colors.text },
-          ]}
-        >
+        <Text style={[styles.emoji, { fontSize: s * 0.45, color: color ?? theme.colors.text }]}>
           {icon}
         </Text>
       ) : showInitials ? (
-        <Text
-          style={[
-            styles.initials,
-            { fontSize: s * 0.38 },
-            color ? { color } : null,
-          ]}
-        >
+        <Text style={[styles.initials, { fontSize: s * 0.38 }, color ? { color } : null]}>
           {initialsText}
         </Text>
       ) : (

@@ -25,19 +25,14 @@ export function AccountList({
       renderItem={({ item }) => (
         <AccountItem
           data={item}
-          onPress={
-            onItemPress != null ? () => onItemPress(item) : undefined
-          }
+          onPress={onItemPress != null ? () => onItemPress(item) : undefined}
           selected={item.id === activeAccountId}
         />
       )}
       ItemSeparatorComponent={() => <View style={styles.separator} />}
       ListEmptyComponent={
         <View style={styles.emptyWrap}>
-          <EmptyMessage
-            icon={emptyMessage.icon}
-            message={emptyMessage.message}
-          />
+          <EmptyMessage icon={emptyMessage.icon} message={emptyMessage.message} />
         </View>
       }
       contentContainerStyle={data.length === 0 ? styles.listEmpty : styles.list}

@@ -18,17 +18,9 @@ function ThreadsHeaderAddButton() {
       onPress={() =>
         notify.success(t('threads.toast.saved.title'), t('threads.toast.saved.message'))
       }
-      style={({ pressed }) => [
-        styles.headerButton,
-        pressed && styles.headerButtonPressed,
-      ]}
+      style={({ pressed }) => [styles.headerButton, pressed && styles.headerButtonPressed]}
     >
-      <Ionicons
-        name="add"
-        size={24}
-        color={theme.colors.text}
-        style={styles.headerIcon}
-      />
+      <Ionicons name="add" size={24} color={theme.colors.text} style={styles.headerIcon} />
     </Pressable>
   );
 }

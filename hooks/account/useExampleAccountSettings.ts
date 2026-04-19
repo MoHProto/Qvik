@@ -5,22 +5,13 @@ import { useCallback, useMemo, useState } from 'react';
 
 export function useExampleAccountSettings() {
   const { locale, t } = useI18n();
-  const [accounts, setAccounts] = useState<AccountItemData[]>(
-    () => [...EXAMPLE_ACCOUNTS],
-  );
-  const [activeAccountId, setActiveAccountId] = useState(
-    () => EXAMPLE_ACCOUNTS[0]!.id,
-  );
+  const [accounts, setAccounts] = useState<AccountItemData[]>(() => [...EXAMPLE_ACCOUNTS]);
+  const [activeAccountId, setActiveAccountId] = useState(() => EXAMPLE_ACCOUNTS[0]!.id);
 
-  const languageLabel = useMemo(
-    () => t(`language.name.${locale}`),
-    [locale, t],
-  );
+  const languageLabel = useMemo(() => t(`language.name.${locale}`), [locale, t]);
 
   const currentAccount = useMemo(() => {
-    return (
-      accounts.find((a) => a.id === activeAccountId) ?? accounts[0]!
-    );
+    return accounts.find((a) => a.id === activeAccountId) ?? accounts[0]!;
   }, [accounts, activeAccountId]);
 
   const addAccount = useCallback((account: AccountItemData) => {
@@ -29,9 +20,7 @@ export function useExampleAccountSettings() {
   }, []);
 
   const updateAccount = useCallback((account: AccountItemData) => {
-    setAccounts((prev) =>
-      prev.map((a) => (a.id === account.id ? { ...a, ...account } : a)),
-    );
+    setAccounts((prev) => prev.map((a) => (a.id === account.id ? { ...a, ...account } : a)));
     setActiveAccountId(account.id);
   }, []);
 

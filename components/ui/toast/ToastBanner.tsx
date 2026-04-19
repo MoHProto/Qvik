@@ -1,10 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { BlurView } from 'expo-blur';
 import { Platform, Pressable, Text, useColorScheme, View } from 'react-native';
-import type {
-  ToastConfig,
-  ToastConfigParams,
-} from 'react-native-toast-message';
+import type { ToastConfig, ToastConfigParams } from 'react-native-toast-message';
 import { StyleSheet } from 'react-native-unistyles';
 
 /** iOS system semantic colors (icons) */
@@ -31,17 +28,12 @@ function IosToastBanner({ text1, text2, onPress, variant }: BannerProps) {
       ? ('systemThinMaterialDark' as const)
       : ('systemThinMaterialLight' as const);
 
-  const intensity =
-    Platform.OS === 'ios' ? 80 : Platform.OS === 'android' ? 50 : 65;
+  const intensity = Platform.OS === 'ios' ? 80 : Platform.OS === 'android' ? 50 : 65;
 
   const inner = (
     <View style={styles.inner}>
       <View style={styles.iconWrap}>
-        <Ionicons
-          name={VARIANT_ICON[variant]}
-          size={24}
-          color={ACCENT[variant]}
-        />
+        <Ionicons name={VARIANT_ICON[variant]} size={24} color={ACCENT[variant]} />
       </View>
       <View style={styles.textBlock}>
         {text1 ? (
@@ -64,10 +56,7 @@ function IosToastBanner({ text1, text2, onPress, variant }: BannerProps) {
         <Pressable
           accessibilityRole="alert"
           onPress={onPress}
-          style={({ pressed }) => [
-            styles.pressable,
-            pressed && styles.pressablePressed,
-          ]}
+          style={({ pressed }) => [styles.pressable, pressed && styles.pressablePressed]}
         >
           {Platform.OS === 'web' ? (
             <View style={styles.blur}>{inner}</View>
