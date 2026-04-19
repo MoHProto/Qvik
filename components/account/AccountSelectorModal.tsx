@@ -1,13 +1,13 @@
-import type { PopupProps } from 'react-popup-manager';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import React from 'react';
 import { Dimensions, Pressable, Text, View } from 'react-native';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
+import type { PopupProps } from 'react-popup-manager';
 
 import { OverlaySheetModal } from 'components/ui/Modal';
 import { useI18n } from 'hooks/i18n/I18nProvider';
-import { AccountList } from './AccountList';
 import type { AccountItemData } from './AccountItem';
+import { AccountList } from './AccountList';
 
 const maxSheetHeight = Math.round(Dimensions.get('window').height * 0.78);
 

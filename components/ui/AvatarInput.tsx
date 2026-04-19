@@ -1,5 +1,13 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { LayoutChangeEvent, Text, View } from 'react-native';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  LayoutChangeEvent,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  Platform,
+  ScrollView,
+  Text,
+  View,
+} from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   cancelAnimation,
@@ -18,9 +26,7 @@ const DEFAULT_STRIP_HEIGHT = 52;
 
 /** Longer glide than Reanimated default (0.998); closer to 1 = slower velocity decay. */
 const SLIDER_DECELERATION = 0.9995;
-/** Amplify throw from finger velocity (px/s → decay). */
 const SLIDER_VELOCITY_FACTOR = 1.35;
-/** Below this |velocityX|, skip decay and spring straight to the nearest slot. */
 const LOW_VELOCITY_PX_PER_S = 120;
 
 const SNAP_SPRING = {
@@ -28,6 +34,31 @@ const SNAP_SPRING = {
   stiffness: 220,
   mass: 0.35,
 } as const;
+
+/** Preview ring diameter never exceeds the measured track (minus small horizontal margin). */
+function effectiveCircleDiameter(
+  trackWidth: number,
+  preferred: number,
+  edgeMargin = 8,
+): number {
+  if (trackWidth <= 0) {
+    return preferred;
+  }
+  const inner = trackWidth - edgeMargin * 2;
+  if (inner <= 0) {
+    return preferred;
+  }
+  return Math.min(preferred, inner);
+}
+
+function indexFromOffset(
+  offsetX: number,
+  itemWidth: number,
+  length: number,
+): number {
+  if (length <= 0) return 0;
+  return Math.min(length - 1, Math.max(0, Math.round(offsetX / itemWidth)));
+}
 
 function clampIndexFromScroll(
   scroll: number,
@@ -44,15 +75,171 @@ export type AvatarInputProps = {
   emojis: readonly string[] | string[];
   value: string;
   onChange: (emoji: string) => void;
-  /** Background of the center preview circle (defaults to theme avatar fallback). */
   circleBackgroundColor?: string;
-  /** Text color for the emoji in the circle (optional). */
   emojiColor?: string;
   itemWidth?: number;
   circleSize?: number;
 };
 
-export function AvatarInput({
+/**
+ * Web: `GestureDetector` + Reanimated-driven row is unreliable (blank / no layout). Use RN
+ * `ScrollView` + snap instead; native keeps the physics slider.
+ */
+function AvatarInputWeb({
+  emojis,
+  value,
+  onChange,
+  circleBackgroundColor: circleBackgroundColorProp,
+  emojiColor,
+  itemWidth = DEFAULT_ITEM_WIDTH,
+  circleSize = DEFAULT_CIRCLE_SIZE,
+}: AvatarInputProps) {
+  const { theme } = useUnistyles();
+  const circleBackgroundColor =
+    circleBackgroundColorProp ?? theme.colors.avatarFallback;
+  const scrollRef = useRef<ScrollView>(null);
+  const [trackWidth, setTrackWidth] = useState(0);
+  const valueIndex = useMemo(() => {
+    const i = emojis.indexOf(value);
+    return i >= 0 ? i : 0;
+  }, [emojis, value]);
+
+  const [centerIndex, setCenterIndex] = useState(valueIndex);
+
+  const sideInset = useMemo(() => {
+    if (trackWidth <= 0) return 0;
+    return Math.max(0, (trackWidth - itemWidth) / 2);
+  }, [trackWidth, itemWidth]);
+
+  const scrollToIndex = useCallback(
+    (index: number, animated: boolean) => {
+      const x = index * itemWidth;
+      scrollRef.current?.scrollTo({ x, y: 0, animated });
+    },
+    [itemWidth],
+  );
+
+  useEffect(() => {
+    if (trackWidth <= 0) return;
+    scrollToIndex(valueIndex, false);
+    setCenterIndex(valueIndex);
+  }, [trackWidth, valueIndex, itemWidth, scrollToIndex]);
+
+  const commitFromOffset = useCallback(
+    (offsetX: number) => {
+      const idx = indexFromOffset(offsetX, itemWidth, emojis.length);
+      setCenterIndex(idx);
+      const next = emojis[idx];
+      if (next != null && next !== value) {
+        onChange(next);
+      }
+    },
+    [emojis, itemWidth, onChange, value],
+  );
+
+  const handleScroll = useCallback(
+    (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+      const x = e.nativeEvent.contentOffset.x;
+      setCenterIndex(indexFromOffset(x, itemWidth, emojis.length));
+    },
+    [emojis.length, itemWidth],
+  );
+
+  const handleScrollEnd = useCallback(
+    (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+      commitFromOffset(e.nativeEvent.contentOffset.x);
+    },
+    [commitFromOffset],
+  );
+
+  const onTrackLayout = useCallback((e: LayoutChangeEvent) => {
+    setTrackWidth(e.nativeEvent.layout.width);
+  }, []);
+
+  const displayEmoji = emojis[centerIndex] ?? emojis[0] ?? '';
+  const ringSize = useMemo(
+    () => effectiveCircleDiameter(trackWidth, circleSize),
+    [trackWidth, circleSize],
+  );
+  const circleFont = ringSize * 0.45;
+  const stripFont = itemWidth * 0.42;
+
+  if (emojis.length === 0) {
+    return null;
+  }
+
+  return (
+    <View
+      style={[styles.outer, styles.widthLockInSheet]}
+      accessibilityRole="adjustable"
+      accessibilityLabel="Account avatar emoji"
+      accessibilityHint="Scroll horizontally to choose an emoji; the centered emoji is selected."
+    >
+      <View style={[styles.trackWrap, styles.widthLockInSheet]} onLayout={onTrackLayout}>
+        <View style={[styles.gestureHost, styles.widthLockInSheet]} collapsable={false}>
+          <ScrollView
+            ref={scrollRef}
+            horizontal
+            bounces
+            keyboardShouldPersistTaps="handled"
+            showsHorizontalScrollIndicator={false}
+            style={[styles.scrollWeb, styles.widthLockInSheet]}
+            contentContainerStyle={{
+              paddingHorizontal: sideInset,
+              alignItems: 'center',
+              minHeight: DEFAULT_STRIP_HEIGHT,
+              flexDirection: 'row',
+            }}
+            decelerationRate="normal"
+            snapToInterval={itemWidth}
+            snapToAlignment="start"
+            scrollEventThrottle={16}
+            onScroll={handleScroll}
+            onScrollEndDrag={handleScrollEnd}
+            onMomentumScrollEnd={handleScrollEnd}
+          >
+            {emojis.map((emoji, index) => (
+              <View
+                key={`${index}-${emoji}`}
+                style={[styles.cell, { width: itemWidth, height: DEFAULT_STRIP_HEIGHT }]}
+              >
+                <Text style={[styles.stripEmoji, { fontSize: stripFont }]}>{emoji}</Text>
+              </View>
+            ))}
+          </ScrollView>
+        </View>
+
+        <View style={styles.overlay} pointerEvents="none">
+          <View
+            style={[
+              styles.circle,
+              {
+                width: ringSize,
+                height: ringSize,
+                borderRadius: ringSize / 2,
+                backgroundColor: circleBackgroundColor,
+              },
+            ]}
+          >
+            <Text
+              style={[
+                styles.circleEmoji,
+                {
+                  fontSize: circleFont,
+                  color: emojiColor ?? theme.colors.text,
+                },
+              ]}
+            >
+              {displayEmoji}
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  );
+}
+
+function AvatarInputNative({
   emojis,
   value,
   onChange,
@@ -191,7 +378,11 @@ export function AvatarInput({
   );
 
   const displayEmoji = emojis[centerIndex] ?? emojis[0] ?? '';
-  const circleFont = circleSize * 0.45;
+  const ringSize = useMemo(
+    () => effectiveCircleDiameter(trackWidth, circleSize),
+    [trackWidth, circleSize],
+  );
+  const circleFont = ringSize * 0.45;
   const stripFont = itemWidth * 0.42;
 
   if (emojis.length === 0) {
@@ -200,14 +391,14 @@ export function AvatarInput({
 
   return (
     <View
-      style={styles.outer}
+      style={[styles.outer, styles.widthLockInSheet]}
       accessibilityRole="adjustable"
       accessibilityLabel="Account avatar emoji"
       accessibilityHint="Drag horizontally to choose an emoji; the centered emoji is selected."
     >
-      <View style={styles.trackWrap} onLayout={onTrackLayout}>
+      <View style={[styles.trackWrap, styles.widthLockInSheet]} onLayout={onTrackLayout}>
         <GestureDetector gesture={panGesture}>
-          <View style={styles.gestureHost} collapsable={false}>
+          <View style={[styles.gestureHost, styles.widthLockInSheet]} collapsable={false}>
             <Animated.View style={[styles.emojiRow, animatedRowStyle]}>
               <View style={{ width: sideInset }} />
               {emojis.map((emoji, index) => (
@@ -228,9 +419,9 @@ export function AvatarInput({
             style={[
               styles.circle,
               {
-                width: circleSize,
-                height: circleSize,
-                borderRadius: circleSize / 2,
+                width: ringSize,
+                height: ringSize,
+                borderRadius: ringSize / 2,
                 backgroundColor: circleBackgroundColor,
               },
             ]}
@@ -253,10 +444,29 @@ export function AvatarInput({
   );
 }
 
+export function AvatarInput(props: AvatarInputProps) {
+  if (Platform.OS === 'web') {
+    return <AvatarInputWeb {...props} />;
+  }
+  return <AvatarInputNative {...props} />;
+}
+
 const styles = StyleSheet.create((theme) => ({
   outer: {
     width: '100%',
     alignItems: 'stretch',
+    overflow: 'hidden',
+  },
+  /**
+   * Break flex min-content width inflation (horizontal strip + many cells); critical on RN Web
+   * inside bottom sheets so the sheet stays within the viewport.
+   */
+  widthLockInSheet: {
+    alignSelf: 'stretch',
+    width: '100%',
+    maxWidth: '100%',
+    minWidth: 0,
+    flexShrink: 1,
   },
   trackWrap: {
     width: '100%',
@@ -268,6 +478,9 @@ const styles = StyleSheet.create((theme) => ({
     minHeight: DEFAULT_CIRCLE_SIZE + theme.spacing[2],
     justifyContent: 'center',
     overflow: 'hidden',
+  },
+  scrollWeb: {
+    height: DEFAULT_STRIP_HEIGHT,
   },
   emojiRow: {
     flexDirection: 'row',
@@ -286,17 +499,19 @@ const styles = StyleSheet.create((theme) => ({
     ...StyleSheet.absoluteFillObject,
     alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'hidden',
   },
   circle: {
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: theme.colors.border,
+    /** Keep shadow inside clipped overlay so it cannot widen the sheet (esp. web). */
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.09,
-    shadowRadius: 14,
-    elevation: 6,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.06,
+    shadowRadius: 6,
+    elevation: 4,
   },
   circleEmoji: {
     textAlign: 'center',

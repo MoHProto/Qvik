@@ -1,16 +1,16 @@
-import type { PopupProps } from 'react-popup-manager';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import {
-  EmojiPicker as LibraryEmojiPicker,
   emojiData,
+  EmojiPicker as LibraryEmojiPicker,
   type EmojiData,
   type PartialTheme,
 } from '@hiraku-ai/react-native-emoji-picker';
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { OverlaySheetModal } from 'components/ui/Modal';
 import React, { useMemo } from 'react';
 import { Dimensions, Pressable, Text, useColorScheme, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
+import type { PopupProps } from 'react-popup-manager';
 
 const maxSheetHeight = Math.round(Dimensions.get('window').height * 0.78);
 

@@ -1,5 +1,5 @@
 import type { PopupProps } from 'react-popup-manager';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Animated,
   KeyboardAvoidingView,
@@ -7,6 +7,7 @@ import {
   Platform,
   Pressable,
   StyleSheet as RNStyleSheet,
+  useWindowDimensions,
   View,
   type StyleProp,
   type ViewStyle,
@@ -58,6 +59,16 @@ export function OverlaySheetModal<TResult = unknown>({
 }: OverlaySheetModalProps<TResult>) {
   const insets = useSafeAreaInsets();
   const { theme } = useUnistyles();
+  const { width: viewportWidth } = useWindowDimensions();
+
+  const viewportCapStyle = useMemo<ViewStyle>(
+    () =>
+      viewportWidth > 0
+        ? { width: '100%', maxWidth: viewportWidth }
+        : { width: '100%', maxWidth: '100%' },
+    [viewportWidth],
+  );
+
   const backdropOpacity = useRef(new Animated.Value(0)).current;
   const sheetTranslateY = useRef(new Animated.Value(maxSheetHeight)).current;
   const [visible, setVisible] = useState(true);
@@ -130,7 +141,7 @@ export function OverlaySheetModal<TResult = unknown>({
         };
 
   const shell = (
-    <View style={styles.root}>
+    <View style={[styles.root, viewportCapStyle]}>
       <Pressable
         style={[RNStyleSheet.absoluteFill, styles.backdropLayer]}
         accessibilityRole="button"
@@ -146,7 +157,9 @@ export function OverlaySheetModal<TResult = unknown>({
         />
       </Pressable>
 
-      <Animated.View style={[styles.sheet, sheetLayoutStyle, sheetStyle]}>
+      <Animated.View
+        style={[styles.sheet, sheetLayoutStyle, sheetStyle, viewportCapStyle]}
+      >
         {children({ finish })}
       </Animated.View>
     </View>
@@ -158,10 +171,11 @@ export function OverlaySheetModal<TResult = unknown>({
       visible={visible}
       animationType="none"
       onRequestClose={() => finish(hardwareBackValue)}
+      style={[styles.modalViewport, viewportCapStyle]}
     >
       {keyboardAvoiding ? (
         <KeyboardAvoidingView
-          style={styles.kavRoot}
+          style={[styles.kavRoot, viewportCapStyle]}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           keyboardVerticalOffset={0}
         >
@@ -175,12 +189,23 @@ export function OverlaySheetModal<TResult = unknown>({
 }
 
 const styles = StyleSheet.create((theme) => ({
+  modalViewport: {
+    flex: 1,
+    minWidth: 0,
+  },
   kavRoot: {
     flex: 1,
+    width: '100%',
+    maxWidth: '100%',
+    minWidth: 0,
   },
   root: {
     flex: 1,
+    width: '100%',
+    maxWidth: '100%',
+    minWidth: 0,
     justifyContent: 'flex-end',
+    alignItems: 'stretch',
   },
   backdropLayer: {
     zIndex: 0,
@@ -191,6 +216,10 @@ const styles = StyleSheet.create((theme) => ({
   sheet: {
     zIndex: 1,
     elevation: 12,
+    width: '100%',
+    maxWidth: '100%',
+    minWidth: 0,
+    alignSelf: 'stretch',
     backgroundColor: theme.colors.surface,
     borderTopLeftRadius: theme.radius.sheet,
     borderTopRightRadius: theme.radius.sheet,
