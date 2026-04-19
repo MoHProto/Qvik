@@ -1,7 +1,6 @@
 ---
-description: REQUIRED — App forms MUST use Formik, Yup, and schemas under validation/
-globs: App/**/*.{ts,tsx}
-alwaysApply: false
+description: REQUIRED — App forms MUST use Formik, Yup, and schemas under App/validation/
+alwaysApply: true
 ---
 
 # Forms (`App/`) — mandatory
@@ -10,8 +9,8 @@ Whenever you add or change a **user-facing form** in `App/` (fields, submit hand
 
 ## Validation location (required)
 
-- **MUST** define Yup schemas (and shared validation helpers used by those schemas) under **`validation/`** (project path `App/validation/`) — e.g. `validation/loginSchema.ts`, `validation/messageSchema.ts`.
-- **MUST NOT** embed large Yup schemas inline in screen or component files when they are non-trivial or reused; colocate them in **`validation/`** and import into the form component or screen.
+- **MUST** define Yup schemas (and shared validation helpers used by those schemas) under **`App/validation/`** — e.g. `App/validation/loginSchema.ts`, `App/validation/messageSchema.ts`.
+- **MUST NOT** embed large Yup schemas inline in screen or component files when they are non-trivial or reused; colocate them in `App/validation/` and import into the form component or screen.
 
 ## Component wiring (required)
 
@@ -21,4 +20,4 @@ Whenever you add or change a **user-facing form** in `App/` (fields, submit hand
 ## Do not
 
 - **Do not** add new forms that bypass Formik/Yup without an explicit exception.
-- **Do not** scatter Yup rules across unrelated modules — keep them in **`validation/`**.
+- **Do not** scatter Yup rules across unrelated modules — keep them in **`App/validation/`**.

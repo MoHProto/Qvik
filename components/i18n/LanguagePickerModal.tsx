@@ -54,30 +54,34 @@ export function LanguagePickerModal({
               <Ionicons name="close" size={18} color={theme.colors.text} />
             </Pressable>
           </View>
-          <View style={styles.options}>
-            {(['en', 'uk'] as const).map((code) => {
+          <View style={styles.listWrap}>
+            {(['en', 'uk'] as const).map((code, index) => {
               const selected = currentLocale === code;
               return (
-                <Pressable
-                  key={code}
-                  accessibilityRole="button"
-                  accessibilityState={{ selected }}
-                  onPress={() => finish({ locale: code })}
-                  style={({ pressed }) => [
-                    styles.optionRow,
-                    pressed && styles.optionRowPressed,
-                    selected && styles.optionRowSelected,
-                  ]}
-                >
-                  <Text style={styles.optionLabel}>{t(`language.name.${code}`)}</Text>
-                  {selected ? (
-                    <Ionicons
-                      name="checkmark"
-                      size={22}
-                      color={theme.colors.primary}
-                    />
-                  ) : null}
-                </Pressable>
+                <React.Fragment key={code}>
+                  {index > 0 ? <View style={styles.separator} /> : null}
+                  <Pressable
+                    accessibilityRole="button"
+                    accessibilityState={{ selected }}
+                    onPress={() => finish({ locale: code })}
+                    style={({ pressed }) => [
+                      styles.row,
+                      pressed && styles.rowPressed,
+                    ]}
+                  >
+                    <Text style={styles.rowLabel} numberOfLines={1}>
+                      {t(`language.name.${code}`)}
+                    </Text>
+                    {selected ? (
+                      <Ionicons
+                        name="checkmark"
+                        size={22}
+                        color={theme.colors.primary}
+                        style={styles.trailingIcon}
+                      />
+                    ) : null}
+                  </Pressable>
+                </React.Fragment>
               );
             })}
           </View>
@@ -96,7 +100,7 @@ const styles = StyleSheet.create((theme) => ({
     gap: theme.spacing[3],
     paddingHorizontal: theme.spacing[4],
     paddingTop: theme.spacing[3],
-    paddingBottom: theme.spacing[2],
+    paddingBottom: theme.spacing[3],
     backgroundColor: theme.colors.surface,
   },
   sheetTitle: {
@@ -118,31 +122,33 @@ const styles = StyleSheet.create((theme) => ({
   closeButtonPressed: {
     opacity: 0.65,
   },
-  options: {
-    paddingHorizontal: theme.spacing[4],
+  listWrap: {
     paddingBottom: theme.spacing[4],
-    gap: theme.spacing[2],
   },
-  optionRow: {
+  separator: {
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: theme.colors.border,
+    marginLeft: theme.spacing[4],
+  },
+  row: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    minHeight: 52,
+    gap: theme.spacing[3],
     paddingVertical: theme.spacing[3],
     paddingHorizontal: theme.spacing[4],
-    borderRadius: theme.radius.card,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: theme.colors.border,
-    backgroundColor: theme.colors.background,
+    minHeight: 56,
   },
-  optionRowPressed: {
-    opacity: 0.7,
+  rowPressed: {
+    opacity: 0.65,
   },
-  optionRowSelected: {
-    borderColor: theme.colors.primary,
-  },
-  optionLabel: {
+  rowLabel: {
+    flex: 1,
+    minWidth: 0,
     fontSize: 17,
+    fontWeight: '400',
     color: theme.colors.text,
+  },
+  trailingIcon: {
+    marginLeft: theme.spacing[1],
   },
 }));

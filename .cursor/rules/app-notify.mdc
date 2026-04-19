@@ -1,0 +1,37 @@
+---
+description: REQUIRED — App toasts via useNotifyToast hook, not lib/notify directly
+alwaysApply: true
+---
+
+# In-app toasts (`App/`)
+
+When showing **success / error / info toasts** (the top banner driven by `AppToast` + `react-native-toast-message`), you **MUST** go through the hook, not the library module.
+
+## Required
+
+- **MUST** call **`useNotifyToast()`** from **`hooks/notify/useNotifyToast`** inside a **React function component** or **another hook**, then use the returned object (`success`, `error`, `info`, `hide`) the same way you would `notify` from `lib/notify`.
+
+## Do not
+
+- **Do not** `import { notify } from 'lib/notify'` (or `Toast` from `react-native-toast-message`) in **screens, components, or feature hooks** meant for UI flows.
+- **Do not** bypass the hook for “one-off” toasts — keep one entry point.
+
+## Exceptions (allowed `lib/notify` / `Toast` imports)
+
+- **`hooks/notify/useNotifyToast.ts`** — the thin wrapper that re-exports the API.
+- **`lib/notify.ts`** — implementation of the notify helpers.
+- **`components/ui/toast/**`** — global toast host and layout (`AppToast`, `ToastBanner`, etc.).
+
+## Example
+
+```tsx
+import { useNotifyToast } from 'hooks/notify/useNotifyToast';
+
+function ExampleScreen() {
+  const notify = useNotifyToast();
+
+  const onSave = () => {
+    notify.success('Saved', 'Your changes were stored.');
+  };
+}
+```

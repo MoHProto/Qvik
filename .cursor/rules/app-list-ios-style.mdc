@@ -1,0 +1,28 @@
+---
+description: App lists default to iOS-style rows and separators unless the prompt specifies another design
+alwaysApply: true
+---
+
+# List row visual style (`App/`) — default
+
+For **any user-facing list of rows** in `App/` (screens, sheets, modals, pickers, settings blocks, `FlatList` / `SectionList` bodies, or short fixed `.map()` lists), use this **default iOS-style presentation** unless the **user’s prompt explicitly defines a different visual design** (e.g. cards, chips, grid, compact density, custom branding).
+
+This rule is **visual only**. Structural rules (`{Entity}List` / `{Entity}Item` / `EmptyMessage`, etc.) stay in the list UI rule.
+
+## Must match by default
+
+- **Rows:** Horizontal layout, vertically centered, **`minHeight` ~56**, **`paddingVertical` / `paddingHorizontal`** consistent with `components/account/AccountItem.tsx` (`theme.spacing[3]` / `[4]`).
+- **Primary label:** **`fontSize: 17`**, **`fontWeight: '400'`**, **`flex: 1`**, `numberOfLines` where truncation matters.
+- **No “card per row”** for this default: avoid **rounded bordered boxes**, **gaps between rows**, or **selected-row outline borders** as the primary pattern.
+- **Between rows:** **`StyleSheet.hairlineWidth`** separator, **`theme.colors.border`**. **Inset** the line from the leading edge when there is **no** leading avatar/icon: e.g. **`marginLeft: theme.spacing[4]`**. If a row has **leading** avatar/icon, inset the separator so it **aligns under the text** (see `components/account/AccountList.tsx` `separator`).
+- **Press:** Row press feedback similar to account rows (e.g. **opacity ~0.65** on pressed `Pressable`).
+- **Single selection / picked row:** Trailing **`Ionicons` `checkmark`**, size **22**, **`theme.colors.primary`**, with **`marginLeft: theme.spacing[1]`** on the icon (same trailing treatment as `AccountItem`).
+
+## Reference implementations
+
+- **With leading avatar:** `AccountItem` + `AccountList` item separators.
+- **Text-only / no leading icon:** `components/i18n/LanguagePickerModal.tsx` list body.
+
+## When to skip this default
+
+If the prompt asks for a **specific alternate layout or style**, implement that instead and do not force this iOS list look.

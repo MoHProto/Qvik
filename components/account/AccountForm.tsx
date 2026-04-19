@@ -23,9 +23,15 @@ import type { Account } from './AccountItem';
 export type AccountFormProps = {
   data: Account;
   onSubmit: (values: Account) => void;
+  /** When true, name field label and input text are horizontally centered. */
+  centeredText?: boolean;
 };
 
-export function AccountForm({ data, onSubmit }: AccountFormProps) {
+export function AccountForm({
+  data,
+  onSubmit,
+  centeredText = false,
+}: AccountFormProps) {
   const { theme } = useUnistyles();
   const { t } = useI18n();
   const validationSchema = useMemo(() => createAccountFormSchema(t), [t]);
@@ -61,6 +67,8 @@ export function AccountForm({ data, onSubmit }: AccountFormProps) {
           ([key, msg]) => key !== 'name' && msg != null && String(msg).length > 0,
         );
 
+        const fieldTextAlign = centeredText ? 'center' : 'left';
+
         return (
           <View style={styles.avoid}>
             <ScrollView
@@ -85,7 +93,9 @@ export function AccountForm({ data, onSubmit }: AccountFormProps) {
                 </View>
 
                 <View style={styles.fieldBlock}>
-                  <Text style={styles.label}>{t('accountForm.nameLabel')}</Text>
+                  <Text style={[styles.label, { textAlign: fieldTextAlign }]}>
+                    {t('accountForm.nameLabel')}
+                  </Text>
                   <TextInput
                     value={values.name}
                     onChangeText={(text) => {
@@ -104,7 +114,11 @@ export function AccountForm({ data, onSubmit }: AccountFormProps) {
                     placeholderTextColor={theme.colors.muted}
                     autoCapitalize="words"
                     autoCorrect
-                    style={[styles.input, showNameError && styles.inputInvalid]}
+                    style={[
+                      styles.input,
+                      showNameError && styles.inputInvalid,
+                      { textAlign: fieldTextAlign },
+                    ]}
                     returnKeyType="done"
                     onSubmitEditing={() => {
                       Keyboard.dismiss();

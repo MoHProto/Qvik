@@ -1,7 +1,6 @@
 ---
-description: REQUIRED — App modals via react-popup-manager, iOS sheet look, content height + scroll
-globs: App/**/*.{ts,tsx}
-alwaysApply: false
+description: REQUIRED — App modals via react-popup-manager; data in, Promise result out; iOS sheet + scroll
+alwaysApply: true
 ---
 
 # Modals (`App/`) — mandatory
@@ -12,6 +11,34 @@ Whenever you add or change **modal overlays** in `App/` (dialogs, confirmations,
 
 - **MUST** register/show/dismiss modal content through **react-popup-manager** APIs and providers as documented for that library (single supported stack for popups).
 - **MUST NOT** introduce parallel modal systems for the same use case.
+
+## Data in / result out (required)
+
+Call sites must not rely on ad-hoc callbacks alone for “what happened.” Overlay modals **MUST** follow a single **input / output** contract so callers can branch in one place.
+
+### Input — `data`
+
+- **MUST** pass all payload the modal needs to render or validate as a single **`data`** prop on the popup component (or the object you pass to `popupManager.open`, with a **`data`** field). Do not scatter unrelated top-level props for the same concern; extend `data` instead.
+- Optional UI-only props (e.g. `title`) may exist alongside `data` when they are not part of the domain payload.
+- **MUST NOT** pass domain **`on*`** callbacks into modal components (`onSubmit`, `onSelect`, `onConfirm`, etc.). Outcomes are communicated only through the **`Promise`** / **`onClose(result)`** contract (library `onClose` is the single exception for wiring).
+
+### Output — resolved `Promise`
+
+- The API that opens the modal (hook or helper) **MUST** return **`Promise<Result>`** where `Result` is **`T \| null \| undefined`** for that modal (or an equivalent union) so **`undefined` and `null` are distinguishable** from a real payload `T`.
+- The promise **MUST** resolve **exactly once** when the overlay is fully dismissed, with one of these outcomes (callers **MUST** handle all three):
+
+| Resolved value | Meaning |
+|----------------|---------|
+| **`undefined`** | User dismissed by **pressing outside** the sheet (backdrop tap / outside press), without committing. |
+| **`null`** | User **canceled** via an explicit in-sheet control (e.g. close, back, “Cancel”) or ended the flow **without** a payload (“no data”). |
+| **`T` (some value)** | User **committed**: Save, Confirm, picked a row, approved, etc. The value is the **result payload** (object, array, or primitive); callers inspect it to see what was chosen. |
+
+- **MUST NOT** use `reject()` for normal dismissals; use the resolution values above. Reserve `reject` for true failures (e.g. internal errors) if needed, and document that separately.
+- Wiring: implement the promise in the hook/helper (e.g. wrap `popupManager.open` and pass `onClose` / resolve callbacks into the modal props) so screens use `await openFooModal({ data })` and switch on `result === undefined`, `result === null`, or use the narrowed `T`.
+
+### Legacy modals
+
+- Existing modals that still use callback-only props should be migrated to this contract when touched; **new** modals and **new** open flows **MUST** implement the `data` + `Promise` pattern from the start.
 
 ## iOS sheet look and motion (required)
 

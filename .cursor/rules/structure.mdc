@@ -1,0 +1,29 @@
+---
+description: Repository structure and boundaries (what lives where)
+alwaysApply: true
+---
+
+# MoHProto repo structure
+
+## Top-level folders
+
+- `Spec/`
+  - Holds the protocol spec and spec-adjacent docs.
+  - Current spec docs include `Spec/MOH-PROTO-V1.md` (protocol) and `Spec/RN-EXPO-2026-V1.md` (React Native/Expo guidance).
+  - **Note:** `Spec/` contains its own `.git/` directory; treat it as a separate repo boundary.
+  - Do not edit or rely on anything under `Spec/.git/`.
+- `JavaScriptSDK/`
+  - Intended home for the JavaScript/TypeScript SDK implementation.
+- `PhpSDK/`
+  - PHP SDK implementation (Composer package `mohproto/sdk-php`).
+
+## Placement rules
+
+- Keep protocol specification text in `Spec/`.
+- Keep SDK/runtime code in the appropriate language SDK folder (e.g. `JavaScriptSDK/`, `PhpSDK/`).
+- Don’t mix concerns: avoid placing SDK code under `Spec/` or spec text under `JavaScriptSDK/`.
+
+## When adding new areas
+
+- If a new language SDK is added, create a sibling top-level folder (e.g., `PythonSDK/`, `RustSDK/`) rather than nesting inside `Spec/`.
+- Prefer clear folder names that describe the artifact: `Spec/`, `JavaScriptSDK/`, `Examples/`, `Tools/`, etc.

@@ -96,7 +96,11 @@ const AccountFormModalBody = React.memo(function AccountFormModalBody({
       </View>
 
       <View style={[styles.formHost, { maxHeight: formMaxHeight }]}>
-        <AccountForm data={formData} onSubmit={handleFormSubmit} />
+        <AccountForm
+          data={formData}
+          onSubmit={handleFormSubmit}
+          centeredText
+        />
       </View>
     </>
   );

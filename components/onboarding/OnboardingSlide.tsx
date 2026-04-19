@@ -6,6 +6,7 @@ import {
   AccessibilityInfo,
   Animated,
   Easing,
+  type ColorValue,
   Platform,
   Text,
   View,
@@ -17,7 +18,7 @@ const ICON_SIZE = 56;
 
 export type OnboardingSlideSvgIllustrationProps = {
   width?: number;
-  color?: string;
+  color?: ColorValue;
 };
 
 export type OnboardingSlideData = {
@@ -111,19 +112,19 @@ export function OnboardingSlide({ data }: OnboardingSlideProps) {
             accessibilityElementsHidden
           >
             {'SvgIllustration' in data ? (
-              <data.SvgIllustration width={ICON_SIZE} color="#ffffff" />
+              <data.SvgIllustration width={ICON_SIZE} color={theme.colors.primary} />
             ) : (
               <Ionicons
                 name={data.icon}
                 size={ICON_SIZE}
-                color="#ffffff"
+                color={theme.colors.primary}
               />
             )}
           </Animated.View>
           <Text style={styles.title}>{data.title}</Text>
           <Text style={styles.description}>{data.description}</Text>
         </View>
-        <MessageBubbleTail bubbleColor={theme.colors.surface} side="left" />
+        <MessageBubbleTail bubbleColor={theme.colors.primary} side="left" />
       </View>
     </View>
   );
@@ -150,7 +151,7 @@ const styles = StyleSheet.create((theme) => ({
   bubbleCard: {
     width: '100%',
     alignItems: 'center',
-    backgroundColor: theme.colors.surface,
+    backgroundColor: theme.colors.primary,
     borderRadius: BUBBLE_RADIUS,
     paddingHorizontal: theme.spacing[5],
     paddingVertical: theme.spacing[6],
@@ -176,16 +177,18 @@ const styles = StyleSheet.create((theme) => ({
     borderRadius: ICON_CIRCLE_SIZE / 2,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: theme.colors.primary,
+    /** Match title text so the well reads as “cut out” of the primary bubble. */
+    backgroundColor: theme.colors.surface,
   },
   title: {
     ...theme.typography.title,
-    color: theme.colors.text,
+    color: theme.colors.surface,
     textAlign: 'center',
   },
   description: {
     ...theme.typography.subtitle,
-    color: theme.colors.muted,
+    color: theme.colors.surface,
+    opacity: 0.88,
     textAlign: 'center',
     lineHeight: 22,
   },

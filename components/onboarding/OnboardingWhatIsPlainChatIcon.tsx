@@ -1,32 +1,33 @@
 import React from 'react';
+import type { ColorValue } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 
 export type OnboardingWhatIsPlainChatIconProps = {
   /** Logical width; height follows viewBox aspect ratio. */
   width?: number;
-  color?: string;
+  color?: ColorValue;
 };
 
 /**
- * PlainChat bubble + ellipsis mark for the first onboarding slide (289×163 viewBox).
+ * PlainChat mark for the first onboarding slide (210×210 viewBox).
  */
 export function OnboardingWhatIsPlainChatIcon({
   width = 120,
   color = '#ffffff',
 }: OnboardingWhatIsPlainChatIconProps) {
-  const height = (width * 163) / 289;
+  const height = width;
   return (
     <Svg
       width={width}
       height={height}
-      viewBox="0 0 289 163"
+      viewBox="0 0 210 210"
       fill="none"
       accessibilityLabel="PlainChat — chat over Markdown files"
     >
       <Path
         fillRule="evenodd"
         clipRule="evenodd"
-        d="M228 0C261.689 0 289 27.3106 289 61V102C289 135.689 261.689 163 228 163H85C68.2929 163 53.1554 156.283 42.1387 145.402C35.4486 155.98 23.6842 163 10.2861 163H0C13.2548 163 24 152.205 24 138.889V61C24 27.3106 51.3106 4.91249e-07 85 0H228ZM108.125 65C99.2194 65 92 72.2194 92 81.125C92 90.0306 99.2194 97.25 108.125 97.25C117.031 97.25 124.25 90.0306 124.25 81.125C124.25 72.2194 117.031 65 108.125 65ZM156.5 65C147.594 65 140.375 72.2194 140.375 81.125C140.375 90.0306 147.594 97.25 156.5 97.25C165.406 97.25 172.625 90.0306 172.625 81.125C172.625 72.2194 165.406 65 156.5 65ZM204.875 65C195.969 65 188.75 72.2194 188.75 81.125C188.75 90.0306 195.969 97.25 204.875 97.25C213.781 97.25 221 90.0306 221 81.125C221 72.2194 213.781 65 204.875 65Z"
+        d="M105 24C149.735 24 186 60.2649 186 105C186 149.735 149.735 186 105 186C81.7166 186 60.7287 176.175 45.9531 160.446C40.8592 175.315 26.816 186 10.2861 186H0C13.2548 186 24 175.205 24 161.889V107H24.0244C24.0083 106.335 24 105.669 24 105C24 60.2649 60.2649 24 105 24ZM105 81C91.7452 81 81 91.7452 81 105C81 118.255 91.7452 129 105 129C118.255 129 129 118.255 129 105C129 91.7452 118.255 81 105 81Z"
         fill={color}
       />
     </Svg>

@@ -1,0 +1,19 @@
+---
+description: Conventions for code inside the JavaScript SDK folder
+globs: JavaScriptSDK/**/*
+alwaysApply: false
+---
+
+# JavaScript SDK conventions (`JavaScriptSDK/`)
+
+- All SDK implementation code belongs in `JavaScriptSDK/`.
+- Keep public API surface small and intentional; prefer a single primary entrypoint (e.g., `src/index.ts`) once `src/` exists.
+- Prefer TypeScript for new code once the SDK is initialized; avoid mixing module systems within the same package.
+- The SDK must be **universal**: core functionality should run in **React Native**, the **browser**, **Node.js**, and **Deno**.
+- Keep **platform-specific** wiring behind adapters (e.g. `src/platform/*`); keep **platform-agnostic** logic in `src/core/*`.
+- Do not rely on **Node-only** APIs in the core (e.g. `fs`, `net`, `tls`, `Buffer`) unless they are isolated behind a platform adapter.
+
+## Project setup expectations (when the SDK is initialized)
+
+- Add standard package files at `JavaScriptSDK/` root (e.g., `package.json`, `tsconfig.json`, `README.md`).
+- Keep build output out of source control (e.g., `dist/`, `build/`) and don’t check in generated artifacts unless explicitly required.

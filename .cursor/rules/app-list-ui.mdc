@@ -1,0 +1,43 @@
+---
+description: REQUIRED — App list UIs MUST follow the List / Item / ItemData pattern
+alwaysApply: true
+---
+
+# List UI pattern (`App/`) — mandatory
+
+Whenever you add or change a **scrollable list of rows** in `App/` (user-facing lists built with `FlatList` or `SectionList`), you **MUST** follow this pattern. Do **not** implement ad-hoc list UIs that bypass it.
+
+## Naming (required)
+
+- **Container:** `{Entity}List` — **MUST** own the list (`FlatList` / `SectionList`), empty state, and list-level layout.
+- **Row:** `{Entity}Item` — **MUST** be the only component that renders a single row’s layout for that entity.
+- **Row shape:** `{Entity}ItemData` — **MUST** be the TypeScript type for one element; export from `*Item.tsx` or a colocated module.
+
+## Props (required)
+
+| Component | Must use |
+|-----------|----------|
+| `{Entity}List` | `data: {Entity}ItemData[]` and `emptyMessage: React.ComponentProps<typeof EmptyMessage>` (icon + message). **Do not** rename `data` to `items` / `rows` without an explicit project exception. |
+| `{Entity}Item` | **`data`** — **MUST** be a single prop; **do not** pass the entity as many top-level props on the row. |
+
+## Data flow (required)
+
+1. **Screen** (`screens/...` or `app/...` route) **MUST** load or hold the array and render `{Entity}List` with `data` and `emptyMessage` — **not** embed `FlatList` in the screen with inline `renderItem` unless you are only wiring a thin one-liner that immediately delegates to `{Entity}List` (prefer importing `{Entity}List` itself).
+2. **`{Entity}List`** **MUST** use `renderItem={({ item }) => <{Entity}Item data={item} />}` and `keyExtractor` on a stable **`id`** (or equivalent unique key).
+3. **`{Entity}Item`** **MUST** read from `data` only; hooks (formatters, etc.) are allowed **inside** the row component.
+
+Fetching, mutations, and navigation **MUST** stay in screens or dedicated hooks — **not** inside `*Item` except for purely presentational helpers.
+
+## Empty state (required)
+
+- **MUST** use **`EmptyMessage`** from `components/ui/EmptyMessage` inside `ListEmptyComponent` (optionally wrapped for centering).
+- **MUST** use **`contentContainerStyle`** with `flexGrow: 1` (and padding as needed) so an empty list can center the empty state vertically.
+
+## Do not
+
+- **Do not** put a full `FlatList` + custom empty UI in a screen file when the list is entity-specific — extract **`{Entity}List`**.
+- **Do not** use `ScrollView` + `.map()` for long or unbounded lists where `FlatList` is appropriate.
+
+## Default row visuals
+
+Row **look** (separators, density, checkmarks, no card-per-row) defaults per **`app-list-ios-style.mdc`** unless the prompt specifies another design.

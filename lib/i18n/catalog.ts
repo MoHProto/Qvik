@@ -12,7 +12,7 @@ const en: Record<string, string> = {
   'nav.threadsBack': 'Threads',
   'onboarding.slide0.title': 'What is PlainChat?',
   'onboarding.slide0.body':
-    "It's chat for Plain Web. For the web without heavy design or annoying ads.",
+    "It's chat for PlainWeb. For the web without heavy design or annoying ads.",
   'onboarding.slide1.title': 'What is a thread?',
   'onboarding.slide1.body':
     "It's like visiting a website, but the whole history stays in one timeline. You can come back to it anytime.",
@@ -84,7 +84,7 @@ const uk: Record<string, string> = {
   'nav.threadsBack': 'Треди',
   'onboarding.slide0.title': 'Що таке PlainChat?',
   'onboarding.slide0.body':
-    'Це чат для Plain Web. Для вебу без важкого дизайну чи нав’язливої реклами.',
+    'Це чат для PlainWeb. Для вебу без важкого дизайну чи нав’язливої реклами.',
   'onboarding.slide1.title': 'Що таке тред?',
   'onboarding.slide1.body':
     'Це як відвідати сайт, але вся історія лишається в одній стрічці. До неї можна повернутися будь-коли.',
