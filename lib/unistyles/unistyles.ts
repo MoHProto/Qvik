@@ -1,4 +1,4 @@
-import { getSystemAccentColor } from 'lib/systemAccent';
+import { getSystemAccentColor } from 'utils/color';
 import { StyleSheet } from 'react-native-unistyles';
 
 const systemAccent = getSystemAccentColor();

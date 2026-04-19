@@ -90,3 +90,4 @@ export function generateFunnyAccountName(locale: AppLocale = 'en'): string {
   }
   return `${pick(ADJECTIVES)} ${pick(NOUNS)}`;
 }
+

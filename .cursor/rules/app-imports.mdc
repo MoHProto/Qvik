@@ -25,7 +25,7 @@ import { AppToast } from '@/components/ui/toast';
 import type { Message } from '@/models';
 
 // ✅ REQUIRED — bare paths from App/ root
-import { queryClient } from 'lib/queryClient';
+import { queryClient } from 'lib/react-query/queryClient';
 import { AppToast } from 'components/ui/toast';
 import type { Message } from 'models';
 ```

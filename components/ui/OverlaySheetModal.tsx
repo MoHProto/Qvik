@@ -1,11 +1,10 @@
-import type { PopupProps } from 'react-popup-manager';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Animated,
   KeyboardAvoidingView,
-  Modal as RNModal,
   Platform,
   Pressable,
+  Modal as RNModal,
   StyleSheet as RNStyleSheet,
   useWindowDimensions,
   View,
@@ -14,6 +13,7 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
+import type { PopupProps } from 'react-popup-manager';
 
 const DEFAULT_ANIM_MS = 240;
 

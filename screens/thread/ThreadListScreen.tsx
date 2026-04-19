@@ -1,5 +1,5 @@
 import { ThreadList } from 'components/thread/ThreadList';
-import { getLocalizedExampleThreads } from 'lib/exampleThreads';
+import { getLocalizedExampleThreads } from 'data/example/exampleThreads';
 import { useI18n } from 'hooks/i18n/I18nProvider';
 import type { Href } from 'expo-router';
 import { useRouter } from 'expo-router';

@@ -18,7 +18,7 @@ These rules apply to the `App/` project. Follow them for all new code and when t
 ## 2. React Query for remote or shared mutable data
 
 - **Requirement:** Data that can change over time or is shared across screens **must** go through **TanStack React Query** (`useQuery` / `useMutation` / `useInfiniteQuery` as appropriate), defined inside hooks (see §1), not in leaf components.
-- **Requirement:** Use a **stable, hierarchical query key** for every query. Extend and reuse keys from `lib/queryKeys.ts` (or add new factories there); do not scatter stringly-typed keys.
+- **Requirement:** Use a **stable, hierarchical query key** for every query. Extend and reuse keys from `lib/react-query/queryKeys.ts` (or add new factories there); do not scatter stringly-typed keys.
 - **Requirement:** After any mutation or action that changes server-visible data, **invalidate** (or update) the affected query keys so the UI stays consistent.
 - **Requirement:** Prefer hooks that wrap query/mutation configuration (including `queryFn` calling services) so caching and invalidation behavior stays centralized.
 
@@ -44,7 +44,7 @@ These rules apply to the `App/` project. Follow them for all new code and when t
 | `hooks/`    | React Query + orchestration; exposes data to UI    |
 | `app/`      | Expo Router: params + thin wrappers into `screens/` |
 | `screens/`  | Screen UI + hook wiring; call hooks only             |
-| `lib/queryKeys.ts` | Canonical query keys and invalidation targets |
+| `lib/react-query/queryKeys.ts` | Canonical query keys and invalidation targets |
 | `validation/` | Yup schemas and helpers for Formik (`app-forms.mdc`) |
 
 ```text

@@ -88,3 +88,4 @@ export function pickRandomAccountAvatarEmoji(): string {
   const i = Math.floor(Math.random() * ACCOUNT_AVATAR_EMOJIS.length);
   return ACCOUNT_AVATAR_EMOJIS[i]!;
 }
+

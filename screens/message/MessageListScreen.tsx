@@ -4,9 +4,9 @@ import { getMessageFormListInsetBottom, MessageForm } from 'components/message/M
 import type { MessageItemData } from 'components/message/MessageItem';
 import { MessageList } from 'components/message/MessageList';
 import { ThreadTitleButton } from 'components/thread/ThreadTitleButton';
+import { getExampleThreadById } from 'data/example/exampleThreads';
 import type { Href } from 'expo-router';
 import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
-import { getExampleThreadById } from 'lib/exampleThreads';
 import { useI18n } from 'hooks/i18n/I18nProvider';
 import React, { useLayoutEffect, useMemo } from 'react';
 import { Platform, View } from 'react-native';

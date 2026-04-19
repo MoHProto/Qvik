@@ -4,11 +4,10 @@ import { useAccountSelectorModal } from 'hooks/account/useAccountSelectorModal';
 import { useExampleAccountSettings } from 'hooks/account/useExampleAccountSettings';
 import { useI18n } from 'hooks/i18n/I18nProvider';
 import { useLanguagePickerModal } from 'hooks/i18n/useLanguagePickerModal';
-import { createPrefilledNewAccountFormData } from 'lib/createPrefilledNewAccountFormData';
-import { waitForPopupHandoff } from 'lib/waitForPopupHandoff';
 import React, { useCallback } from 'react';
 import { View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
+import { createPrefilledNewAccountFormData } from 'utils/account/createPrefilledNewAccountFormData';
 
 export function AccountSettingsScreen() {
   const {
@@ -48,7 +47,6 @@ export function AccountSettingsScreen() {
         setActiveAccountId(selectorResult.accountId);
         return;
       }
-      await waitForPopupHandoff();
       const created = await openAccountFormModal({
         data: { initialAccount: createPrefilledNewAccountFormData(locale) },
       });

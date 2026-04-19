@@ -4,7 +4,7 @@ import { Dimensions, Pressable, Text, View } from 'react-native';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 import type { PopupProps } from 'react-popup-manager';
 
-import { OverlaySheetModal } from 'components/ui/Modal';
+import { OverlaySheetModal } from 'components/ui/OverlaySheetModal';
 import { useI18n } from 'hooks/i18n/I18nProvider';
 import type { AccountItemData } from './AccountItem';
 import { AccountList } from './AccountList';

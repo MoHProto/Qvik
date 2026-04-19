@@ -1,11 +1,11 @@
-import type { PopupProps } from 'react-popup-manager';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { OverlaySheetModal } from 'components/ui/Modal';
-import { APP_LOCALES, type AppLocale } from 'lib/i18n/locales';
+import { OverlaySheetModal } from 'components/ui/OverlaySheetModal';
 import { useI18n } from 'hooks/i18n/I18nProvider';
+import { APP_LOCALES, type AppLocale } from 'lib/i18n/locales';
 import React from 'react';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
+import type { PopupProps } from 'react-popup-manager';
 
 export type LanguagePickerModalData = {
   currentLocale: AppLocale;

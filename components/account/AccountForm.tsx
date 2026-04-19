@@ -1,11 +1,11 @@
 import { AvatarInput } from 'components/ui/AvatarInput';
 import { Formik } from 'formik';
-import { ACCOUNT_AVATAR_EMOJIS, DEFAULT_ACCOUNT_AVATAR_EMOJI } from 'lib/accountAvatarEmojis';
+import { useI18n } from 'hooks/i18n/I18nProvider';
 import React, { useMemo } from 'react';
 import { Keyboard, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
-import { useI18n } from 'hooks/i18n/I18nProvider';
-import { avatarTintFromName } from 'utils/avatarTintFromName';
+import { ACCOUNT_AVATAR_EMOJIS, DEFAULT_ACCOUNT_AVATAR_EMOJI } from 'utils/account/accountAvatarEmojis';
+import { avatarTintFromName } from 'utils/avatar';
 import { createAccountFormSchema } from 'validation/accountFormSchema';
 
 import type { Account } from './AccountItem';

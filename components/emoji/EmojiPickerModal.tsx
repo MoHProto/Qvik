@@ -5,7 +5,7 @@ import {
   type EmojiData,
   type PartialTheme,
 } from '@hiraku-ai/react-native-emoji-picker';
-import { OverlaySheetModal } from 'components/ui/Modal';
+import { OverlaySheetModal } from 'components/ui/OverlaySheetModal';
 import React, { useMemo } from 'react';
 import { Dimensions, Pressable, Text, useColorScheme, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';

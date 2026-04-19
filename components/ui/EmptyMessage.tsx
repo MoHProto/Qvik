@@ -25,6 +25,9 @@ const styles = StyleSheet.create((theme) => ({
     justifyContent: 'center',
     gap: theme.spacing[3],
     paddingHorizontal: theme.spacing[6],
+    paddingVertical: theme.spacing[6],
+    borderRadius: theme.radius.card,
+    backgroundColor: theme.colors.surface,
   },
   message: {
     ...theme.typography.subtitle,

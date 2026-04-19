@@ -1,7 +1,7 @@
-import { pickRandomAccountAvatarEmoji } from './accountAvatarEmojis';
-import { generateFunnyAccountName } from './funnyAccountName';
 import type { AppLocale } from 'lib/i18n/locales';
-import { avatarTintFromName } from 'utils/avatarTintFromName';
+import { pickRandomAccountAvatarEmoji } from 'utils/account/accountAvatarEmojis';
+import { avatarTintFromName } from 'utils/avatar';
+import { generateFunnyAccountName } from 'utils/names';
 
 /** Prefill for `AccountFormModal` `initialAccount` (call before opening the modal). */
 export function createPrefilledNewAccountFormData(locale: AppLocale = 'en'): {
@@ -19,3 +19,4 @@ export function createPrefilledNewAccountFormData(locale: AppLocale = 'en'): {
     avatarColor: tint?.avatarColor,
   };
 }
+

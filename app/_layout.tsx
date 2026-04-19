@@ -1,19 +1,17 @@
-import { AppToast } from 'components/ui/toast';
-import { I18nProvider, useI18n } from 'hooks/i18n/I18nProvider';
-import { queryClient } from 'lib/queryClient';
-import { getAppNavigationTheme } from 'lib/navigationTheme';
-import { PopupProvider } from 'react-popup-manager';
 import { ThemeProvider } from '@react-navigation/native';
 import { QueryClientProvider } from '@tanstack/react-query';
+import { AppToast } from 'components/ui/toast';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { warmTabBarIonRasterSources } from 'lib/tabBarIonRasterSources';
-import { useEffect } from 'react';
+import { I18nProvider, useI18n } from 'hooks/i18n/I18nProvider';
+import { queryClient } from 'lib/react-query/queryClient';
+import { getAppNavigationTheme } from 'lib/unistyles/utils';
 import { useColorScheme } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { useUnistyles } from 'react-native-unistyles';
 import 'react-native-reanimated';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { useUnistyles } from 'react-native-unistyles';
+import { PopupProvider } from 'react-popup-manager';
 
 export const unstable_settings = {
   anchor: '(tabs)',
@@ -24,10 +22,6 @@ function RootNavigation() {
   const theme = getAppNavigationTheme(colorScheme);
   const { theme: appTheme } = useUnistyles();
   const { t } = useI18n();
-
-  useEffect(() => {
-    void warmTabBarIonRasterSources();
-  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>

@@ -1,6 +1,6 @@
 import type { AccountItemData } from 'components/account/AccountItem';
 import { useI18n } from 'hooks/i18n/I18nProvider';
-import { EXAMPLE_ACCOUNTS } from 'lib/exampleAccounts';
+import { EXAMPLE_ACCOUNTS } from 'data/example/exampleAccounts';
 import { useCallback, useMemo, useState } from 'react';
 
 export function useExampleAccountSettings() {
