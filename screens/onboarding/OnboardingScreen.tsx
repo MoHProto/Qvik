@@ -5,7 +5,6 @@ import {
 import { OnboardingCircle } from 'components/onboarding/OnboardingCircle';
 import type { OnboardingSlideData } from 'components/onboarding/OnboardingSlide';
 import { OnboardingSlider } from 'components/onboarding/OnboardingSlider';
-import { OnboardingWhatIsPlainChatIcon } from 'components/onboarding/OnboardingWhatIsPlainChatIcon';
 import { Background } from 'components/ui/background';
 import { useI18n } from 'hooks/i18n/I18nProvider';
 import React, { useMemo } from 'react';
@@ -23,20 +22,20 @@ export function OnboardingScreen({ onGetStarted }: OnboardingScreenProps) {
   const slides = useMemo<OnboardingSlideData[]>(
     () => [
       {
-        id: 'what-is-plainchat',
-        SvgIllustration: OnboardingWhatIsPlainChatIcon,
+        id: 'web-without-noise',
+        icon: 'globe-outline',
         title: t('onboarding.slide0.title'),
         description: t('onboarding.slide0.body'),
       },
       {
-        id: 'threads',
-        icon: 'chatbubbles-outline',
+        id: 'markdown-core',
+        icon: 'document-text-outline',
         title: t('onboarding.slide1.title'),
         description: t('onboarding.slide1.body'),
       },
       {
-        id: 'account',
-        icon: 'id-card-outline',
+        id: 'always-with-you',
+        icon: 'cloud-offline-outline',
         title: t('onboarding.slide2.title'),
         description: t('onboarding.slide2.body'),
       },

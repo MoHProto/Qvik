@@ -111,6 +111,7 @@ export default function MessageListScreen() {
   return (
     <View style={styles.screen}>
       <MessageList
+        key={id || 'messages'}
         data={data}
         contentPaddingBottom={listBottomInset}
         emptyMessage={{

@@ -10,15 +10,15 @@ const en: Record<string, string> = {
   'nav.thread': 'Thread',
   'nav.messages': 'Messages',
   'nav.threadsBack': 'Threads',
-  'onboarding.slide0.title': 'What is PlainChat?',
+  'onboarding.slide0.title': 'A web without noise',
   'onboarding.slide0.body':
-    "It's chat for PlainWeb. For the web without heavy design or annoying ads.",
-  'onboarding.slide1.title': 'What is a thread?',
+    'Content without ads, trackers, or unnecessary scripts. Just text and structure that belong to you and work fast on any device.',
+  'onboarding.slide1.title': 'Markdown at the core',
   'onboarding.slide1.body':
-    "It's like visiting a website, but the whole history stays in one timeline. You can come back to it anytime.",
-  'onboarding.slide2.title': 'Is it private?',
+    'The entire web is built from simple Markdown files. Easy to read, edit, and store — no special tools or complex formats required.',
+  'onboarding.slide2.title': 'Always with you',
   'onboarding.slide2.body':
-    'Yes. Your account stays on this device. Move it over when you switch to a new one.',
+    'Save sites locally, access them offline, and return to your history anytime. Your data stays available regardless of your connection.',
   'onboarding.back': 'Back',
   'onboarding.next': 'Next',
   'onboarding.getStarted': 'Get started',
@@ -81,15 +81,15 @@ const uk: Record<string, string> = {
   'nav.thread': 'Тред',
   'nav.messages': 'Повідомлення',
   'nav.threadsBack': 'Треди',
-  'onboarding.slide0.title': 'Що таке PlainChat?',
+  'onboarding.slide0.title': 'Простий веб без шуму',
   'onboarding.slide0.body':
-    'Це чат для PlainWeb. Для вебу без важкого дизайну чи нав’язливої реклами.',
-  'onboarding.slide1.title': 'Що таке тред?',
+    'Контент без реклами, трекерів і зайвих скриптів. Лише текст і структура, які належать вам і працюють швидко на будь-якому пристрої.',
+  'onboarding.slide1.title': 'Markdown як основа',
   'onboarding.slide1.body':
-    'Це як відвідати сайт, але вся історія лишається в одній стрічці. До неї можна повернутися будь-коли.',
-  'onboarding.slide2.title': 'Це приватно?',
+    'Увесь веб складається з простих Markdown-файлів. Їх легко читати, редагувати й зберігати без спеціальних інструментів чи складних форматів.',
+  'onboarding.slide2.title': 'Завжди з вами',
   'onboarding.slide2.body':
-    'Так. Ваш обліковий запис залишається на цьому пристрої. Перенесіть його, коли перейдете на новий.',
+    'Сайти можна зберігати локально, переглядати офлайн і повертатися до історії. Ваші дані залишаються доступними незалежно від підключення.',
   'onboarding.back': 'Назад',
   'onboarding.next': 'Далі',
   'onboarding.getStarted': 'Почати',

@@ -4,7 +4,7 @@ import {
 } from 'assets/backgrounds/messagesPattern';
 import { Background } from 'components/ui/background';
 import { EmptyMessage } from 'components/ui/EmptyMessage';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { FlatList, View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 
@@ -13,7 +13,10 @@ import { MessageItem, type MessageItemData } from './MessageItem';
 export type MessageListProps = {
   data: MessageItemData[];
   emptyMessage: React.ComponentProps<typeof EmptyMessage>;
-  /** Extra bottom padding (e.g. for a floating footer over the list). */
+  /**
+   * Extra inset for content at the visual bottom of the thread (e.g. floating composer).
+   * Applied as bottom padding in normal mode; as top padding when the list is inverted (chat).
+   */
   contentPaddingBottom?: number;
   /** Called when the user taps Retry on a failed message row. */
   onRetry?: (item: MessageItemData) => void;
@@ -25,17 +28,25 @@ export function MessageList({
   contentPaddingBottom = 0,
   onRetry,
 }: MessageListProps) {
-  const contentStyle =
-    data.length === 0
-      ? [styles.listEmpty, { paddingBottom: contentPaddingBottom }]
-      : [styles.list, { paddingBottom: contentPaddingBottom }];
+  const hasMessages = data.length > 0;
+  /** Newest-first for `inverted` FlatList so the latest row sits on the visual bottom. */
+  const listData = useMemo(() => (hasMessages ? [...data].reverse() : data), [data, hasMessages]);
+
+  const contentStyle = hasMessages
+    ? [
+        styles.list,
+        // Inverted list: visual bottom corresponds to content’s top edge in layout coordinates.
+        { paddingTop: contentPaddingBottom },
+      ]
+    : [styles.listEmpty, { paddingBottom: contentPaddingBottom }];
 
   return (
     <View style={styles.listRoot}>
       <Background source={messagesPatternSource} tileSize={MESSAGES_PATTERN_TILE_PX} />
       <FlatList
         style={styles.listFill}
-        data={data}
+        inverted={hasMessages}
+        data={listData}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <MessageItem data={item} onRetry={onRetry} />}
         ListEmptyComponent={
