@@ -81,5 +81,9 @@ export const uk: Record<string, string> = {
   'demo.message.3.body': 'Орієнтуємося на **наступну п’ятницю** для мобільної збірки.',
   'demo.message.4.input': 'Запусти перевірку відповідності',
   'demo.message.4.error': 'Служба перевірки не відповіла вчасно. Спробуйте ще раз.',
+
+  'supportUkraine.banner.title': 'Підтримайте Україну',
+  'supportUkraine.banner.body':
+    'Торкніться, щоб відкрити UNITED24 і підтримати гуманітарну допомогу.',
 };
 

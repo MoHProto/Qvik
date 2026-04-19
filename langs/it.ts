@@ -81,5 +81,9 @@ export const it: Record<string, string> = {
   'demo.message.3.body': 'Puntiamo a **venerdì prossimo** per la build mobile.',
   'demo.message.4.input': 'Esegui controllo conformità',
   'demo.message.4.error': 'Il servizio di conformità non ha risposto in tempo. Riprova.',
+
+  'supportUkraine.banner.title': 'Sostieni l’Ucraina',
+  'supportUkraine.banner.body':
+    'Tocca per aprire UNITED24 e sostenere l’assistenza umanitaria.',
 };
 

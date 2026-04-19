@@ -81,5 +81,9 @@ export const es: Record<string, string> = {
   'demo.message.3.body': 'Apuntamos a **el próximo viernes** para la build móvil.',
   'demo.message.4.input': 'Ejecutar comprobación de cumplimiento',
   'demo.message.4.error': 'El servicio de cumplimiento tardó demasiado. Inténtalo de nuevo.',
+
+  'supportUkraine.banner.title': 'Apoya a Ucrania',
+  'supportUkraine.banner.body':
+    'Toca para visitar UNITED24 y apoyar la ayuda humanitaria.',
 };
 

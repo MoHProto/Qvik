@@ -1,12 +1,12 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { BottomTabBar } from '@react-navigation/bottom-tabs';
 import { ThemeProvider } from '@react-navigation/native';
+import { SupportUkraineBanner } from 'components/ui/SupportUkraineBanner';
 import { Tabs } from 'expo-router';
 import { useI18n } from 'hooks/i18n/I18nProvider';
 import { getAppNavigationTheme } from 'lib/unistyles/utils';
 import React from 'react';
-import { Linking, Platform, Pressable, Text, View, useColorScheme } from 'react-native';
-import { StyleSheet } from 'react-native-unistyles';
+import { Platform, View, useColorScheme } from 'react-native';
 import { getSystemAccentColor } from 'utils/color';
 
 /**
@@ -18,7 +18,7 @@ export default function NavigationTabs() {
   const navigationTheme = getAppNavigationTheme(colorScheme);
   const tabIconColorDefault = navigationTheme.colors.text;
   const tabIconColorSelected = getSystemAccentColor();
-  const { t, locale } = useI18n();
+  const { t } = useI18n();
 
   return (
     <ThemeProvider value={navigationTheme}>
@@ -50,29 +50,7 @@ export default function NavigationTabs() {
         }}
         tabBar={(props) => (
           <View>
-            {locale === 'ru' ? (
-              <Pressable
-                accessibilityRole="button"
-                onPress={() => Linking.openURL('https://u24.gov.ua/')}
-                style={({ pressed }) => [styles.banner, pressed && styles.bannerPressed]}
-              >
-                <View style={styles.bannerRow}>
-                  <View style={styles.bannerTextCol}>
-                    <View style={styles.bannerTitleRow}>
-                      <Text style={styles.bannerEmoji} accessibilityLabel="Ukraine flag">
-                        🇺🇦
-                      </Text>
-                      <Text style={styles.bannerTitle} numberOfLines={1}>
-                        {t('supportUkraine.banner.title')}
-                      </Text>
-                    </View>
-                    <Text style={styles.bannerBody} numberOfLines={2}>
-                      {t('supportUkraine.banner.body')}
-                    </Text>
-                  </View>
-                </View>
-              </Pressable>
-            ) : null}
+            <SupportUkraineBanner hideBody />
             <BottomTabBar {...props} />
           </View>
         )}
@@ -108,44 +86,3 @@ export default function NavigationTabs() {
     </ThemeProvider>
   );
 }
-
-const styles = StyleSheet.create((theme) => ({
-  banner: {
-    paddingHorizontal: theme.spacing[4],
-    paddingVertical: theme.spacing[3],
-    backgroundColor: theme.colors.surface,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: theme.colors.border,
-  },
-  bannerPressed: {
-    opacity: 0.65,
-  },
-  bannerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  bannerTitleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: theme.spacing[2],
-  },
-  bannerEmoji: {
-    fontSize: 13,
-  },
-  bannerTextCol: {
-    flex: 1,
-    minWidth: 0,
-  },
-  bannerTitle: {
-    flex: 1,
-    minWidth: 0,
-    fontSize: 13,
-    fontWeight: '600',
-    color: theme.colors.text,
-  },
-  bannerBody: {
-    marginTop: theme.spacing[1],
-    fontSize: 13,
-    color: theme.colors.muted,
-  },
-}));

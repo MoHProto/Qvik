@@ -81,5 +81,9 @@ export const ptBR: Record<string, string> = {
   'demo.message.3.body': 'Estamos mirando **na próxima sexta-feira** para o build mobile.',
   'demo.message.4.input': 'Executar verificação de conformidade',
   'demo.message.4.error': 'O serviço de conformidade expirou. Tente novamente.',
+
+  'supportUkraine.banner.title': 'Apoie a Ucrânia',
+  'supportUkraine.banner.body':
+    'Toque para abrir o UNITED24 e apoiar o auxílio humanitário.',
 };
 

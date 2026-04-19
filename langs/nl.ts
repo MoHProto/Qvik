@@ -81,5 +81,9 @@ export const nl: Record<string, string> = {
   'demo.message.3.body': 'We mikken op **volgende vrijdag** voor de mobiele build.',
   'demo.message.4.input': 'Compliancecheck uitvoeren',
   'demo.message.4.error': 'De compliance-service reageerde niet op tijd. Probeer het opnieuw.',
+
+  'supportUkraine.banner.title': 'Steun Oekraïne',
+  'supportUkraine.banner.body':
+    'Tik om UNITED24 te openen en humanitaire hulp te steunen.',
 };
 

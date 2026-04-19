@@ -81,5 +81,9 @@ export const fa: Record<string, string> = {
   'demo.message.3.body': 'برای بیلد موبایل **جمعه‌ی آینده** را هدف گرفته‌ایم.',
   'demo.message.4.input': 'اجرای بررسی انطباق',
   'demo.message.4.error': 'سرویس انطباق زمان‌بر شد. دوباره تلاش کنید.',
+
+  'supportUkraine.banner.title': 'از اوکراین حمایت کنید',
+  'supportUkraine.banner.body':
+    'برای باز کردن UNITED24 و حمایت از کمک‌های بشردوستانه ضربه بزنید.',
 };
 

@@ -81,5 +81,8 @@ export const ar: Record<string, string> = {
   'demo.message.3.body': 'نستهدف **الجمعة القادمة** لبناء الجوال.',
   'demo.message.4.input': 'تشغيل فحص الالتزام',
   'demo.message.4.error': 'انتهت مهلة خدمة الالتزام. حاول مرة أخرى.',
+
+  'supportUkraine.banner.title': 'ادعم أوكرانيا',
+  'supportUkraine.banner.body': 'اضغط لفتح UNITED24 ودعم الإغاثة الإنسانية.',
 };
 

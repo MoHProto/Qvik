@@ -81,5 +81,9 @@ export const tr: Record<string, string> = {
   'demo.message.3.body': 'Mobil derleme için hedefimiz **gelecek Cuma**.',
   'demo.message.4.input': 'Uyumluluk kontrolünü çalıştır',
   'demo.message.4.error': 'Uyumluluk hizmeti zaman aşımına uğradı. Lütfen tekrar deneyin.',
+
+  'supportUkraine.banner.title': "Ukrayna'yı destekleyin",
+  'supportUkraine.banner.body':
+    "UNITED24'e gidip insani yardımı desteklemek için dokunun.",
 };
 

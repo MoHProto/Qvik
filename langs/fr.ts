@@ -81,5 +81,9 @@ export const fr: Record<string, string> = {
   'demo.message.3.body': 'Nous visons **vendredi prochain** pour la build mobile.',
   'demo.message.4.input': 'Lancer le contrôle de conformité',
   'demo.message.4.error': 'Le service de conformité a expiré. Réessayez.',
+
+  'supportUkraine.banner.title': 'Soutenez l’Ukraine',
+  'supportUkraine.banner.body':
+    'Appuyez pour ouvrir UNITED24 et soutenir l’aide humanitaire.',
 };
 

@@ -81,5 +81,9 @@ export const kk: Record<string, string> = {
   'demo.message.3.body': 'Мобильді билд үшін **келесі жұманы** көздеп отырмыз.',
   'demo.message.4.input': 'Сәйкестік тексерісін іске қосу',
   'demo.message.4.error': 'Сәйкестік қызметі уақытында жауап бермеді. Қайта көріңіз.',
+
+  'supportUkraine.banner.title': 'Украинаны қолдаңыз',
+  'supportUkraine.banner.body':
+    'UNITED24 ашып, гуманитарлық көмекке қолдау көрсету үшін басыңыз.',
 };
 

@@ -81,5 +81,9 @@ export const uz: Record<string, string> = {
   'demo.message.3.body': 'Mobil build uchun **kelasi juma**ni mo‘ljallayapmiz.',
   'demo.message.4.input': 'Muvofiqlik tekshiruvini ishga tushirish',
   'demo.message.4.error': 'Muvofiqlik xizmati vaqtida javob bermadi. Qayta urinib ko‘ring.',
+
+  'supportUkraine.banner.title': 'Ukrainani qo‘llab-quvvatlang',
+  'supportUkraine.banner.body':
+    'UNITED24 saytiga o‘tish va gumanitar yordamni qo‘llab-quvvatlash uchun bosing.',
 };
 

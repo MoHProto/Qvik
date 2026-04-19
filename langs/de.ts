@@ -81,5 +81,9 @@ export const de: Record<string, string> = {
   'demo.message.3.body': 'Wir planen **nächsten Freitag** für den Mobile-Build.',
   'demo.message.4.input': 'Compliance-Prüfung ausführen',
   'demo.message.4.error': 'Der Compliance-Dienst hat nicht rechtzeitig geantwortet. Bitte erneut versuchen.',
+
+  'supportUkraine.banner.title': 'Unterstützen Sie die Ukraine',
+  'supportUkraine.banner.body':
+    'Tippen Sie, um UNITED24 zu öffnen und humanitäre Hilfe zu unterstützen.',
 };
 
