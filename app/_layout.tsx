@@ -1,4 +1,5 @@
 import { AppToast } from 'components/ui/toast';
+import { I18nProvider, useI18n } from 'hooks/i18n/I18nProvider';
 import { queryClient } from 'lib/queryClient';
 import { getAppNavigationTheme } from 'lib/navigationTheme';
 import { PopupProvider } from 'react-popup-manager';
@@ -17,51 +18,60 @@ export const unstable_settings = {
   anchor: '(tabs)',
 };
 
-export default function RootLayout() {
+function RootNavigation() {
   const colorScheme = useColorScheme();
   const theme = getAppNavigationTheme(colorScheme);
   const { theme: appTheme } = useUnistyles();
+  const { t } = useI18n();
 
   useEffect(() => {
     void warmTabBarIonRasterSources();
   }, []);
 
   return (
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider value={theme}>
+        <PopupProvider>
+          <Stack>
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="threads/[threadId]/index"
+              options={{
+                title: t('nav.thread'),
+                headerBackTitle: t('nav.back'),
+                headerTitleAlign: 'center',
+                contentStyle: {
+                  backgroundColor: appTheme.colors.background,
+                },
+              }}
+            />
+            <Stack.Screen
+              name="threads/[threadId]/messages"
+              options={{
+                title: t('nav.messages'),
+                headerBackTitle: t('nav.threadsBack'),
+                headerTitleAlign: 'center',
+                contentStyle: {
+                  backgroundColor: appTheme.colors.background,
+                },
+              }}
+            />
+          </Stack>
+          <StatusBar style="auto" />
+          <AppToast />
+        </PopupProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
+  );
+}
+
+export default function RootLayout() {
+  return (
     <SafeAreaProvider>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider value={theme}>
-          <PopupProvider>
-            <Stack>
-              <Stack.Screen name="index" options={{ headerShown: false }} />
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-              <Stack.Screen
-                name="threads/[threadId]/index"
-                options={{
-                  title: 'Thread',
-                  headerBackTitle: 'Back',
-                  headerTitleAlign: 'center',
-                  contentStyle: {
-                    backgroundColor: appTheme.colors.background,
-                  },
-                }}
-              />
-              <Stack.Screen
-                name="threads/[threadId]/messages"
-                options={{
-                  title: 'Messages',
-                  headerBackTitle: 'Threads',
-                  headerTitleAlign: 'center',
-                  contentStyle: {
-                    backgroundColor: appTheme.colors.background,
-                  },
-                }}
-              />
-            </Stack>
-            <StatusBar style="auto" />
-            <AppToast />
-          </PopupProvider>
-        </ThemeProvider>
-      </QueryClientProvider>
+      <I18nProvider>
+        <RootNavigation />
+      </I18nProvider>
     </SafeAreaProvider>
   );
 }

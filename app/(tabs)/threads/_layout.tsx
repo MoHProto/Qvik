@@ -1,5 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Stack } from 'expo-router';
+import { useI18n } from 'hooks/i18n/I18nProvider';
 import { useNotifyToast } from 'hooks/notify/useNotifyToast';
 import React from 'react';
 import { Platform, Pressable } from 'react-native';
@@ -8,12 +9,15 @@ import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 function ThreadsHeaderAddButton() {
   const notify = useNotifyToast();
   const { theme } = useUnistyles();
+  const { t } = useI18n();
   return (
     <Pressable
-      accessibilityLabel="Add"
+      accessibilityLabel={t('threads.header.addA11y')}
       accessibilityRole="button"
       hitSlop={12}
-      onPress={() => notify.success('Saved', 'Your change was recorded.')}
+      onPress={() =>
+        notify.success(t('threads.toast.saved.title'), t('threads.toast.saved.message'))
+      }
       style={({ pressed }) => [
         styles.headerButton,
         pressed && styles.headerButtonPressed,
@@ -31,10 +35,11 @@ function ThreadsHeaderAddButton() {
 
 export default function ThreadsTabLayout() {
   const { theme } = useUnistyles();
+  const { t } = useI18n();
   return (
     <Stack
       screenOptions={{
-        headerTitle: 'Threads',
+        headerTitle: t('tabs.threads'),
         headerTintColor: Platform.select({
           ios: theme.colors.text,
           default: undefined,

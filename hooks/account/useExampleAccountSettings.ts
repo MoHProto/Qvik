@@ -1,8 +1,10 @@
 import type { AccountItemData } from 'components/account/AccountItem';
+import { useI18n } from 'hooks/i18n/I18nProvider';
 import { EXAMPLE_ACCOUNTS } from 'lib/exampleAccounts';
 import { useCallback, useMemo, useState } from 'react';
 
 export function useExampleAccountSettings() {
+  const { locale, t } = useI18n();
   const [accounts, setAccounts] = useState<AccountItemData[]>(
     () => [...EXAMPLE_ACCOUNTS],
   );
@@ -10,7 +12,10 @@ export function useExampleAccountSettings() {
     () => EXAMPLE_ACCOUNTS[0]!.id,
   );
 
-  const languageLabel = 'English';
+  const languageLabel = useMemo(
+    () => t(`language.name.${locale}`),
+    [locale, t],
+  );
 
   const currentAccount = useMemo(() => {
     return (

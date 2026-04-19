@@ -14,8 +14,9 @@ import {
   View,
 } from 'react-native';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
+import { useI18n } from 'hooks/i18n/I18nProvider';
 import { avatarTintFromName } from 'utils/avatarTintFromName';
-import { accountFormSchema } from 'validation/accountFormSchema';
+import { createAccountFormSchema } from 'validation/accountFormSchema';
 
 import type { Account } from './AccountItem';
 
@@ -26,6 +27,8 @@ export type AccountFormProps = {
 
 export function AccountForm({ data, onSubmit }: AccountFormProps) {
   const { theme } = useUnistyles();
+  const { t } = useI18n();
+  const validationSchema = useMemo(() => createAccountFormSchema(t), [t]);
   const emojiChoices = useMemo(() => {
     const icon = data.avatarIcon;
     const base = [...ACCOUNT_AVATAR_EMOJIS];
@@ -39,7 +42,7 @@ export function AccountForm({ data, onSubmit }: AccountFormProps) {
   return (
     <Formik<Account>
       initialValues={data}
-      validationSchema={accountFormSchema}
+      validationSchema={validationSchema}
       enableReinitialize
       onSubmit={onSubmit}
     >
@@ -78,11 +81,11 @@ export function AccountForm({ data, onSubmit }: AccountFormProps) {
                     }
                     emojiColor={values.avatarColor}
                   />
-                  <Text style={styles.avatarHint}>Swipe to choose emoji</Text>
+                  <Text style={styles.avatarHint}>{t('accountForm.avatarHint')}</Text>
                 </View>
 
                 <View style={styles.fieldBlock}>
-                  <Text style={styles.label}>Name</Text>
+                  <Text style={styles.label}>{t('accountForm.nameLabel')}</Text>
                   <TextInput
                     value={values.name}
                     onChangeText={(text) => {
@@ -97,7 +100,7 @@ export function AccountForm({ data, onSubmit }: AccountFormProps) {
                       }
                     }}
                     onBlur={handleBlur('name')}
-                    placeholder="Account name"
+                    placeholder={t('accountForm.namePlaceholder')}
                     placeholderTextColor={theme.colors.muted}
                     autoCapitalize="words"
                     autoCorrect
@@ -144,7 +147,7 @@ export function AccountForm({ data, onSubmit }: AccountFormProps) {
                   isSubmitting && styles.submitDisabled,
                 ]}
               >
-                <Text style={styles.submitLabel}>Save</Text>
+                <Text style={styles.submitLabel}>{t('accountForm.save')}</Text>
               </Pressable>
             </View>
           </View>

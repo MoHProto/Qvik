@@ -7,6 +7,7 @@ import {
   VectorIcon,
 } from 'expo-router/unstable-native-tabs';
 import { usePathname, useRouter, type Href } from 'expo-router';
+import { useI18n } from 'hooks/i18n/I18nProvider';
 import { getTabBarIonRasterSources, warmTabBarIonRasterSources } from 'lib/tabBarIonRasterSources';
 import { getAppNavigationTheme } from 'lib/navigationTheme';
 import { getSystemAccentColor } from 'lib/systemAccent';
@@ -20,6 +21,7 @@ export default function NavigationTabs() {
   const tabIconColorSelected = getSystemAccentColor();
   const pathname = usePathname();
   const router = useRouter();
+  const { t } = useI18n();
 
   const [raster, setRaster] = useState(getTabBarIonRasterSources);
   const prevRasterRef = useRef(getTabBarIonRasterSources());
@@ -77,7 +79,7 @@ export default function NavigationTabs() {
                   }
             }
           />
-          <Label>Search</Label>
+          <Label>{t('tabs.search')}</Label>
         </NativeTabs.Trigger>
 
         <NativeTabs.Trigger name="threads">
@@ -104,7 +106,7 @@ export default function NavigationTabs() {
                   }
             }
           />
-          <Label>Threads</Label>
+          <Label>{t('tabs.threads')}</Label>
         </NativeTabs.Trigger>
 
         <NativeTabs.Trigger name="settings">
@@ -123,7 +125,7 @@ export default function NavigationTabs() {
                   }
             }
           />
-          <Label>Settings</Label>
+          <Label>{t('tabs.settings')}</Label>
         </NativeTabs.Trigger>
       </NativeTabs>
     </ThemeProvider>

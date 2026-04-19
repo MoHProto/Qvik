@@ -10,27 +10,31 @@ import { ThreadTitleButton } from 'components/thread/ThreadTitleButton';
 import type { Href } from 'expo-router';
 import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
 import { getExampleThreadById } from 'lib/exampleThreads';
+import { useI18n } from 'hooks/i18n/I18nProvider';
 import React, { useLayoutEffect, useMemo } from 'react';
 import { Platform, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
-function buildExampleMessages(threadId: string): MessageItemData[] {
+function buildExampleMessages(
+  threadId: string,
+  t: (key: string) => string,
+): MessageItemData[] {
   const now = Date.now();
   return [
     {
       id: 'm-1',
       threadId,
       createdAt: now - 1000 * 60 * 12,
-      label: 'Summarize this thread',
-      body: 'Here is a **short summary** of the discussion:\n\n- Navigation\n- Lists\n- Empty states',
+      label: t('demo.message.1.label'),
+      body: t('demo.message.1.body'),
       status: 'success',
     },
     {
       id: 'm-2',
       threadId,
       createdAt: now - 1000 * 60 * 8,
-      input: 'What is the release date?',
+      input: t('demo.message.2.input'),
       body: '',
       status: 'pending',
     },
@@ -38,17 +42,17 @@ function buildExampleMessages(threadId: string): MessageItemData[] {
       id: 'm-3',
       threadId,
       createdAt: now - 1000 * 60 * 5,
-      label: 'Draft reply',
-      body: 'We are targeting **next Friday** for the mobile build.',
+      label: t('demo.message.3.label'),
+      body: t('demo.message.3.body'),
       status: 'success',
     },
     {
       id: 'm-4',
       threadId,
       createdAt: now - 1000 * 60 * 2,
-      input: 'Run compliance check',
+      input: t('demo.message.4.input'),
       body: '',
-      error: 'The compliance service timed out. Please try again.',
+      error: t('demo.message.4.error'),
       status: 'error',
     },
   ];
@@ -59,11 +63,12 @@ export default function MessageListScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { theme } = useUnistyles();
+  const { t } = useI18n();
   const { threadId } = useLocalSearchParams<{ threadId: string }>();
   const id = threadId ?? '';
 
-  const thread = useMemo(() => getExampleThreadById(id), [id]);
-  const data = useMemo(() => buildExampleMessages(id), [id]);
+  const thread = useMemo(() => getExampleThreadById(id, t), [id, t]);
+  const data = useMemo(() => buildExampleMessages(id, t), [id, t]);
   const listBottomInset = useMemo(
     () =>
       getMessageFormListInsetBottom(
@@ -121,7 +126,7 @@ export default function MessageListScreen() {
         contentPaddingBottom={listBottomInset}
         emptyMessage={{
           icon: 'chatbubble-ellipses-outline',
-          message: 'No messages in this thread.',
+          message: t('messageList.empty'),
         }}
       />
       <MessageForm />

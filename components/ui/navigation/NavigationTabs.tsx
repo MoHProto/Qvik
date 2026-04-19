@@ -1,6 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { ThemeProvider } from '@react-navigation/native';
 import { Tabs } from 'expo-router';
+import { useI18n } from 'hooks/i18n/I18nProvider';
 import { getAppNavigationTheme } from 'lib/navigationTheme';
 import { getSystemAccentColor } from 'lib/systemAccent';
 import React from 'react';
@@ -15,6 +16,7 @@ export default function NavigationTabs() {
   const navigationTheme = getAppNavigationTheme(colorScheme);
   const tabIconColorDefault = navigationTheme.colors.text;
   const tabIconColorSelected = getSystemAccentColor();
+  const { t } = useI18n();
 
   return (
     <ThemeProvider value={navigationTheme}>
@@ -48,7 +50,7 @@ export default function NavigationTabs() {
         <Tabs.Screen
           name="search"
           options={{
-            title: 'Search',
+            title: t('tabs.search'),
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="search-outline" size={size} color={color} />
             ),
@@ -57,7 +59,7 @@ export default function NavigationTabs() {
         <Tabs.Screen
           name="threads"
           options={{
-            title: 'Threads',
+            title: t('tabs.threads'),
             tabBarIcon: ({ color, size }) => (
               <Ionicons
                 name="chatbubble-ellipses-outline"
@@ -70,7 +72,7 @@ export default function NavigationTabs() {
         <Tabs.Screen
           name="settings"
           options={{
-            title: 'Settings',
+            title: t('tabs.settings'),
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="settings-outline" size={size} color={color} />
             ),

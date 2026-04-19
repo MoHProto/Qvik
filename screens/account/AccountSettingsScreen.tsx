@@ -2,6 +2,8 @@ import { AccountSettings } from 'components/account/AccountSettings';
 import { useAccountFormModal } from 'hooks/account/useAccountFormModal';
 import { useAccountSelectorModal } from 'hooks/account/useAccountSelectorModal';
 import { useExampleAccountSettings } from 'hooks/account/useExampleAccountSettings';
+import { useI18n } from 'hooks/i18n/I18nProvider';
+import { useLanguagePickerModal } from 'hooks/i18n/useLanguagePickerModal';
 import { createPrefilledNewAccountFormData } from 'lib/createPrefilledNewAccountFormData';
 import { waitForPopupHandoff } from 'lib/waitForPopupHandoff';
 import React, { useCallback } from 'react';
@@ -17,8 +19,21 @@ export function AccountSettingsScreen() {
     languageLabel,
     currentAccount,
   } = useExampleAccountSettings();
+  const { locale, setLocale } = useI18n();
   const openAccountSelectorModal = useAccountSelectorModal();
   const openAccountFormModal = useAccountFormModal();
+  const openLanguagePickerModal = useLanguagePickerModal();
+
+  const onLanguagePress = useCallback(() => {
+    void (async () => {
+      const result = await openLanguagePickerModal({
+        data: { currentLocale: locale },
+      });
+      if (result !== undefined && result !== null) {
+        setLocale(result.locale);
+      }
+    })();
+  }, [locale, openLanguagePickerModal, setLocale]);
 
   const openPicker = useCallback(() => {
     void (async () => {
@@ -34,7 +49,7 @@ export function AccountSettingsScreen() {
       }
       await waitForPopupHandoff();
       const created = await openAccountFormModal({
-        data: { initialAccount: createPrefilledNewAccountFormData() },
+        data: { initialAccount: createPrefilledNewAccountFormData(locale) },
       });
       if (created !== undefined && created !== null) {
         addAccount(created);
@@ -43,6 +58,7 @@ export function AccountSettingsScreen() {
   }, [
     accounts,
     activeAccountId,
+    locale,
     addAccount,
     openAccountFormModal,
     openAccountSelectorModal,
@@ -55,7 +71,7 @@ export function AccountSettingsScreen() {
         account={currentAccount}
         languageLabel={languageLabel}
         onAccountHeaderPress={openPicker}
-        onLanguagePress={() => {}}
+        onLanguagePress={onLanguagePress}
         onAccountSettingPress={openPicker}
       />
     </View>

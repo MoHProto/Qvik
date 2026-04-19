@@ -1,14 +1,14 @@
+import { useI18n } from 'hooks/i18n/I18nProvider';
 import React from 'react';
 import { Text, View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 
 export default function SearchScreen() {
+  const { t } = useI18n();
   return (
     <View style={styles.screen}>
-      <Text style={styles.title}>Search</Text>
-      <Text style={styles.subtitle}>
-        Search dialogs, users, or anything else.
-      </Text>
+      <Text style={styles.title}>{t('search.title')}</Text>
+      <Text style={styles.subtitle}>{t('search.subtitle')}</Text>
     </View>
   );
 }

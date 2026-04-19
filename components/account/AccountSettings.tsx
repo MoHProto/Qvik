@@ -3,6 +3,8 @@ import React from 'react';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
+import { useI18n } from 'hooks/i18n/I18nProvider';
+
 import { AccountItem, type AccountItemData } from './AccountItem';
 
 export type AccountSettingsProps = {
@@ -63,6 +65,7 @@ export function AccountSettings({
   onLanguagePress,
   onAccountSettingPress,
 }: AccountSettingsProps) {
+  const { t } = useI18n();
   return (
     <ScrollView
       style={styles.screen}
@@ -79,12 +82,12 @@ export function AccountSettings({
 
       <View style={styles.card}>
         <SettingsRow
-          title="Language"
+          title={t('settings.language')}
           value={languageLabel}
           onPress={onLanguagePress}
           showSeparator
         />
-        <SettingsRow title="Account" onPress={onAccountSettingPress} />
+        <SettingsRow title={t('settings.account')} onPress={onAccountSettingPress} />
       </View>
     </ScrollView>
   );

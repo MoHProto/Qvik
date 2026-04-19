@@ -1,24 +1,27 @@
 import { ThreadList } from 'components/thread/ThreadList';
-import { EXAMPLE_THREADS } from 'lib/exampleThreads';
+import { getLocalizedExampleThreads } from 'lib/exampleThreads';
+import { useI18n } from 'hooks/i18n/I18nProvider';
 import type { Href } from 'expo-router';
 import { useRouter } from 'expo-router';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 
 export default function ThreadListScreen() {
   const router = useRouter();
+  const { t } = useI18n();
+  const threads = useMemo(() => getLocalizedExampleThreads(t), [t]);
 
   return (
     <View style={styles.screen}>
       <ThreadList
-        data={EXAMPLE_THREADS}
+        data={threads}
         onItemPress={(item) => {
           router.push(`/threads/${item.id}/messages` as Href);
         }}
         emptyMessage={{
           icon: 'chatbubbles-outline',
-          message: 'No threads yet.',
+          message: t('threadList.empty'),
         }}
       />
     </View>

@@ -5,6 +5,7 @@ import { Dimensions, Pressable, Text, View } from 'react-native';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 import { OverlaySheetModal } from 'components/ui/Modal';
+import { useI18n } from 'hooks/i18n/I18nProvider';
 import { AccountList } from './AccountList';
 import type { AccountItemData } from './AccountItem';
 
@@ -36,6 +37,7 @@ export function AccountSelectorModal({
 }: AccountSelectorModalProps) {
   const { accounts, activeAccountId } = data;
   const { theme } = useUnistyles();
+  const { t } = useI18n();
 
   return (
     <OverlaySheetModal<AccountSelectorModalResult>
@@ -47,11 +49,11 @@ export function AccountSelectorModal({
         <>
           <View style={styles.sheetHeader}>
             <Text style={styles.sheetTitle} numberOfLines={1}>
-              Accounts
+              {t('accountSelector.title')}
             </Text>
             <Pressable
               accessibilityRole="button"
-              accessibilityLabel="Close"
+              accessibilityLabel={t('a11y.close')}
               hitSlop={12}
               onPress={() => finish(null)}
               style={({ pressed }) => [
@@ -75,7 +77,7 @@ export function AccountSelectorModal({
               }
               emptyMessage={{
                 icon: 'person-outline',
-                message: 'No accounts yet.',
+                message: t('accountSelector.empty'),
               }}
             />
           </View>
@@ -92,7 +94,7 @@ export function AccountSelectorModal({
               size={22}
               color={theme.colors.primary}
             />
-            <Text style={styles.addLabel}>Add new account</Text>
+            <Text style={styles.addLabel}>{t('accountSelector.addNew')}</Text>
           </Pressable>
         </>
       )}

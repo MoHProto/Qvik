@@ -1,15 +1,18 @@
 import { pickRandomAccountAvatarEmoji } from './accountAvatarEmojis';
 import { generateFunnyAccountName } from './funnyAccountName';
+import type { AppLocale } from 'lib/i18n/catalog';
 import { avatarTintFromName } from 'utils/avatarTintFromName';
 
 /** Prefill for `AccountFormModal` `initialAccount` (call before opening the modal). */
-export function createPrefilledNewAccountFormData(): {
+export function createPrefilledNewAccountFormData(
+  locale: AppLocale = 'en',
+): {
   name: string;
   avatarIcon: string;
   avatarBackground?: string;
   avatarColor?: string;
 } {
-  const name = generateFunnyAccountName();
+  const name = generateFunnyAccountName(locale);
   const tint = avatarTintFromName(name);
   return {
     name,

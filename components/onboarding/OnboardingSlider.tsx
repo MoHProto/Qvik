@@ -19,6 +19,7 @@ import {
   OnboardingSlide,
   type OnboardingSlideData,
 } from 'components/onboarding/OnboardingSlide';
+import { useI18n } from 'hooks/i18n/I18nProvider';
 
 export type OnboardingSliderProps = {
   data: OnboardingSlideData[];
@@ -37,6 +38,7 @@ export function OnboardingSlider({ data, onGetStarted }: OnboardingSliderProps) 
   const { width: windowWidth, height: windowHeight } = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const { theme } = useUnistyles();
+  const { t } = useI18n();
   const listRef = useRef<FlatList<OnboardingSlideData>>(null);
   const [index, setIndex] = useState(0);
   const scrollX = useRef(new Animated.Value(0)).current;
@@ -236,11 +238,13 @@ export function OnboardingSlider({ data, onGetStarted }: OnboardingSliderProps) 
             {!isFirst ? (
               <Pressable
                 accessibilityRole="button"
-                accessibilityLabel="Back"
+                accessibilityLabel={t('onboarding.a11y.back')}
                 onPress={handleBack}
                 hitSlop={12}
               >
-                <Text style={[styles.navButton, styles.backLabel]}>Back</Text>
+                <Text style={[styles.navButton, styles.backLabel]}>
+                  {t('onboarding.back')}
+                </Text>
               </Pressable>
             ) : null}
           </View>
@@ -288,12 +292,16 @@ export function OnboardingSlider({ data, onGetStarted }: OnboardingSliderProps) 
           >
             <Pressable
               accessibilityRole="button"
-              accessibilityLabel={isLast ? 'Get started' : 'Next'}
+              accessibilityLabel={
+                isLast
+                  ? t('onboarding.a11y.getStarted')
+                  : t('onboarding.a11y.next')
+              }
               onPress={handleNext}
               hitSlop={12}
             >
               <Text style={[styles.navButton, styles.nextNavLabel]}>
-                {isLast ? 'Get started' : 'Next'}
+                {isLast ? t('onboarding.getStarted') : t('onboarding.next')}
               </Text>
             </Pressable>
           </View>
