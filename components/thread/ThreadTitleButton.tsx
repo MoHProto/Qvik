@@ -7,26 +7,25 @@ import type { ThreadItemData } from './ThreadItem';
 
 const AVATAR_SIZE = 28;
 
-/** Default cap on header title width; title text scales down to fit inside. */
-export const THREAD_TITLE_BUTTON_MAX_WIDTH = 260;
+/** Default cap on header title width; long titles truncate with an ellipsis. */
+export const THREAD_TITLE_BUTTON_MAX_WIDTH = 160;
 
-/** Largest font size before `adjustsFontSizeToFit` shrinks to fit the title cell. */
 const TITLE_FONT_SIZE_MAX = 13;
-
-/** Smallest scale applied vs `TITLE_FONT_SIZE_MAX` (about 8.5pt at default). */
-const TITLE_MIN_FONT_SCALE = 0.65;
 
 export type ThreadTitleButtonProps = {
   data: ThreadItemData;
   onPress?: () => void;
-  /** Max width for the column; text uses adaptive font size to stay within this width. */
+  /** Max width for the column (avatar + title). */
   maxWidth?: number;
+  /** Max width for the title line; defaults to `maxWidth`. */
+  titleMaxWidth?: number;
 };
 
 export function ThreadTitleButton({
   data,
   onPress,
   maxWidth = THREAD_TITLE_BUTTON_MAX_WIDTH,
+  titleMaxWidth = maxWidth,
 }: ThreadTitleButtonProps) {
   const hasUrl = Boolean(data.rootUrl && data.rootUrl.length > 0);
   const showIcon = !hasUrl && Boolean(data.iconEmoji);
@@ -51,12 +50,11 @@ export function ThreadTitleButton({
         color={data.avatarColor}
         size={AVATAR_SIZE}
       />
-      <View style={styles.titleCell}>
+      <View style={[styles.titleCell, { maxWidth: titleMaxWidth }]}>
         <Text
           style={styles.title}
           numberOfLines={1}
-          adjustsFontSizeToFit
-          minimumFontScale={TITLE_MIN_FONT_SCALE}
+          ellipsizeMode="tail"
         >
           {data.title}
         </Text>
@@ -83,6 +81,7 @@ const styles = StyleSheet.create((theme) => ({
     minWidth: 0,
   },
   title: {
+    maxWidth: '100%',
     fontSize: TITLE_FONT_SIZE_MAX,
     fontWeight: '600',
     color: theme.colors.text,
