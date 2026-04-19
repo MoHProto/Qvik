@@ -237,15 +237,6 @@ export function OnboardingSlider({ data, onGetStarted }: OnboardingSliderProps) 
           },
         ]}
       >
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={t('settings.language')}
-          onPress={onLanguagePress}
-          style={({ pressed }) => [styles.languageRow, pressed && styles.languageRowPressed]}
-        >
-          <Ionicons name="language-outline" size={20} color={theme.colors.primary} />
-          <Text style={styles.languageLabel}>{t('settings.language')}</Text>
-        </Pressable>
         <View style={styles.controlsRow}>
           <View style={[styles.sideSlot, { width: SIDE_SLOT_WIDTH }]}>
             {!isFirst ? (
@@ -254,10 +245,25 @@ export function OnboardingSlider({ data, onGetStarted }: OnboardingSliderProps) 
                 accessibilityLabel={t('onboarding.a11y.back')}
                 onPress={handleBack}
                 hitSlop={12}
+                style={({ pressed }) => [styles.navPressable, pressed && styles.navPressablePressed]}
               >
-                <Text style={[styles.navButton, styles.backLabel]}>{t('onboarding.back')}</Text>
+                <Text style={[styles.navButton, styles.backLabel]} numberOfLines={1} ellipsizeMode="middle">{t('onboarding.back')}</Text>
               </Pressable>
-            ) : null}
+            ) : (
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel={t('settings.language')}
+                onPress={onLanguagePress}
+                hitSlop={12}
+                style={({ pressed }) => [
+                  styles.navPressable,
+                  styles.languageIconButton,
+                  pressed && styles.navPressablePressed,
+                ]}
+              >
+                <Ionicons name="language-outline" size={22} color={theme.colors.primary} />
+              </Pressable>
+            )}
           </View>
           <View style={styles.dotsWrap}>
             {data.map((slide, i) => {
@@ -298,8 +304,9 @@ export function OnboardingSlider({ data, onGetStarted }: OnboardingSliderProps) 
               }
               onPress={handleNext}
               hitSlop={12}
+              style={({ pressed }) => [styles.navPressable, pressed && styles.navPressablePressed]}
             >
-              <Text style={[styles.navButton, styles.nextNavLabel]}>
+              <Text style={[styles.navButton, styles.nextNavLabel]} numberOfLines={1} ellipsizeMode="middle">
                 {isLast ? t('onboarding.getStarted') : t('onboarding.next')}
               </Text>
             </Pressable>
@@ -327,26 +334,22 @@ const styles = StyleSheet.create((theme) => ({
     paddingTop: theme.spacing[3],
     gap: theme.spacing[4],
   },
-  languageRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  navPressable: {
+    minHeight: 32,
     justifyContent: 'center',
-    gap: theme.spacing[2],
-    alignSelf: 'center',
-    paddingVertical: theme.spacing[2],
-    paddingHorizontal: theme.spacing[3],
   },
-  languageRowPressed: {
+  navPressablePressed: {
     opacity: 0.65,
   },
-  languageLabel: {
-    fontSize: 17,
-    color: theme.colors.primary,
+  languageIconButton: {
+    paddingVertical: theme.spacing[1],
+    paddingHorizontal: theme.spacing[1],
   },
   controlsRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    minHeight: 32,
   },
   sideSlot: {
     justifyContent: 'center',
@@ -360,7 +363,7 @@ const styles = StyleSheet.create((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
     gap: theme.spacing[2],
-    maxWidth: 50,
+    maxWidth: 40,
   },
   dot: {
     borderRadius: 999,
@@ -382,8 +385,10 @@ const styles = StyleSheet.create((theme) => ({
   },
   backLabel: {
     fontWeight: '400',
+    whiteSpace: 'nowrap',
   },
   nextNavLabel: {
     fontWeight: '600',
+    whiteSpace: 'nowrap',
   },
 }));

@@ -15,6 +15,8 @@ const colorsLight = {
   /** Large icon wells (e.g. onboarding) — lighter than `avatarFallback`. */
   onboardingIconCircle: '#f9fafb',
   border: '#e5e7eb',
+  /** Slightly stronger border for form fields / inputs. */
+  inputBorder: '#d1d5db',
   /** Links, tab accents, controls — follows system / Material primary. */
   primary: systemAccent,
   /** Translucent primary wash for small chips (e.g. bubble actions). */
@@ -37,6 +39,7 @@ const colorsDark = {
   avatarFallback: '#ececec',
   onboardingIconCircle: 'rgba(255, 255, 255, 0.16)',
   border: '#1f2937',
+  inputBorder: '#374151',
   primary: systemAccent,
   primaryMuted: 'rgba(10, 132, 255, 0.22)',
   error: '#f87171',

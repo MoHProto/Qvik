@@ -1,4 +1,4 @@
-import type { AppLocale } from 'lib/i18n/catalog';
+import type { AppLocale } from 'lib/i18n/locales';
 
 const ADJECTIVES = [
   'Sleepy',

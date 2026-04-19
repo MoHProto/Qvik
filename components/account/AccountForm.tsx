@@ -191,7 +191,7 @@ const styles = StyleSheet.create((theme) => ({
   },
   input: {
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: theme.colors.border,
+    borderColor: theme.colors.inputBorder,
     borderRadius: theme.radius.card,
     paddingVertical: theme.spacing[3],
     paddingHorizontal: theme.spacing[4],

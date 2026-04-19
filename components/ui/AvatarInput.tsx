@@ -35,6 +35,19 @@ const SNAP_SPRING = {
   mass: 0.35,
 } as const;
 
+/**
+ * Prefer monochrome/text presentation for simple emoji where supported by the platform.
+ * This uses VS15 (U+FE0E). Complex ZWJ sequences / skin-tone variants are left as-is.
+ */
+function preferTextEmojiPresentation(emoji: string): string {
+  if (!emoji) return emoji;
+  if (emoji.includes('\uFE0E') || emoji.includes('\uFE0F')) return emoji;
+  if (emoji.includes('\u200D')) return emoji; // ZWJ sequence
+  // Fitzpatrick modifiers (skin tones)
+  if (/[\u{1F3FB}-\u{1F3FF}]/u.test(emoji)) return emoji;
+  return `${emoji}\uFE0E`;
+}
+
 /** Preview ring diameter never exceeds the measured track (minus small horizontal margin). */
 function effectiveCircleDiameter(trackWidth: number, preferred: number, edgeMargin = 8): number {
   if (trackWidth <= 0) {
@@ -147,7 +160,7 @@ function AvatarInputWeb({
     setTrackWidth(e.nativeEvent.layout.width);
   }, []);
 
-  const displayEmoji = emojis[centerIndex] ?? emojis[0] ?? '';
+  const displayEmoji = preferTextEmojiPresentation(emojis[centerIndex] ?? emojis[0] ?? '');
   const ringSize = useMemo(
     () => effectiveCircleDiameter(trackWidth, circleSize),
     [trackWidth, circleSize],
@@ -194,7 +207,9 @@ function AvatarInputWeb({
                 key={`${index}-${emoji}`}
                 style={[styles.cell, { width: itemWidth, height: DEFAULT_STRIP_HEIGHT }]}
               >
-                <Text style={[styles.stripEmoji, { fontSize: stripFont }]}>{emoji}</Text>
+                <Text style={[styles.stripEmoji, { fontSize: stripFont }]}>
+                  {preferTextEmojiPresentation(emoji)}
+                </Text>
               </View>
             ))}
           </ScrollView>
@@ -363,7 +378,7 @@ function AvatarInputNative({
     [itemWidth, onCommitIndex],
   );
 
-  const displayEmoji = emojis[centerIndex] ?? emojis[0] ?? '';
+  const displayEmoji = preferTextEmojiPresentation(emojis[centerIndex] ?? emojis[0] ?? '');
   const ringSize = useMemo(
     () => effectiveCircleDiameter(trackWidth, circleSize),
     [trackWidth, circleSize],
@@ -392,7 +407,9 @@ function AvatarInputNative({
                   key={`${index}-${emoji}`}
                   style={[styles.cell, { width: itemWidth, height: DEFAULT_STRIP_HEIGHT }]}
                 >
-                  <Text style={[styles.stripEmoji, { fontSize: stripFont }]}>{emoji}</Text>
+                  <Text style={[styles.stripEmoji, { fontSize: stripFont }]}>
+                    {preferTextEmojiPresentation(emoji)}
+                  </Text>
                 </View>
               ))}
               <View style={{ width: sideInset }} />
@@ -496,7 +513,7 @@ const styles = StyleSheet.create((theme) => ({
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.06,
-    shadowRadius: 4,
+    shadowRadius: 2,
     elevation: 4,
   },
   circleEmoji: {

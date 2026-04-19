@@ -1,10 +1,10 @@
 import type { PopupProps } from 'react-popup-manager';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { OverlaySheetModal } from 'components/ui/Modal';
-import { APP_LOCALES, type AppLocale } from 'lib/i18n/catalog';
+import { APP_LOCALES, type AppLocale } from 'lib/i18n/locales';
 import { useI18n } from 'hooks/i18n/I18nProvider';
 import React from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { Pressable, ScrollView, Text, View } from 'react-native';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
 export type LanguagePickerModalData = {
@@ -44,7 +44,12 @@ export function LanguagePickerModal({ isOpen: _isOpen, onClose, data }: Language
               <Ionicons name="close" size={18} color={theme.colors.text} />
             </Pressable>
           </View>
-          <View style={styles.listWrap}>
+          <ScrollView
+            style={styles.scroll}
+            contentContainerStyle={styles.listWrap}
+            bounces={false}
+            showsVerticalScrollIndicator
+          >
             {APP_LOCALES.map((code, index) => {
               const selected = currentLocale === code;
               return (
@@ -71,7 +76,7 @@ export function LanguagePickerModal({ isOpen: _isOpen, onClose, data }: Language
                 </React.Fragment>
               );
             })}
-          </View>
+          </ScrollView>
         </>
       )}
     </OverlaySheetModal>
@@ -108,6 +113,9 @@ const styles = StyleSheet.create((theme) => ({
   },
   closeButtonPressed: {
     opacity: 0.65,
+  },
+  scroll: {
+    maxHeight: 520,
   },
   listWrap: {
     paddingBottom: theme.spacing[4],

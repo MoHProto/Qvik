@@ -1,6 +1,6 @@
 import { pickRandomAccountAvatarEmoji } from './accountAvatarEmojis';
 import { generateFunnyAccountName } from './funnyAccountName';
-import type { AppLocale } from 'lib/i18n/catalog';
+import type { AppLocale } from 'lib/i18n/locales';
 import { avatarTintFromName } from 'utils/avatarTintFromName';
 
 /** Prefill for `AccountFormModal` `initialAccount` (call before opening the modal). */

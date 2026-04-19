@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { catalog, isAppLocale, LOCALE_STORAGE_KEY, type AppLocale } from 'lib/i18n/catalog';
+import { catalog, isAppLocale } from 'lib/i18n/catalog';
+import { LOCALE_STORAGE_KEY, type AppLocale } from 'lib/i18n/locales';
 import { pickSupportedLocale } from 'lib/i18n/pickSupportedLocale';
 import { getLocales } from 'expo-localization';
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
@@ -13,7 +14,8 @@ export type I18nContextValue = {
 const I18nContext = createContext<I18nContextValue | null>(null);
 
 function readDeviceLocale(): AppLocale {
-  return pickSupportedLocale(getLocales()[0]?.languageCode);
+  const device = getLocales()[0];
+  return pickSupportedLocale(device?.languageTag ?? device?.languageCode);
 }
 
 export function I18nProvider({ children }: { children: React.ReactNode }) {

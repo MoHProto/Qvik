@@ -23,7 +23,7 @@ export function OnboardingScreen({ onGetStarted }: OnboardingScreenProps) {
     () => [
       {
         id: 'web-without-noise',
-        icon: 'globe-outline',
+        icon: 'speedometer-outline',
         title: t('onboarding.slide0.title'),
         description: t('onboarding.slide0.body'),
       },
