@@ -1,7 +1,3 @@
-import {
-  MESSAGES_PATTERN_TILE_PX,
-  messagesPatternSource,
-} from 'assets/backgrounds/messagesPattern';
 import { OnboardingCircle } from 'components/onboarding/OnboardingCircle';
 import type { OnboardingSlideData } from 'components/onboarding/OnboardingSlide';
 import { OnboardingSlider } from 'components/onboarding/OnboardingSlider';
@@ -45,7 +41,7 @@ export function OnboardingScreen({ onGetStarted }: OnboardingScreenProps) {
 
   return (
     <View style={styles.fill}>
-      <Background source={messagesPatternSource} tileSize={MESSAGES_PATTERN_TILE_PX} />
+      <Background />
       <OnboardingCircle />
       <OnboardingSlider data={slides} onGetStarted={onGetStarted} />
     </View>

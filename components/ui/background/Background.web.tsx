@@ -1,28 +1,26 @@
 import resolveAssetSource from 'expo-asset/build/resolveAssetSource';
 import React from 'react';
-import { type ImageSourcePropType, StyleSheet, useColorScheme, View } from 'react-native';
+import { type ImageSourcePropType, StyleSheet, View } from 'react-native';
 
 import type { BackgroundProps } from './background.types';
 
-const DEFAULT_OPACITY_LIGHT = 0.25;
-const DEFAULT_OPACITY_DARK = 0.25;
+const defaultBackgroundSource = require('../../../assets/backgrounds/default.png');
+const DEFAULT_TILE_SIZE_PX = 128;
 
 /**
  * Web: `react-native-web` `Image` pins intrinsic asset size (~tile), so tiling via `repeat`
  * fails. Use CSS `background-repeat` on a full-size `View`.
  */
 export function Background({
-  source,
   tileSize,
-  opacityLight = DEFAULT_OPACITY_LIGHT,
-  opacityDark = DEFAULT_OPACITY_DARK,
   children,
+  scale = 3,
 }: BackgroundProps) {
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === 'dark';
-  const opacity = isDark ? opacityDark : opacityLight;
-  const resolved = resolveAssetSource(source as ImageSourcePropType);
-  const uri = resolved?.uri;
+  const resolvedDefault = resolveAssetSource(defaultBackgroundSource as ImageSourcePropType);
+  const intrinsicOrProvided =
+    resolvedDefault?.width ?? resolvedDefault?.height ?? tileSize ?? DEFAULT_TILE_SIZE_PX;
+  const effectiveTileSize = intrinsicOrProvided / scale;
+  const uri = resolvedDefault?.uri;
 
   const pattern =
     uri != null ? (
@@ -30,11 +28,11 @@ export function Background({
         pointerEvents="none"
         style={[
           StyleSheet.absoluteFill,
+          styles.clip,
           {
             backgroundImage: `url(${uri})`,
             backgroundRepeat: 'repeat',
-            backgroundSize: `${tileSize}px ${tileSize}px`,
-            opacity,
+            backgroundSize: `${effectiveTileSize}px ${effectiveTileSize}px`,
           },
         ]}
       />
@@ -53,6 +51,9 @@ export function Background({
 }
 
 const styles = StyleSheet.create({
+  clip: {
+    overflow: 'hidden',
+  },
   fill: {
     flex: 1,
   },

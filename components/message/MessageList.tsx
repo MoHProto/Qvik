@@ -1,7 +1,3 @@
-import {
-  MESSAGES_PATTERN_TILE_PX,
-  messagesPatternSource,
-} from 'assets/backgrounds/messagesPattern';
 import { Background } from 'components/ui/background';
 import { EmptyMessage } from 'components/ui/EmptyMessage';
 import React, { useMemo } from 'react';
@@ -42,7 +38,7 @@ export function MessageList({
 
   return (
     <View style={styles.listRoot}>
-      <Background source={messagesPatternSource} tileSize={MESSAGES_PATTERN_TILE_PX} />
+      <Background />
       <FlatList
         style={styles.listFill}
         inverted={hasMessages}

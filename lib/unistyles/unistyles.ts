@@ -1,5 +1,5 @@
-import { getSystemAccentColor } from 'utils/color';
 import { StyleSheet } from 'react-native-unistyles';
+import { getSystemAccentColor } from 'utils/color';
 
 const systemAccent = getSystemAccentColor();
 
@@ -32,7 +32,7 @@ const colorsLight = {
 
 const colorsDark = {
   background: '#0b1220',
-  backgroundAlt: '#121f14',
+  backgroundAlt: '#9DF3B6',
   surface: '#111827',
   text: '#f9fafb',
   muted: '#9ca3af',
