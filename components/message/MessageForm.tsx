@@ -3,21 +3,13 @@ import React from 'react';
 import { Platform, Pressable, StyleSheet as RNStyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
+import { hexToRgba } from 'utils/color';
 
 /** Vertical padding inside the floating footer (excluding safe area). */
 const FOOTER_VERTICAL_PADDING = 12;
 
 /** Min height of the primary control (pill). */
 const CONTROL_MIN_HEIGHT = 48;
-
-/** Fade from `transparent` uses black RGB; interpolate from same hue at α=0 to avoid a dark band. */
-function hexToRgba(hex: string, alpha: number): string {
-  const h = hex.replace('#', '');
-  const r = parseInt(h.slice(0, 2), 16);
-  const g = parseInt(h.slice(2, 4), 16);
-  const b = parseInt(h.slice(4, 6), 16);
-  return `rgba(${r},${g},${b},${alpha})`;
-}
 
 /**
  * Floating footer over message content: transparent chrome, no border.

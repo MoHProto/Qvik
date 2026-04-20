@@ -69,7 +69,7 @@ export default function NavigationTabs() {
           options={{
             title: t('tabs.threads'),
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="chatbubble-ellipses-outline" size={size} color={color} />
+              <Ionicons name="chatbubbles-outline" size={size} color={color} />
             ),
           }}
         />

@@ -115,7 +115,7 @@ export default function MessageListScreen() {
         data={data}
         contentPaddingBottom={listBottomInset}
         emptyMessage={{
-          icon: 'chatbubble-ellipses-outline',
+          icon: 'chatbubbles-outline',
           message: t('messageList.empty'),
         }}
       />
