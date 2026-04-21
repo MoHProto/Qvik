@@ -1,4 +1,9 @@
-import { addColumns, createTable, schemaMigrations } from '@nozbe/watermelondb/Schema/migrations';
+import {
+  addColumns,
+  createTable,
+  schemaMigrations,
+  unsafeExecuteSql,
+} from '@nozbe/watermelondb/Schema/migrations';
 
 export const migrations = schemaMigrations({
   migrations: [
@@ -35,6 +40,37 @@ export const migrations = schemaMigrations({
             { name: 'error', type: 'string', isOptional: true },
           ],
         }),
+      ],
+    },
+    {
+      toVersion: 5,
+      steps: [
+        addColumns({
+          table: 'threads',
+          columns: [{ name: 'base_url', type: 'string' }],
+        }),
+        unsafeExecuteSql('UPDATE threads SET base_url = root_url;'),
+      ],
+    },
+    {
+      toVersion: 6,
+      steps: [
+        addColumns({
+          table: 'threads',
+          columns: [{ name: 'base_path', type: 'string' }],
+        }),
+        unsafeExecuteSql('UPDATE threads SET base_path = base_url;'),
+      ],
+    },
+    {
+      toVersion: 7,
+      steps: [
+        addColumns({
+          table: 'messages',
+          columns: [{ name: 'is_outgoing', type: 'boolean', isOptional: true }],
+        }),
+        unsafeExecuteSql('UPDATE messages SET is_outgoing = 0 WHERE is_outgoing IS NULL;'),
+        unsafeExecuteSql('ALTER TABLE messages DROP COLUMN label;'),
       ],
     },
   ],

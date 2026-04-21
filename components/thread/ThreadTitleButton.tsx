@@ -1,8 +1,8 @@
 import { Avatar } from 'components/ui/Avatar';
-import { formatInitials } from 'utils/string';
 import React from 'react';
 import { Pressable, Text, View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
+import { formatInitials } from 'utils/string';
 import type { ThreadItemData } from './ThreadItem';
 
 const AVATAR_SIZE = 28;
@@ -27,7 +27,7 @@ export function ThreadTitleButton({
   maxWidth = THREAD_TITLE_BUTTON_MAX_WIDTH,
   titleMaxWidth = maxWidth,
 }: ThreadTitleButtonProps) {
-  const hasUrl = Boolean(data.rootUrl && data.rootUrl.length > 0);
+  const hasUrl = Boolean(data.iconUrl && data.iconUrl.length > 0);
   const showIcon = !hasUrl && Boolean(data.iconEmoji);
   const initials = !hasUrl && !showIcon ? formatInitials(data.title) : '';
 
@@ -43,7 +43,7 @@ export function ThreadTitleButton({
       ]}
     >
       <Avatar
-        url={data.rootUrl}
+        url={data.iconUrl}
         icon={showIcon ? data.iconEmoji : undefined}
         initials={initials || undefined}
         background={data.avatarBackground}

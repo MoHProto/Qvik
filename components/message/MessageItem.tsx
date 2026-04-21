@@ -8,18 +8,26 @@ import { formatBubbleTime, type MessageItemProps } from './messageItemShared';
 export type { MessageItemData, MessageItemProps, MessageStatus } from './messageItemShared';
 
 export function MessageItem({ data, onRetry }: MessageItemProps) {
-  const outgoingText =
-    data.label != null && data.label.length > 0
-      ? data.label
-      : data.input != null && data.input.length > 0
-        ? data.input
-        : '';
-  const showOutgoing = outgoingText.length > 0;
+  const isOutgoing = data.isOutgoing ?? false;
 
-  const secondIsError = data.status === 'error';
-  const secondIsPending = data.status === 'pending';
+  if (isOutgoing) {
+    const text = data.input?.trim() ?? '';
+    return (
+      <View style={styles.row}>
+        <MessageBubble
+          variant="outgoing"
+          data={{
+            text,
+            time: formatBubbleTime(data.createdAt),
+          }}
+        />
+      </View>
+    );
+  }
 
-  const incomingText = secondIsError
+  const isError = data.status === 'error';
+  const isPending = data.status === 'pending';
+  const incomingText = isError
     ? data.error != null && data.error.length > 0
       ? data.error
       : 'Something went wrong.'
@@ -27,25 +35,15 @@ export function MessageItem({ data, onRetry }: MessageItemProps) {
 
   return (
     <View style={styles.row}>
-      {showOutgoing ? (
-        <MessageBubble
-          variant="outgoing"
-          data={{
-            text: outgoingText,
-            time: formatBubbleTime(data.createdAt),
-          }}
-        />
-      ) : null}
-
       <MessageBubble
         variant="incoming"
         data={{
           text: incomingText,
-          time: secondIsPending ? undefined : formatBubbleTime(data.createdAt),
+          time: isPending ? undefined : formatBubbleTime(data.createdAt),
         }}
-        error={secondIsError}
-        pending={secondIsPending}
-        actions={secondIsError ? ['Retry'] : []}
+        error={isError}
+        pending={isPending}
+        actions={isError ? ['Retry'] : []}
         onAction={(label) => {
           if (label === 'Retry') {
             onRetry?.(data);

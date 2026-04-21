@@ -6,7 +6,7 @@ const systemAccent = getSystemAccentColor();
 const colorsLight = {
   background: '#f2f2f7',
   /** Alternative page/sheet surface (e.g. onboarding, message thread). */
-  backgroundAlt: '#9DF3B6',
+  backgroundAlt: '#93BB88',
   surface: '#ffffff',
   text: '#111827',
   muted: '#6b7280',

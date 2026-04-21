@@ -1,16 +1,16 @@
 import { Avatar } from 'components/ui/Avatar';
 import { useDateFormatter } from 'hooks/date/useDateFormatter';
-import { formatInitials } from 'utils/string';
 import React from 'react';
 import { Pressable, Text, View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
+import { formatInitials } from 'utils/string';
 
 /** UI thread row; aligns with `Thread` plus optional list fields. */
 export type ThreadItemData = {
   id: string;
   title: string;
   accountId: string;
-  rootUrl?: string | null;
+  iconUrl?: string | null;
   description?: string;
   createdAt?: number;
   iconEmoji?: string;
@@ -29,7 +29,7 @@ export type ThreadItemProps = {
 
 export function ThreadItem({ data, onPress, variant = 'row' }: ThreadItemProps) {
   const formatDate = useDateFormatter();
-  const hasUrl = Boolean(data.rootUrl && data.rootUrl.length > 0);
+  const hasUrl = Boolean(data.iconUrl && data.iconUrl.length > 0);
   const showIcon = !hasUrl && Boolean(data.iconEmoji);
   const initials = !hasUrl && !showIcon ? formatInitials(data.title) : '';
   const subtitle = data.description ?? (data.createdAt != null ? formatDate(data.createdAt) : '');
@@ -47,7 +47,7 @@ export function ThreadItem({ data, onPress, variant = 'row' }: ThreadItemProps) 
       ]}
     >
       <Avatar
-        url={data.rootUrl}
+        url={data.iconUrl}
         icon={showIcon ? data.iconEmoji : undefined}
         initials={initials || undefined}
         background={data.avatarBackground}
