@@ -1,16 +1,16 @@
 import { ThreadList } from 'components/thread/ThreadList';
-import { getLocalizedExampleThreads } from 'data/example/exampleThreads';
 import { useI18n } from 'hooks/i18n/I18nProvider';
+import { useThreadList } from 'hooks/thread/useThreadList';
 import type { Href } from 'expo-router';
 import { useRouter } from 'expo-router';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 
 export default function ThreadListScreen() {
   const router = useRouter();
   const { t } = useI18n();
-  const threads = useMemo(() => getLocalizedExampleThreads(t), [t]);
+  const { data: threads = [] } = useThreadList();
 
   return (
     <View style={styles.screen}>
