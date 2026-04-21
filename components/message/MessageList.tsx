@@ -9,12 +9,7 @@ import { MessageItem, type MessageItemData } from './MessageItem';
 export type MessageListProps = {
   data: MessageItemData[];
   emptyMessage: React.ComponentProps<typeof EmptyMessage>;
-  /**
-   * Extra inset for content at the visual bottom of the thread (e.g. floating composer).
-   * Applied as bottom padding in normal mode; as top padding when the list is inverted (chat).
-   */
   contentPaddingBottom?: number;
-  /** Called when the user taps Retry on a failed message row. */
   onRetry?: (item: MessageItemData) => void;
 };
 
@@ -25,13 +20,11 @@ export function MessageList({
   onRetry,
 }: MessageListProps) {
   const hasMessages = data.length > 0;
-  /** Newest-first for `inverted` FlatList so the latest row sits on the visual bottom. */
   const listData = useMemo(() => (hasMessages ? [...data].reverse() : data), [data, hasMessages]);
 
   const contentStyle = hasMessages
     ? [
         styles.list,
-        // Inverted list: visual bottom corresponds to content’s top edge in layout coordinates.
         { paddingTop: contentPaddingBottom },
       ]
     : [styles.listEmpty, { paddingBottom: contentPaddingBottom }];

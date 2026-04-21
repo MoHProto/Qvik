@@ -1,23 +1,22 @@
+import type { MessageStatus } from 'types/message';
+
 /**
- * One list row = one chat message (either outgoing user text or an incoming assistant row).
- * Mirrors persisted `Message` fields plus UI-only `status`.
+ * One list row = one persisted `Message`.
  *
- * Outgoing: set `isOutgoing: true` and put user-visible text in `input` (other fields optional).
- * Incoming: set `isOutgoing` false/omit; use `body` / `error` and `status` for assistant UI.
+ * - `input`: `body` is what the user entered.
+ * - `pending`: do not use `body`; show loading dots.
+ * - `success`: `body` is the server response body.
+ * - `error`: `body` is the error message for the user.
+ * - `isOutgoing`: bubble alignment / tail side (independent of `status` once rows evolve).
  */
 export type MessageItemData = {
   id: string;
   threadId: string;
   body: string;
   timestamp: number;
-  /** Outgoing (user) bubble when true. */
-  isOutgoing?: boolean;
-  input?: string;
-  error?: string;
   status: MessageStatus;
+  isOutgoing: boolean;
 };
-
-export type MessageStatus = 'pending' | 'success' | 'error';
 
 export type MessageItemProps = {
   data: MessageItemData;

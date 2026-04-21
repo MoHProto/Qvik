@@ -1,4 +1,5 @@
 import { LinearGradient } from 'expo-linear-gradient';
+import { useI18n } from 'hooks/i18n/I18nProvider';
 import React from 'react';
 import { Platform, Pressable, StyleSheet as RNStyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -19,6 +20,7 @@ export function MessageForm({ onStartPress }: { onStartPress?: () => void }) {
   const insets = useSafeAreaInsets();
   const { theme } = useUnistyles();
   const paddingBottom = insets.bottom + (Platform.OS === 'web' ? theme.spacing[4] : 0);
+  const { t } = useI18n();
 
   return (
     <View pointerEvents="box-none" style={[styles.wrap, { paddingBottom }]}>
@@ -31,7 +33,7 @@ export function MessageForm({ onStartPress }: { onStartPress?: () => void }) {
       />
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel="Start"
+        accessibilityLabel={t('messageForm.startPress')}
         android_ripple={
           Platform.OS === 'android'
             ? { color: 'rgba(255, 255, 255, 0.25)', borderless: false }
@@ -40,7 +42,7 @@ export function MessageForm({ onStartPress }: { onStartPress?: () => void }) {
         onPress={onStartPress}
         style={({ pressed }) => [styles.control, { backgroundColor: theme.colors.primary }, pressed && styles.controlPressed]}
       >
-        <Text style={styles.controlLabel}>Start</Text>
+        <Text style={styles.controlLabel}>{t('messageForm.startPress')}</Text>
       </Pressable>
     </View>
   );

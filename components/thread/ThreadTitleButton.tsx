@@ -6,19 +6,14 @@ import { formatInitials } from 'utils/string';
 import type { ThreadItemData } from './ThreadItem';
 
 const AVATAR_SIZE = 28;
-
-/** Default cap on header title width; long titles truncate with an ellipsis. */
-export const THREAD_TITLE_BUTTON_MAX_WIDTH = 160;
-
 const TITLE_FONT_SIZE_MAX = 13;
+const THREAD_TITLE_BUTTON_MAX_WIDTH = 160;
 
 export type ThreadTitleButtonProps = {
   data: ThreadItemData;
-  onPress?: () => void;
-  /** Max width for the column (avatar + title). */
   maxWidth?: number;
-  /** Max width for the title line; defaults to `maxWidth`. */
   titleMaxWidth?: number;
+  onPress?: () => void;
 };
 
 export function ThreadTitleButton({

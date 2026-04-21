@@ -22,16 +22,37 @@ When showing **success / error / info toasts** (the top banner driven by `AppToa
 - **`lib/notify.ts`** — implementation of the notify helpers.
 - **`components/ui/toast/**`** — global toast host and layout (`AppToast`, `ToastBanner`, etc.).
 
+## Error toast bodies (caught failures) — **MUST**
+
+When **`notify.error`**’s **message** (second argument) is built from a **failed operation** (caught `Error`, React Query `onError`, `catch`, etc.):
+
+- **MUST** normalize the value to an **`Error`** when it might not be one, e.g. `const err = e instanceof Error ? e : new Error(String(e))`.
+- **MUST** pass **`formatErrorMessage(err, fallback)`** from **`utils/errors`** as that message — **`fallback`** is the string used when **`err.message`** is empty (typically a translated generic line). **Do not** use raw `error.message`, **`String(error)`** on unknown values, or ad‑hoc concatenation.
+- **Do not** bypass this for convenience in screens, components, or feature hooks.
+
+**Exceptions:** **`utils/errors.ts`** (implementation of `formatErrorMessage`), and **`lib/notify.ts`** (transport only; callers still format before passing strings in).
+
+Static copy-only error messages (no `Error` from the failure) do not require `formatErrorMessage`.
+
 ## Example
 
 ```tsx
 import { useNotifyToast } from 'hooks/notify/useNotifyToast';
+import { formatErrorMessage } from 'utils/errors';
 
 function ExampleScreen() {
   const notify = useNotifyToast();
 
   const onSave = () => {
     notify.success('Saved', 'Your changes were stored.');
+  };
+
+  const onFailure = (e: unknown) => {
+    const err = e instanceof Error ? e : new Error(String(e));
+    notify.error(
+      'Could not save',
+      formatErrorMessage(err, t('feature.errorFallback')), // or a plain string when no i18n
+    );
   };
 }
 ```

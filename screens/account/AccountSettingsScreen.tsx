@@ -1,9 +1,12 @@
 import { AccountSettings } from 'components/account/AccountSettings';
+import { useAccountAdd } from 'hooks/account/useAccountAdd';
 import { useAccountFormModal } from 'hooks/account/useAccountFormModal';
 import { useAccountSelectorModal } from 'hooks/account/useAccountSelectorModal';
-import { useExampleAccountSettings } from 'hooks/account/useExampleAccountSettings';
+import { useAccountSettings } from 'hooks/account/useAccountSettings';
 import { useI18n } from 'hooks/i18n/I18nProvider';
 import { useLanguagePickerModal } from 'hooks/i18n/useLanguagePickerModal';
+import { usePlainClient } from 'hooks/plain/usePlainClient';
+import { useThreadOne } from 'hooks/thread/useThreadOne';
 import React, { useCallback } from 'react';
 import { View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
@@ -14,65 +17,66 @@ export function AccountSettingsScreen() {
     accounts,
     activeAccountId,
     setActiveAccountId,
-    addAccount,
     updateAccount,
     languageLabel,
     currentAccount,
-  } = useExampleAccountSettings();
+  } = useAccountSettings();
+  const { mutateAsync: createAccount } = useAccountAdd();
   const { locale, setLocale } = useI18n();
   const openAccountSelectorModal = useAccountSelectorModal();
   const openAccountFormModal = useAccountFormModal();
   const openLanguagePickerModal = useLanguagePickerModal();
+  const { data: thread } = useThreadOne(currentAccount?.id);
+  const plainClient = usePlainClient(thread?.url);
+  
+  const onLanguagePress = useCallback(async () => {
+    const result = await openLanguagePickerModal({
+      data: { currentLocale: locale },
+    });
 
-  const onLanguagePress = useCallback(() => {
-    void (async () => {
-      const result = await openLanguagePickerModal({
-        data: { currentLocale: locale },
-      });
-      if (result !== undefined && result !== null) {
-        setLocale(result.locale);
-      }
-    })();
+    if (result) {
+      setLocale(result.locale);
+    }
   }, [locale, openLanguagePickerModal, setLocale]);
 
-  const openPicker = useCallback(() => {
-    void (async () => {
-      const selectorResult = await openAccountSelectorModal({
-        data: { accounts, activeAccountId },
-      });
-      if (selectorResult === undefined || selectorResult === null) {
-        return;
-      }
-      if (selectorResult.action === 'select') {
-        setActiveAccountId(selectorResult.accountId);
-        return;
-      }
-      const created = await openAccountFormModal({
-        data: { initialAccount: createPrefilledNewAccountFormData(locale) },
-      });
-      if (created !== undefined && created !== null) {
-        addAccount(created);
-      }
-    })();
+  const openPicker = useCallback(async () => {
+    const selectorResult = await openAccountSelectorModal({
+      data: { accounts, activeAccountId },
+    });
+    if (!selectorResult) {
+      return;
+    }
+    if (selectorResult.action === 'select') {
+      setActiveAccountId(selectorResult.accountId);
+      return;
+    }
+    const created = await openAccountFormModal({
+      data: {
+        initialAccount: createPrefilledNewAccountFormData(locale),
+        showSuccessToast: false,
+      },
+    });
+    if (created) {
+      const row = await createAccount({ name: created.name.trim() });
+      setActiveAccountId(row.id);
+    }
   }, [
     accounts,
     activeAccountId,
+    createAccount,
     locale,
-    addAccount,
     openAccountFormModal,
     openAccountSelectorModal,
     setActiveAccountId,
   ]);
 
-  const onAccountSettingPress = useCallback(() => {
-    void (async () => {
-      const saved = await openAccountFormModal({
-        data: { initialAccount: currentAccount },
-      });
-      if (saved !== undefined && saved !== null) {
-        updateAccount(saved);
-      }
-    })();
+  const onAccountSettingPress = useCallback(async () => {
+    const saved = await openAccountFormModal({
+      data: { initialAccount: currentAccount },
+    });
+    if (saved) {
+      updateAccount(saved);
+    }
   }, [currentAccount, openAccountFormModal, updateAccount]);
 
   return (

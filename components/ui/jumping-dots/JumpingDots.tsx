@@ -18,8 +18,13 @@ const timingConfig = {
   easing: Easing.inOut(Easing.cubic),
 };
 
+export type JumpingDotsProps = {
+  /** Dot fill (defaults to theme primary). */
+  dotColor?: string;
+};
+
 /** Three bouncing dots (native: Reanimated). Stagger = exactly ⅓ of one full bounce cycle. */
-export function JumpingDots() {
+export function JumpingDots({ dotColor }: JumpingDotsProps = {}) {
   const d1 = useSharedValue(0);
   const d2 = useSharedValue(0);
   const d3 = useSharedValue(0);
@@ -52,13 +57,13 @@ export function JumpingDots() {
   return (
     <View style={styles.dotsRow} accessibilityLabel="Loading">
       <Animated.View style={s1}>
-        <View style={styles.dotCircle} />
+        <View style={[styles.dotCircle, dotColor != null && { backgroundColor: dotColor }]} />
       </Animated.View>
       <Animated.View style={s2}>
-        <View style={styles.dotCircle} />
+        <View style={[styles.dotCircle, dotColor != null && { backgroundColor: dotColor }]} />
       </Animated.View>
       <Animated.View style={s3}>
-        <View style={styles.dotCircle} />
+        <View style={[styles.dotCircle, dotColor != null && { backgroundColor: dotColor }]} />
       </Animated.View>
     </View>
   );

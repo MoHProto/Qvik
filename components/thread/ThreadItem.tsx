@@ -5,11 +5,11 @@ import { Pressable, Text, View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 import { formatInitials } from 'utils/string';
 
-/** UI thread row; aligns with `Thread` plus optional list fields. */
 export type ThreadItemData = {
   id: string;
   title: string;
   accountId: string;
+  url: string;
   iconUrl?: string | null;
   description?: string;
   createdAt?: number;
@@ -23,7 +23,6 @@ export type ThreadItemVariant = 'row' | 'column';
 export type ThreadItemProps = {
   data: ThreadItemData;
   onPress?: () => void;
-  /** List row (default) or stacked layout for detail / profile-style views. */
   variant?: ThreadItemVariant;
 };
 

@@ -20,4 +20,13 @@ export class AccountService {
       return null;
     }
   }
+
+  async create(params: { name: string }): Promise<Account> {
+    const name = params.name.trim();
+    return this.db.write(async () => {
+      return this.db.get<Account>('accounts').create((account) => {
+        account.name = name;
+      });
+    });
+  }
 }

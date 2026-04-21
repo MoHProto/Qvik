@@ -20,7 +20,7 @@ export type MessageBubbleProps = {
   variant: MessageBubbleVariant;
   /** Incoming: treat body as failed / show error styling when true. */
   error?: boolean;
-  /** Incoming: loading dots instead of body. */
+  /** Loading dots instead of body text (incoming or outgoing). */
   pending?: boolean;
   actions?: string[];
   onAction?: (actionLabel: string, data: MessageBubbleData) => void;
@@ -72,7 +72,11 @@ export function MessageBubble({
               { backgroundColor: bubble.outgoingBubble },
             ]}
           >
-            <Text style={styles.outgoingBubbleText}>{data.text}</Text>
+            {pending ? (
+              <JumpingDots dotColor="rgba(255,255,255,0.9)" />
+            ) : (
+              <Text style={styles.outgoingBubbleText}>{data.text}</Text>
+            )}
             {data.time != null && data.time.length > 0 ? (
               <Text
                 style={[styles.bubbleTime, styles.bubbleTimeOutgoing, { color: OUTGOING_TIME }]}
@@ -143,7 +147,6 @@ const styles = StyleSheet.create((theme) => ({
   bubbleOuterIncoming: {
     position: 'relative',
     alignSelf: 'stretch',
-    marginBottom: 8,
   },
   bubbleShadow: {
     ...Platform.select({
@@ -207,6 +210,7 @@ const styles = StyleSheet.create((theme) => ({
     flexWrap: 'wrap',
     gap: theme.spacing[2],
     alignSelf: 'flex-start',
+    marginTop: theme.spacing[2],
   },
   actionButton: {
     paddingVertical: theme.spacing[2],

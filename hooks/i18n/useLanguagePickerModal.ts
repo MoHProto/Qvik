@@ -2,7 +2,7 @@ import {
   LanguagePickerModal,
   type LanguagePickerModalData,
   type LanguagePickerModalResult,
-} from 'components/i18n/LanguagePickerModal';
+} from 'components/language/LanguagePickerModal';
 import { useCallback } from 'react';
 import { usePopupManager } from 'react-popup-manager';
 

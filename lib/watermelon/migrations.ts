@@ -87,5 +87,45 @@ export const migrations = schemaMigrations({
         ),
       ],
     },
+    {
+      toVersion: 10,
+      steps: [
+        unsafeExecuteSql(
+          'create index if not exists "threads_url" on "threads" ("url");',
+        ),
+      ],
+    },
+    {
+      toVersion: 11,
+      steps: [
+        unsafeExecuteSql(
+          'ALTER TABLE messages ADD COLUMN "status" TEXT;',
+        ),
+        unsafeExecuteSql(
+          'UPDATE messages SET "status" = CASE WHEN COALESCE("is_outgoing", 0) = 1 THEN \'input\' WHEN NULLIF(TRIM(COALESCE("error", \'\')), \'\') IS NOT NULL THEN \'error\' ELSE \'success\' END, "body" = CASE WHEN COALESCE("is_outgoing", 0) = 1 THEN COALESCE(NULLIF(TRIM(COALESCE("input", \'\')), \'\'), "body", \'\') WHEN NULLIF(TRIM(COALESCE("error", \'\')), \'\') IS NOT NULL THEN COALESCE("error", "body", \'\') ELSE "body" END;',
+        ),
+        unsafeExecuteSql('ALTER TABLE messages DROP COLUMN "input";'),
+        unsafeExecuteSql('ALTER TABLE messages DROP COLUMN "error";'),
+        unsafeExecuteSql('ALTER TABLE messages DROP COLUMN "is_outgoing";'),
+        unsafeExecuteSql(
+          'create index if not exists "messages_status" on "messages" ("status");',
+        ),
+      ],
+    },
+    {
+      toVersion: 12,
+      steps: [
+        addColumns({
+          table: 'messages',
+          columns: [{ name: 'is_outgoing', type: 'boolean', isOptional: true }],
+        }),
+        unsafeExecuteSql(
+          'UPDATE messages SET is_outgoing = CASE WHEN status IN (\'input\', \'pending\') THEN 1 ELSE 0 END WHERE is_outgoing IS NULL;',
+        ),
+        unsafeExecuteSql(
+          'create index if not exists "messages_is_outgoing" on "messages" ("is_outgoing");',
+        ),
+      ],
+    },
   ],
 });

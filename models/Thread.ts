@@ -6,5 +6,5 @@ export class Thread extends Model {
 
   @field('account_id') accountId!: string;
   @field('title') title!: string;
-  @field('url') url!: string | null;
+  @field('url') url!: string;
 }

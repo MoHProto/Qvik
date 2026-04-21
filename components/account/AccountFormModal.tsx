@@ -12,11 +12,12 @@ import { AccountForm } from './AccountForm';
 import type { Account } from './AccountItem';
 
 const maxSheetHeight = Math.round(Dimensions.get('window').height * 0.88);
-/** Sheet chrome (title row) + padding — keeps form scroll region bounded. */
+
 const SHEET_CHROME_VERTICAL = 120;
 
 export type AccountFormModalData = {
   initialAccount?: Partial<Account>;
+  showSuccessToast?: boolean;
 };
 
 export type AccountFormModalOwnProps = {
@@ -35,7 +36,6 @@ function mergeInitial(initial?: Partial<Account>): Account {
   return {
     ...emptyAccount,
     ...initial,
-    // `...initial` can set `id: undefined`, which overwrites `''` and breaks Yup `.defined()`.
     id: initial?.id != null && String(initial.id).trim() !== '' ? String(initial.id).trim() : '',
     avatarUrl: initial?.avatarUrl ?? null,
     avatarIcon: initial?.avatarIcon ?? DEFAULT_ACCOUNT_AVATAR_EMOJI,
@@ -45,12 +45,13 @@ function mergeInitial(initial?: Partial<Account>): Account {
 type AccountFormModalBodyProps = {
   finish: (result: Account | null | undefined) => void;
   formData: Account;
+  showSuccessToast: boolean;
 };
 
-/** Isolated from `OverlaySheetModal` render prop so Formik’s `onSubmit` ref stays stable. */
 const AccountFormModalBody = React.memo(function AccountFormModalBody({
   finish,
   formData,
+  showSuccessToast,
 }: AccountFormModalBodyProps) {
   const { theme } = useUnistyles();
   const notify = useNotifyToast();
@@ -64,10 +65,12 @@ const AccountFormModalBody = React.memo(function AccountFormModalBody({
           : `acc-${Date.now()}`;
       const account = { ...values, id };
       const label = values.name.trim();
-      notify.success(t('account.toast.savedTitle'), label.length > 0 ? label : undefined);
+      if (showSuccessToast) {
+        notify.success(t('account.toast.savedTitle'), label.length > 0 ? label : undefined);
+      }
       finish(account);
     },
-    [finish, notify, t],
+    [finish, notify, showSuccessToast, t],
   );
 
   const formMaxHeight = Math.max(200, maxSheetHeight - SHEET_CHROME_VERTICAL);
@@ -98,6 +101,7 @@ const AccountFormModalBody = React.memo(function AccountFormModalBody({
 
 export function AccountFormModal({ isOpen: _isOpen, onClose, data }: AccountFormModalProps) {
   const formData = useMemo(() => mergeInitial(data?.initialAccount), [data?.initialAccount]);
+  const showSuccessToast = data?.showSuccessToast !== false;
 
   return (
     <OverlaySheetModal<Account | null | undefined>
@@ -106,7 +110,9 @@ export function AccountFormModal({ isOpen: _isOpen, onClose, data }: AccountForm
       onClose={onClose}
       sheetSize="intrinsic"
     >
-      {({ finish }) => <AccountFormModalBody finish={finish} formData={formData} />}
+      {({ finish }) => (
+        <AccountFormModalBody finish={finish} formData={formData} showSuccessToast={showSuccessToast} />
+      )}
     </OverlaySheetModal>
   );
 }

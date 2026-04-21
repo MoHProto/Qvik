@@ -5,20 +5,20 @@ import { StyleSheet } from 'react-native-unistyles';
 
 import { formatBubbleTime, type MessageItemProps } from './messageItemShared';
 
-export type { MessageItemData, MessageItemProps, MessageStatus } from './messageItemShared';
+export type { MessageItemData, MessageItemProps } from './messageItemShared';
 
 export function MessageItem({ data, onRetry }: MessageItemProps) {
-  const isOutgoing = data.isOutgoing ?? false;
-
-  if (isOutgoing) {
-    const text = data.input?.trim() ?? '';
+  if (data.isOutgoing) {
+    const isPending = data.status === 'pending';
+    const text = isPending ? '' : data.body.trim();
     return (
       <View style={styles.row}>
         <MessageBubble
           variant="outgoing"
+          pending={isPending}
           data={{
             text,
-            time: formatBubbleTime(data.timestamp),
+            time: isPending ? undefined : formatBubbleTime(data.timestamp),
           }}
         />
       </View>
@@ -27,11 +27,7 @@ export function MessageItem({ data, onRetry }: MessageItemProps) {
 
   const isError = data.status === 'error';
   const isPending = data.status === 'pending';
-  const incomingText = isError
-    ? data.error != null && data.error.length > 0
-      ? data.error
-      : 'Something went wrong.'
-    : data.body;
+  const incomingText = isError && data.body.trim().length === 0 ? 'Something went wrong.' : data.body;
 
   return (
     <View style={styles.row}>
