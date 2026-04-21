@@ -73,5 +73,19 @@ export const migrations = schemaMigrations({
         unsafeExecuteSql('ALTER TABLE messages DROP COLUMN label;'),
       ],
     },
+    {
+      toVersion: 8,
+      steps: [
+        unsafeExecuteSql('ALTER TABLE messages RENAME COLUMN created_at TO timestamp;'),
+      ],
+    },
+    {
+      toVersion: 9,
+      steps: [
+        unsafeExecuteSql(
+          'create index if not exists "messages_timestamp" on "messages" ("timestamp");',
+        ),
+      ],
+    },
   ],
 });

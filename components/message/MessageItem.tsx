@@ -18,7 +18,7 @@ export function MessageItem({ data, onRetry }: MessageItemProps) {
           variant="outgoing"
           data={{
             text,
-            time: formatBubbleTime(data.createdAt),
+            time: formatBubbleTime(data.timestamp),
           }}
         />
       </View>
@@ -39,7 +39,7 @@ export function MessageItem({ data, onRetry }: MessageItemProps) {
         variant="incoming"
         data={{
           text: incomingText,
-          time: isPending ? undefined : formatBubbleTime(data.createdAt),
+          time: isPending ? undefined : formatBubbleTime(data.timestamp),
         }}
         error={isError}
         pending={isPending}

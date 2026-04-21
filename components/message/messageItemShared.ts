@@ -9,7 +9,7 @@ export type MessageItemData = {
   id: string;
   threadId: string;
   body: string;
-  createdAt: number;
+  timestamp: number;
   /** Outgoing (user) bubble when true. */
   isOutgoing?: boolean;
   input?: string;
@@ -24,8 +24,8 @@ export type MessageItemProps = {
   onRetry?: (item: MessageItemData) => void;
 };
 
-export function formatBubbleTime(createdAtMs: number): string {
-  return new Date(createdAtMs).toLocaleTimeString(undefined, {
+export function formatBubbleTime(timestampMs: number): string {
+  return new Date(timestampMs).toLocaleTimeString(undefined, {
     hour: 'numeric',
     minute: '2-digit',
   });

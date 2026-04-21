@@ -9,7 +9,7 @@ export class MessageService {
   async listByThread(threadId: string): Promise<Message[]> {
     return this.db
       .get<Message>('messages')
-      .query(Q.where('thread_id', threadId), Q.sortBy('created_at', Q.desc))
+      .query(Q.where('thread_id', threadId), Q.sortBy('timestamp', Q.desc))
       .fetch();
   }
 }

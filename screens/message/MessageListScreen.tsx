@@ -19,7 +19,7 @@ function buildExampleMessages(threadId: string, t: (key: string) => string): Mes
     {
       id: 'm-1-out',
       threadId,
-      createdAt: now - 1000 * 60 * 12,
+      timestamp: now - 1000 * 60 * 12,
       isOutgoing: true,
       input: t('demo.message.1.label'),
       body: '',
@@ -28,14 +28,14 @@ function buildExampleMessages(threadId: string, t: (key: string) => string): Mes
     {
       id: 'm-1-in',
       threadId,
-      createdAt: now - 1000 * 60 * 12 + 800,
+      timestamp: now - 1000 * 60 * 12 + 800,
       body: t('demo.message.1.body'),
       status: 'success',
     },
     {
       id: 'm-2-out',
       threadId,
-      createdAt: now - 1000 * 60 * 8,
+      timestamp: now - 1000 * 60 * 8,
       isOutgoing: true,
       input: t('demo.message.2.input'),
       body: '',
@@ -44,14 +44,14 @@ function buildExampleMessages(threadId: string, t: (key: string) => string): Mes
     {
       id: 'm-2-in',
       threadId,
-      createdAt: now - 1000 * 60 * 8 + 600,
+      timestamp: now - 1000 * 60 * 8 + 600,
       body: '',
       status: 'pending',
     },
     {
       id: 'm-3-out',
       threadId,
-      createdAt: now - 1000 * 60 * 5,
+      timestamp: now - 1000 * 60 * 5,
       isOutgoing: true,
       input: t('demo.message.3.label'),
       body: '',
@@ -60,14 +60,14 @@ function buildExampleMessages(threadId: string, t: (key: string) => string): Mes
     {
       id: 'm-3-in',
       threadId,
-      createdAt: now - 1000 * 60 * 5 + 900,
+      timestamp: now - 1000 * 60 * 5 + 900,
       body: t('demo.message.3.body'),
       status: 'success',
     },
     {
       id: 'm-4-out',
       threadId,
-      createdAt: now - 1000 * 60 * 2,
+      timestamp: now - 1000 * 60 * 2,
       isOutgoing: true,
       input: t('demo.message.4.input'),
       body: '',
@@ -76,7 +76,7 @@ function buildExampleMessages(threadId: string, t: (key: string) => string): Mes
     {
       id: 'm-4-in',
       threadId,
-      createdAt: now - 1000 * 60 * 2 + 700,
+      timestamp: now - 1000 * 60 * 2 + 700,
       body: '',
       error: t('demo.message.4.error'),
       status: 'error',
