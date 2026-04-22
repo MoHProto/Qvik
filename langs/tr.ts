@@ -28,6 +28,8 @@ export const tr: Record<string, string> = {
   'threads.toast.saved.message': 'Değişikliğiniz kaydedildi.',
   'threadList.empty': 'Henüz akış yok.',
   'messageList.empty': 'Bu akışta mesaj yok.',
+  'messageList.startPress': 'Başlat',
+  'messageForm.startPress': 'Başlat',
   'search.title': 'Ara',
   'search.subtitle': 'Diyalogları, kullanıcıları veya başka bir şeyi arayın.',
   'settings.language': 'Dil',

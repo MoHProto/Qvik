@@ -1,4 +1,5 @@
 import { MessageBubble } from 'components/message/MessageBubble';
+import { useMinimumPendingDisplay } from 'hooks/message/useMinimumPendingDisplay';
 import React from 'react';
 import { View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
@@ -8,25 +9,26 @@ import { formatBubbleTime, type MessageItemProps } from './messageItemShared';
 export type { MessageItemData, MessageItemProps } from './messageItemShared';
 
 export function MessageItem({ data, onRetry }: MessageItemProps) {
+  const isPending = data.status === 'pending';
+  const isError = data.status === 'error';
+  const showPending = useMinimumPendingDisplay(data.id, isPending, isError);
+
   if (data.isOutgoing) {
-    const isPending = data.status === 'pending';
-    const text = isPending ? '' : data.body.trim();
+    const text = showPending ? '' : data.body.trim();
     return (
       <View style={styles.row}>
         <MessageBubble
           variant="outgoing"
-          pending={isPending}
+          pending={showPending}
           data={{
             text,
-            time: isPending ? undefined : formatBubbleTime(data.timestamp),
+            time: showPending ? undefined : formatBubbleTime(data.timestamp),
           }}
         />
       </View>
     );
   }
 
-  const isError = data.status === 'error';
-  const isPending = data.status === 'pending';
   const incomingText = isError && data.body.trim().length === 0 ? 'Something went wrong.' : data.body;
 
   return (
@@ -35,10 +37,10 @@ export function MessageItem({ data, onRetry }: MessageItemProps) {
         variant="incoming"
         data={{
           text: incomingText,
-          time: isPending ? undefined : formatBubbleTime(data.timestamp),
+          time: showPending ? undefined : formatBubbleTime(data.timestamp),
         }}
         error={isError}
-        pending={isPending}
+        pending={showPending}
         actions={isError ? ['Retry'] : []}
         onAction={(label) => {
           if (label === 'Retry') {

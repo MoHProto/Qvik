@@ -28,6 +28,8 @@ export const fr: Record<string, string> = {
   'threads.toast.saved.message': 'Votre modification a été enregistrée.',
   'threadList.empty': 'Pas encore de fils.',
   'messageList.empty': 'Aucun message dans ce fil.',
+  'messageList.startPress': 'Démarrer',
+  'messageForm.startPress': 'Démarrer',
   'search.title': 'Recherche',
   'search.subtitle': 'Recherchez des dialogues, des utilisateurs ou autre chose.',
   'settings.language': 'Langue',

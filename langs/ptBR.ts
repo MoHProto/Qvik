@@ -28,6 +28,8 @@ export const ptBR: Record<string, string> = {
   'threads.toast.saved.message': 'Sua alteração foi registrada.',
   'threadList.empty': 'Ainda não há threads.',
   'messageList.empty': 'Nenhuma mensagem nesta thread.',
+  'messageList.startPress': 'Iniciar',
+  'messageForm.startPress': 'Iniciar',
   'search.title': 'Buscar',
   'search.subtitle': 'Busque diálogos, usuários ou qualquer outra coisa.',
   'settings.language': 'Idioma',

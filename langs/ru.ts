@@ -28,6 +28,8 @@ export const ru: Record<string, string> = {
   'threads.toast.saved.message': 'Изменение сохранено.',
   'threadList.empty': 'Тредов пока нет.',
   'messageList.empty': 'В этом треде нет сообщений.',
+  'messageList.startPress': 'Начать',
+  'messageForm.startPress': 'Начать',
   'search.title': 'Поиск',
   'search.subtitle': 'Ищите диалоги, пользователей или что угодно.',
   'settings.language': 'Язык',

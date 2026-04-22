@@ -7,5 +7,6 @@ export function useMessageList(threadId: string | undefined | null) {
     queryKey: queryKeys.messages.byThread(threadId!),
     queryFn: () => messageService.listByThread(threadId!),
     enabled: !!threadId,
+    structuralSharing: false,
   });
 }

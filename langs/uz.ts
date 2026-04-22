@@ -28,6 +28,8 @@ export const uz: Record<string, string> = {
   'threads.toast.saved.message': "O'zgarish saqlandi.",
   'threadList.empty': 'Hali mavzular yo‘q.',
   'messageList.empty': 'Bu mavzuda xabarlar yo‘q.',
+  'messageList.startPress': 'Boshlash',
+  'messageForm.startPress': 'Boshlash',
   'search.title': 'Qidirish',
   'search.subtitle': 'Dialoglar, foydalanuvchilar yoki boshqa narsani qidiring.',
   'settings.language': 'Til',

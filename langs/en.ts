@@ -40,6 +40,8 @@ export const en: Record<string, string> = {
   'threads.add.error.title': 'Could not add thread',
   'threads.add.error.message': 'Something went wrong. Please try again.',
   'messageList.empty': 'No messages in this thread.',
+  'messageList.startPress': 'Start',
+  'messageForm.startPress': 'Start',
   'search.title': 'Search',
   'search.subtitle': 'Search dialogs, users, or anything else.',
   'settings.language': 'Language',

@@ -28,6 +28,8 @@ export const fa: Record<string, string> = {
   'threads.toast.saved.message': 'تغییر شما ثبت شد.',
   'threadList.empty': 'هنوز رشته‌ای نیست.',
   'messageList.empty': 'در این رشته پیامی وجود ندارد.',
+  'messageList.startPress': 'شروع',
+  'messageForm.startPress': 'شروع',
   'search.title': 'جستجو',
   'search.subtitle': 'گفت‌وگوها، کاربران یا هر چیز دیگری را جستجو کنید.',
   'settings.language': 'زبان',

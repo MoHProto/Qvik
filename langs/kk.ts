@@ -28,6 +28,8 @@ export const kk: Record<string, string> = {
   'threads.toast.saved.message': 'Өзгеріс жазылды.',
   'threadList.empty': 'Әзірге тред жоқ.',
   'messageList.empty': 'Бұл тредте хабарламалар жоқ.',
+  'messageList.startPress': 'Бастау',
+  'messageForm.startPress': 'Бастау',
   'search.title': 'Іздеу',
   'search.subtitle': 'Диалогтарды, пайдаланушыларды немесе басқа нәрсені іздеңіз.',
   'settings.language': 'Тіл',

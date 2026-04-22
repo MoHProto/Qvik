@@ -28,6 +28,8 @@ export const it: Record<string, string> = {
   'threads.toast.saved.message': 'La modifica è stata registrata.',
   'threadList.empty': 'Ancora nessun thread.',
   'messageList.empty': 'Nessun messaggio in questo thread.',
+  'messageList.startPress': 'Avvia',
+  'messageForm.startPress': 'Avvia',
   'search.title': 'Cerca',
   'search.subtitle': 'Cerca dialoghi, utenti o qualsiasi altra cosa.',
   'settings.language': 'Lingua',

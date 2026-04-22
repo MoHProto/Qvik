@@ -28,6 +28,8 @@ export const uk: Record<string, string> = {
   'threads.toast.saved.message': 'Вашу зміну записано.',
   'threadList.empty': 'Поки що немає тредів.',
   'messageList.empty': 'У цьому треді немає повідомлень.',
+  'messageList.startPress': 'Почати',
+  'messageForm.startPress': 'Почати',
   'search.title': 'Пошук',
   'search.subtitle': 'Шукайте діалоги, користувачів або будь-що інше.',
   'settings.language': 'Мова',

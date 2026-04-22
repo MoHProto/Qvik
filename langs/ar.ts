@@ -28,6 +28,8 @@ export const ar: Record<string, string> = {
   'threads.toast.saved.message': 'تم تسجيل التغيير.',
   'threadList.empty': 'لا توجد سلاسل بعد.',
   'messageList.empty': 'لا توجد رسائل في هذه السلسلة.',
+  'messageList.startPress': 'ابدأ',
+  'messageForm.startPress': 'ابدأ',
   'search.title': 'بحث',
   'search.subtitle': 'ابحث في الحوارات أو المستخدمين أو أي شيء آخر.',
   'settings.language': 'اللغة',

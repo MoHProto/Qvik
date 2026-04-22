@@ -28,6 +28,8 @@ export const nl: Record<string, string> = {
   'threads.toast.saved.message': 'Je wijziging is opgeslagen.',
   'threadList.empty': 'Nog geen threads.',
   'messageList.empty': 'Geen berichten in deze thread.',
+  'messageList.startPress': 'Start',
+  'messageForm.startPress': 'Start',
   'search.title': 'Zoeken',
   'search.subtitle': 'Zoek dialogs, gebruikers of iets anders.',
   'settings.language': 'Taal',
