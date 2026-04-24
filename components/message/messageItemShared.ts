@@ -1,5 +1,10 @@
 import type { MessageStatus } from 'types/message';
 
+export type MessageButtonData = {
+  label: string;
+  url: string;
+};
+
 /**
  * One list row = one persisted `Message`.
  *
@@ -16,11 +21,13 @@ export type MessageItemData = {
   timestamp: number;
   status: MessageStatus;
   isOutgoing: boolean;
+  buttons?: MessageButtonData[];
 };
 
 export type MessageItemProps = {
   data: MessageItemData;
   onRetry?: (item: MessageItemData) => void;
+  onVisit?: (button: MessageButtonData, item: MessageItemData) => void;
 };
 
 export function formatBubbleTime(timestampMs: number): string {

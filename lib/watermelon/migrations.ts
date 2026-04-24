@@ -142,5 +142,36 @@ export const migrations = schemaMigrations({
         ),
       ],
     },
+    {
+      toVersion: 14,
+      steps: [
+        addColumns({
+          table: 'threads',
+          columns: [{ name: 'menu', type: 'string', isOptional: true }],
+        }),
+        unsafeExecuteSql(
+          "UPDATE threads SET menu = '{}' WHERE menu IS NULL;",
+        ),
+        addColumns({
+          table: 'messages',
+          columns: [{ name: 'buttons', type: 'string', isOptional: true }],
+        }),
+        unsafeExecuteSql(
+          "UPDATE messages SET buttons = '{}' WHERE buttons IS NULL;",
+        ),
+      ],
+    },
+    {
+      toVersion: 15,
+      steps: [
+        addColumns({
+          table: 'threads',
+          columns: [{ name: 'description', type: 'string', isOptional: true }],
+        }),
+        unsafeExecuteSql(
+          "UPDATE threads SET description = '' WHERE description IS NULL;",
+        ),
+      ],
+    },
   ],
 });

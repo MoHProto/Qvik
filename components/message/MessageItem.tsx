@@ -1,20 +1,36 @@
-import { MessageBubble } from 'components/message/MessageBubble';
-import { useMinimumPendingDisplay } from 'hooks/message/useMinimumPendingDisplay';
-import React from 'react';
-import { View } from 'react-native';
-import { StyleSheet } from 'react-native-unistyles';
+import { MessageBubble } from "components/message/MessageBubble";
+import { useMinimumPendingDisplay } from "hooks/message/useMinimumPendingDisplay";
+import React, { useMemo } from "react";
+import { View } from "react-native";
+import { StyleSheet } from "react-native-unistyles";
 
-import { formatBubbleTime, type MessageItemProps } from './messageItemShared';
+import { formatBubbleTime, type MessageItemProps } from "./messageItemShared";
 
-export type { MessageItemData, MessageItemProps } from './messageItemShared';
+export type { MessageItemData, MessageItemProps } from "./messageItemShared";
 
-export function MessageItem({ data, onRetry }: MessageItemProps) {
-  const isPending = data.status === 'pending';
-  const isError = data.status === 'error';
+export function MessageItem({ data, onRetry, onVisit }: MessageItemProps) {
+  const isPending = data.status === "pending";
+  const isError = data.status === "error";
   const showPending = useMinimumPendingDisplay(data.id, isPending, isError);
 
+  const buttons = useMemo(
+    () => [
+      ...((data.buttons ?? []).map((b) => ({
+        type: "visit" as const,
+        ...b,
+      })) ?? []),
+      ...(isError ? [{ type: "action" as const, label: "Retry" }] : []),
+    ],
+    [data.buttons, isError],
+  );
+
+  const incomingText =
+    isError && data.body.trim().length === 0
+      ? "Something went wrong."
+      : data.body;
+
   if (data.isOutgoing) {
-    const text = showPending ? '' : data.body.trim();
+    const text = showPending ? "" : data.body.trim();
     return (
       <View style={styles.row}>
         <MessageBubble
@@ -29,8 +45,6 @@ export function MessageItem({ data, onRetry }: MessageItemProps) {
     );
   }
 
-  const incomingText = isError && data.body.trim().length === 0 ? 'Something went wrong.' : data.body;
-
   return (
     <View style={styles.row}>
       <MessageBubble
@@ -41,9 +55,13 @@ export function MessageItem({ data, onRetry }: MessageItemProps) {
         }}
         error={isError}
         pending={showPending}
-        actions={isError ? ['Retry'] : []}
-        onAction={(label) => {
-          if (label === 'Retry') {
+        buttons={buttons}
+        onButtonPress={(button) => {
+          if (button.type === "visit") {
+            onVisit?.({ url: button.url, label: button.label }, data);
+            return;
+          }
+          if (button.label === "Retry") {
             onRetry?.(data);
           }
         }}

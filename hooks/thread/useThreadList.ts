@@ -17,6 +17,7 @@ function toThreadItemData(thread: Thread) {
     title: thread.title,
     accountId: thread.accountId,
     url: baseUrlFromUrl(thread.url),
+    description: thread.description,
   };
   return item;
 }

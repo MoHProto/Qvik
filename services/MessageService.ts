@@ -16,6 +16,7 @@ export type MessageUpdateParams = {
   body?: string;
   status?: MessageStatus;
   isOutgoing?: boolean;
+  buttons?: unknown;
 };
 
 export class MessageService {
@@ -59,6 +60,9 @@ export class MessageService {
         }
         if (params.isOutgoing !== undefined) {
           message.isOutgoing = params.isOutgoing;
+        }
+        if (params.buttons !== undefined) {
+          message.buttons = params.buttons;
         }
       });
     });

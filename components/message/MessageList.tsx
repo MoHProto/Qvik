@@ -11,6 +11,7 @@ export type MessageListProps = {
   emptyMessage: React.ComponentProps<typeof EmptyMessage>;
   contentPaddingBottom?: number;
   onRetry?: (item: MessageItemData) => void;
+  onVisit?: (button: { label: string; url: string }, item: MessageItemData) => void;
 };
 
 export function MessageList({
@@ -18,6 +19,7 @@ export function MessageList({
   emptyMessage,
   contentPaddingBottom = 0,
   onRetry,
+  onVisit,
 }: MessageListProps) {
   const hasMessages = data.length > 0;
   const listData = useMemo(() => (hasMessages ? [...data].reverse() : data), [data, hasMessages]);
@@ -37,7 +39,7 @@ export function MessageList({
         inverted={hasMessages}
         data={listData}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <MessageItem data={item} onRetry={onRetry} />}
+        renderItem={({ item }) => <MessageItem data={item} onRetry={onRetry} onVisit={onVisit} />}
         ListEmptyComponent={
           <View style={styles.emptyWrap}>
             <EmptyMessage icon={emptyMessage.icon} message={emptyMessage.message} />

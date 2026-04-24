@@ -4,9 +4,12 @@ import { getExampleThreadById } from 'data/example/exampleThreads';
 import { useLocalSearchParams } from 'expo-router';
 import { useI18n } from 'hooks/i18n/I18nProvider';
 import { useNotifyToast } from 'hooks/notify/useNotifyToast';
+import { useThreadOne } from 'hooks/thread/useThreadOne';
+import { Thread } from 'models';
 import React, { useCallback, useMemo } from 'react';
 import { ScrollView, View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
+import { baseUrlFromUrl } from 'utils/url/normalizeUrl';
 
 const THREAD_ACTION_BUTTONS: ButtonsNavItemData[] = [
   { name: 'Mute', icon: 'volume-mute-outline' },
@@ -20,7 +23,22 @@ export default function ThreadViewScreen() {
   const { t } = useI18n();
   const notify = useNotifyToast();
 
-  const thread = useMemo(() => getExampleThreadById(id, t), [id, t]);
+  const { data: threadModel } = useThreadOne(id);
+
+  const thread = useMemo(() => {
+    if (!threadModel) {
+      return getExampleThreadById(id, t);
+    }
+
+    const item = {
+      id: threadModel.id,
+      accountId: threadModel.accountId,
+      title: threadModel.title,
+      description: threadModel.description,
+      url: baseUrlFromUrl(threadModel.url),
+    };
+    return item;
+  }, [id, t, threadModel]);
 
   const onThreadAction = useCallback(
     (button: ButtonsNavItemData) => {

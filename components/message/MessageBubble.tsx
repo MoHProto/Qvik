@@ -1,19 +1,30 @@
-import { MessageBody } from 'components/message/MessageBody';
-import { MessageBubbleTail } from 'components/message/MessageBubbleTail';
-import { JumpingDots } from 'components/ui/jumping-dots/JumpingDots';
-import React from 'react';
-import { Platform, PlatformColor, Pressable, Text, useColorScheme, View } from 'react-native';
-import { StyleSheet, useUnistyles } from 'react-native-unistyles';
+import { MessageBody } from "components/message/MessageBody";
+import { MessageBubbleTail } from "components/message/MessageBubbleTail";
+import { JumpingDots } from "components/ui/jumping-dots/JumpingDots";
+import React from "react";
+import {
+  Platform,
+  PlatformColor,
+  Pressable,
+  Text,
+  useColorScheme,
+  View,
+} from "react-native";
+import { StyleSheet, useUnistyles } from "react-native-unistyles";
 
-const OUTGOING_TIME = 'rgba(255, 255, 255, 0.65)';
+const OUTGOING_TIME = "rgba(255, 255, 255, 0.65)";
 
-export type MessageBubbleVariant = 'incoming' | 'outgoing';
+export type MessageBubbleVariant = "incoming" | "outgoing";
 
 export type MessageBubbleData = {
   text: string;
   /** Pre-formatted time under the bubble (omit when hidden, e.g. pending). */
   time?: string;
 };
+
+export type MessageBubbleButton =
+  | { type: "visit"; label: string; url: string }
+  | { type: "action"; label: string };
 
 export type MessageBubbleProps = {
   data: MessageBubbleData;
@@ -22,31 +33,31 @@ export type MessageBubbleProps = {
   error?: boolean;
   /** Loading dots instead of body text (incoming or outgoing). */
   pending?: boolean;
-  actions?: string[];
-  onAction?: (actionLabel: string, data: MessageBubbleData) => void;
+  buttons?: MessageBubbleButton[];
+  onButtonPress?: (button: MessageBubbleButton, data: MessageBubbleData) => void;
 };
 
 function useIosLikeBubblePalette() {
   const colorScheme = useColorScheme();
-  const isDark = colorScheme === 'dark';
+  const isDark = colorScheme === "dark";
 
-  if (Platform.OS === 'ios') {
+  if (Platform.OS === "ios") {
     return {
-      outgoingBubble: PlatformColor('systemBlue'),
-      incomingTime: PlatformColor('secondaryLabel'),
+      outgoingBubble: PlatformColor("systemBlue"),
+      incomingTime: PlatformColor("secondaryLabel"),
     };
   }
 
   if (isDark) {
     return {
-      outgoingBubble: '#0A84FF',
-      incomingTime: 'rgba(235, 235, 245, 0.6)',
+      outgoingBubble: "#0A84FF",
+      incomingTime: "rgba(235, 235, 245, 0.6)",
     };
   }
 
   return {
-    outgoingBubble: '#007AFF',
-    incomingTime: '#8E8E93',
+    outgoingBubble: "#007AFF",
+    incomingTime: "#8E8E93",
   };
 }
 
@@ -55,13 +66,13 @@ export function MessageBubble({
   variant,
   error = false,
   pending = false,
-  actions = [],
-  onAction,
+  buttons = [],
+  onButtonPress,
 }: MessageBubbleProps) {
   const { theme } = useUnistyles();
   const bubble = useIosLikeBubblePalette();
 
-  if (variant === 'outgoing') {
+  if (variant === "outgoing") {
     return (
       <View style={styles.outgoingWrap}>
         <View style={styles.bubbleOuterOutgoing}>
@@ -79,7 +90,11 @@ export function MessageBubble({
             )}
             {data.time != null && data.time.length > 0 ? (
               <Text
-                style={[styles.bubbleTime, styles.bubbleTimeOutgoing, { color: OUTGOING_TIME }]}
+                style={[
+                  styles.bubbleTime,
+                  styles.bubbleTimeOutgoing,
+                  { color: OUTGOING_TIME },
+                ]}
               >
                 {data.time}
               </Text>
@@ -91,13 +106,19 @@ export function MessageBubble({
     );
   }
 
-  const incomingTailColor = error ? theme.colors.incomingBubbleError : theme.colors.surface;
+  const incomingTailColor = error
+    ? theme.colors.incomingBubbleError
+    : theme.colors.surface;
 
   return (
     <View style={styles.incomingWrap}>
       <View style={styles.bubbleOuterIncoming}>
         <View
-          style={[styles.incomingBubble, styles.bubbleShadow, error && styles.incomingBubbleError]}
+          style={[
+            styles.incomingBubble,
+            styles.bubbleShadow,
+            error && styles.incomingBubbleError,
+          ]}
         >
           {pending ? (
             <JumpingDots />
@@ -108,7 +129,11 @@ export function MessageBubble({
           )}
           {!pending && data.time != null && data.time.length > 0 ? (
             <Text
-              style={[styles.bubbleTime, styles.bubbleTimeIncoming, { color: bubble.incomingTime }]}
+              style={[
+                styles.bubbleTime,
+                styles.bubbleTimeIncoming,
+                { color: bubble.incomingTime },
+              ]}
             >
               {data.time}
             </Text>
@@ -116,17 +141,22 @@ export function MessageBubble({
         </View>
         <MessageBubbleTail bubbleColor={incomingTailColor} side="left" />
       </View>
-      {actions.length > 0 ? (
-        <View style={styles.actionsRow}>
-          {actions?.map((label) => (
+      {buttons.length > 0 ? (
+        <View style={styles.buttonsRow}>
+          {buttons?.map((button) => (
             <Pressable
-              key={label}
+              key={`${button.type}:${button.label}${
+                button.type === "visit" ? `:${button.url}` : ""
+              }`}
               accessibilityRole="button"
-              accessibilityLabel={label}
-              onPress={() => onAction?.(label, data)}
-              style={({ pressed }) => [styles.actionButton, pressed && styles.actionButtonPressed]}
+              accessibilityLabel={button.label}
+              onPress={() => onButtonPress?.(button, data)}
+              style={({ pressed }) => [
+                styles.button,
+                pressed && styles.buttonPressed,
+              ]}
             >
-              <Text style={styles.actionLabel}>{label}</Text>
+              <Text style={styles.buttonLabel}>{button.label}</Text>
             </Pressable>
           ))}
         </View>
@@ -137,21 +167,21 @@ export function MessageBubble({
 
 const styles = StyleSheet.create((theme) => ({
   outgoingWrap: {
-    alignSelf: 'flex-end',
-    maxWidth: '88%',
+    alignSelf: "flex-end",
+    maxWidth: "88%",
   },
   bubbleOuterOutgoing: {
-    position: 'relative',
-    alignSelf: 'stretch',
+    position: "relative",
+    alignSelf: "stretch",
   },
   bubbleOuterIncoming: {
-    position: 'relative',
-    alignSelf: 'stretch',
+    position: "relative",
+    alignSelf: "stretch",
   },
   bubbleShadow: {
     ...Platform.select({
       ios: {
-        shadowColor: '#000',
+        shadowColor: "#000",
         shadowOffset: { width: 0, height: 0.5 },
         shadowOpacity: 0.03,
         shadowRadius: 1.5,
@@ -160,7 +190,7 @@ const styles = StyleSheet.create((theme) => ({
         elevation: 0,
       },
       default: {
-        boxShadow: '0 0.5px 1.5px rgba(0, 0, 0, 0.04)',
+        boxShadow: "0 0.5px 1.5px rgba(0, 0, 0, 0.04)",
       },
     }),
   },
@@ -172,11 +202,11 @@ const styles = StyleSheet.create((theme) => ({
   },
   outgoingBubbleText: {
     fontSize: 15,
-    color: '#ffffff',
+    color: "#ffffff",
   },
   incomingWrap: {
-    alignSelf: 'flex-start',
-    maxWidth: '92%',
+    alignSelf: "flex-start",
+    maxWidth: "92%",
   },
   incomingBubble: {
     backgroundColor: theme.colors.surface,
@@ -192,10 +222,10 @@ const styles = StyleSheet.create((theme) => ({
     color: theme.colors.muted,
   },
   bubbleTimeOutgoing: {
-    alignSelf: 'flex-end',
+    alignSelf: "flex-end",
   },
   bubbleTimeIncoming: {
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
   },
   incomingBubbleError: {
     backgroundColor: theme.colors.incomingBubbleError,
@@ -205,26 +235,26 @@ const styles = StyleSheet.create((theme) => ({
     lineHeight: 22,
     color: theme.colors.error,
   },
-  actionsRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+  buttonsRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
     gap: theme.spacing[2],
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
     marginTop: theme.spacing[2],
   },
-  actionButton: {
+  button: {
     paddingVertical: theme.spacing[2],
     paddingHorizontal: theme.spacing[3],
     backgroundColor: theme.colors.surface,
     borderRadius: theme.radius.pill,
   },
-  actionButtonPressed: {
+  buttonPressed: {
     opacity: 0.72,
   },
-  actionLabel: {
+  buttonLabel: {
     fontSize: 13,
     lineHeight: 16,
-    fontWeight: '600',
+    fontWeight: "600",
     color: theme.colors.primary,
   },
 }));
