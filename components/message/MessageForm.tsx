@@ -5,6 +5,9 @@ import { Platform, Pressable, StyleSheet as RNStyleSheet, Text, View } from 'rea
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 import { hexToRgba } from 'utils/color';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { usePopupManager } from 'react-popup-manager';
+import { MenuModal, type MenuItem } from 'components/ui/MenuModal';
 
 /** Vertical padding inside the floating footer (excluding safe area). */
 const FOOTER_VERTICAL_PADDING = 12;
@@ -16,11 +19,22 @@ const CONTROL_MIN_HEIGHT = 48;
  * Floating footer over message content: transparent chrome, no border.
  * Primary action is a full-width pill with primary background.
  */
-export function MessageForm({ onStartPress }: { onStartPress?: () => void }) {
+export function MessageForm({
+  onStartPress,
+  showMenuButton = false,
+  menu = [],
+  onMenuItemPress,
+}: {
+  onStartPress?: () => void;
+  showMenuButton?: boolean;
+  menu?: MenuItem[];
+  onMenuItemPress?: (item: MenuItem) => void;
+}) {
   const insets = useSafeAreaInsets();
   const { theme } = useUnistyles();
   const paddingBottom = insets.bottom + (Platform.OS === 'web' ? theme.spacing[4] : 0);
   const { t } = useI18n();
+  const popupManager = usePopupManager();
 
   return (
     <View pointerEvents="box-none" style={[styles.wrap, { paddingBottom }]}>
@@ -31,19 +45,46 @@ export function MessageForm({ onStartPress }: { onStartPress?: () => void }) {
         start={{ x: 0.5, y: 0 }}
         style={RNStyleSheet.absoluteFill}
       />
-      <Pressable
-        accessibilityRole="button"
-        accessibilityLabel={t('messageForm.startPress')}
-        android_ripple={
-          Platform.OS === 'android'
-            ? { color: 'rgba(255, 255, 255, 0.25)', borderless: false }
-            : undefined
-        }
-        onPress={onStartPress}
-        style={({ pressed }) => [styles.control, { backgroundColor: theme.colors.primary }, pressed && styles.controlPressed]}
-      >
-        <Text style={styles.controlLabel}>{t('messageForm.startPress')}</Text>
-      </Pressable>
+      {showMenuButton ? (
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={t('a11y.menu')}
+          onPress={() => {
+            const { response } = popupManager.open(MenuModal, {
+              data: menu,
+              onPress: onMenuItemPress,
+            });
+
+            response.then((result) => {
+              if (result && typeof result === 'object') {
+                onMenuItemPress?.(result);
+              }
+            });
+          }}
+          style={({ pressed }) => [styles.menuControl, pressed && styles.controlPressed]}
+        >
+          <Ionicons name="menu" size={18} color={theme.colors.text} />
+          <Text style={styles.menuLabel}>Menu</Text>
+        </Pressable>
+      ) : (
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={t('messageForm.startPress')}
+          android_ripple={
+            Platform.OS === 'android'
+              ? { color: 'rgba(255, 255, 255, 0.25)', borderless: false }
+              : undefined
+          }
+          onPress={onStartPress}
+          style={({ pressed }) => [
+            styles.control,
+            { backgroundColor: theme.colors.primary },
+            pressed && styles.controlPressed,
+          ]}
+        >
+          <Text style={styles.controlLabel}>{t('messageForm.startPress')}</Text>
+        </Pressable>
+      )}
     </View>
   );
 }
@@ -87,6 +128,18 @@ const styles = StyleSheet.create((theme) => ({
       default: {},
     }),
   },
+  menuControl: {
+    minHeight: CONTROL_MIN_HEIGHT,
+    borderRadius: theme.radius.pill,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: theme.spacing[4],
+    flexDirection: 'row',
+    gap: theme.spacing[2],
+    backgroundColor: theme.colors.surface,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: theme.colors.inputBorder,
+  },
   controlPressed: {
     opacity: 0.85,
   },
@@ -94,5 +147,10 @@ const styles = StyleSheet.create((theme) => ({
     fontSize: 17,
     fontWeight: '600',
     color: '#ffffff',
+  },
+  menuLabel: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: theme.colors.text,
   },
 }));

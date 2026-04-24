@@ -34,7 +34,10 @@ export type MessageBubbleProps = {
   /** Loading dots instead of body text (incoming or outgoing). */
   pending?: boolean;
   buttons?: MessageBubbleButton[];
-  onButtonPress?: (button: MessageBubbleButton, data: MessageBubbleData) => void;
+  onButtonPress?: (
+    button: MessageBubbleButton,
+    data: MessageBubbleData,
+  ) => void;
 };
 
 function useIosLikeBubblePalette() {
@@ -141,7 +144,7 @@ export function MessageBubble({
         </View>
         <MessageBubbleTail bubbleColor={incomingTailColor} side="left" />
       </View>
-      {buttons.length > 0 ? (
+      {!pending && buttons.length > 0 ? (
         <View style={styles.buttonsRow}>
           {buttons?.map((button) => (
             <Pressable

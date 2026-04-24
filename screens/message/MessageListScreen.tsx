@@ -10,6 +10,7 @@ import {
 } from "components/message/messageItemShared";
 import { MessageList } from "components/message/MessageList";
 import { ThreadTitleButton } from "components/thread/ThreadTitleButton";
+import type { MenuItem } from "components/ui/MenuModal";
 import type { Href } from "expo-router";
 import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import { useI18n } from "hooks/i18n/I18nProvider";
@@ -52,6 +53,22 @@ function buildMessageItemData(message: Message): MessageItemData {
   };
 }
 
+function buildMenuItems(rawMenu: unknown): MenuItem[] {
+  return Array.isArray(rawMenu)
+    ? rawMenu
+        .filter(
+          (m): m is MenuItem =>
+            typeof m === "object" &&
+            m != null &&
+            "label" in m &&
+            "url" in m &&
+            typeof (m as { label?: unknown }).label === "string" &&
+            typeof (m as { url?: unknown }).url === "string",
+        )
+        .map((m) => ({ label: m.label, url: m.url }))
+    : [];
+}
+
 export default function MessageListScreen() {
   const navigation = useNavigation();
   const router = useRouter();
@@ -62,6 +79,8 @@ export default function MessageListScreen() {
   const { data: thread } = useThreadOne(threadId);
   const { data: messages = [] } = useMessageList(threadId);
   const { mutateAsync: visitThread } = useThreadVisit(threadId);
+
+  const menuItems = useMemo(() => buildMenuItems(thread?.menu), [thread]);
 
   const listBottomInset = useMemo(
     () =>
@@ -75,6 +94,13 @@ export default function MessageListScreen() {
   const handleStartPress = useCallback(() => {
     visitThread({ path: "/", body: t("messageList.startPress") });
   }, [visitThread, t]);
+
+  const handleMenuItemPress = useCallback(
+    (item: MenuItem) => {
+      visitThread({ path: item.url, body: item.label });
+    },
+    [visitThread],
+  );
 
   const handleVisitButton = useCallback(
     (button: { label: string; url: string }) => {
@@ -123,7 +149,12 @@ export default function MessageListScreen() {
           message: t("messageList.empty"),
         }}
       />
-      <MessageForm onStartPress={handleStartPress} />
+      <MessageForm
+        onStartPress={handleStartPress}
+        showMenuButton={messages.length > 0}
+        menu={menuItems}
+        onMenuItemPress={handleMenuItemPress}
+      />
     </View>
   );
 }
