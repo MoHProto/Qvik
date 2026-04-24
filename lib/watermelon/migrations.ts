@@ -127,5 +127,20 @@ export const migrations = schemaMigrations({
         ),
       ],
     },
+    {
+      toVersion: 13,
+      steps: [
+        addColumns({
+          table: 'accounts',
+          columns: [{ name: 'is_active', type: 'boolean', isOptional: true }],
+        }),
+        unsafeExecuteSql(
+          'UPDATE accounts SET is_active = 1 WHERE is_active IS NULL;',
+        ),
+        unsafeExecuteSql(
+          'create index if not exists "accounts_is_active" on "accounts" ("is_active");',
+        ),
+      ],
+    },
   ],
 });

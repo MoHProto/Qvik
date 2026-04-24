@@ -1,11 +1,14 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export const schema = appSchema({
-  version: 12,
+  version: 13,
   tables: [
     tableSchema({
       name: 'accounts',
-      columns: [{ name: 'name', type: 'string' }],
+      columns: [
+        { name: 'name', type: 'string' },
+        { name: 'is_active', type: 'boolean', isIndexed: true },
+      ],
     }),
     tableSchema({
       name: 'threads',

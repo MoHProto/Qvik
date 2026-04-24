@@ -1,31 +1,18 @@
 import { Href, useRouter } from 'expo-router';
-import { useAccountAdd } from 'hooks/account/useAccountAdd';
-import { useAccountFormModal } from 'hooks/account/useAccountFormModal';
-import { useI18n } from 'hooks/i18n/I18nProvider';
-import React, { useCallback } from 'react';
-import { OnboardingScreen } from 'screens/onboarding/OnboardingScreen';
-import { createPrefilledNewAccountFormData } from 'utils/account/createPrefilledNewAccountFormData';
+import { useAccountList } from 'hooks/account/useAccountList';
+import React, { useEffect } from 'react';
+import { View } from 'react-native';
 
 export default function RootIndex() {
   const router = useRouter();
-  const { locale } = useI18n();
-  const openAccountFormModal = useAccountFormModal();
-  const { mutateAsync: createAccount } = useAccountAdd();
+  const { data: accounts, isLoading } = useAccountList();
 
-  const onGetStarted = useCallback(() => {
-    void (async () => {
-      const result = await openAccountFormModal({
-        data: {
-          initialAccount: createPrefilledNewAccountFormData(locale),
-          showSuccessToast: false,
-        },
-      });
-      if (result !== undefined && result !== null) {
-        await createAccount({ name: result.name.trim() });
-        router.replace('/(tabs)/threads' as Href);
-      }
-    })();
-  }, [createAccount, locale, openAccountFormModal, router]);
+  useEffect(() => {
+    if (isLoading) return;
+    const hasActive = Boolean(accounts?.some((a) => a.isActive));
+    router.replace((hasActive ? '/(tabs)/threads' : '/(onboarding)') as Href);
+  }, [accounts, isLoading, router]);
 
-  return <OnboardingScreen onGetStarted={onGetStarted} />;
+  // Intentionally blank: this route only redirects (no back stack).
+  return <View />;
 }

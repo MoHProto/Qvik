@@ -29,6 +29,7 @@ function RootNavigation() {
         <PopupProvider>
           <Stack>
             <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen name="(onboarding)/index" options={{ headerShown: false }} />
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen
               name="threads/[threadId]/index"

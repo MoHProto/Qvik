@@ -1,8 +1,10 @@
 import { AccountSettings } from 'components/account/AccountSettings';
 import { useAccountAdd } from 'hooks/account/useAccountAdd';
 import { useAccountFormModal } from 'hooks/account/useAccountFormModal';
+import { useAccountSetActive } from 'hooks/account/useAccountSetActive';
 import { useAccountSelectorModal } from 'hooks/account/useAccountSelectorModal';
 import { useAccountSettings } from 'hooks/account/useAccountSettings';
+import { useAccountUpdate } from 'hooks/account/useAccountUpdate';
 import { useI18n } from 'hooks/i18n/I18nProvider';
 import { useLanguagePickerModal } from 'hooks/i18n/useLanguagePickerModal';
 import { usePlainClient } from 'hooks/plain/usePlainClient';
@@ -17,11 +19,13 @@ export function AccountSettingsScreen() {
     accounts,
     activeAccountId,
     setActiveAccountId,
-    updateAccount,
+    updateAccount: setLocalActiveAccount,
     languageLabel,
     currentAccount,
   } = useAccountSettings();
   const { mutateAsync: createAccount } = useAccountAdd();
+  const { mutateAsync: setActiveAccount } = useAccountSetActive();
+  const { mutateAsync: saveAccount } = useAccountUpdate();
   const { locale, setLocale } = useI18n();
   const openAccountSelectorModal = useAccountSelectorModal();
   const openAccountFormModal = useAccountFormModal();
@@ -48,6 +52,7 @@ export function AccountSettingsScreen() {
     }
     if (selectorResult.action === 'select') {
       setActiveAccountId(selectorResult.accountId);
+      await setActiveAccount({ accountId: selectorResult.accountId });
       return;
     }
     const created = await openAccountFormModal({
@@ -64,6 +69,7 @@ export function AccountSettingsScreen() {
     accounts,
     activeAccountId,
     createAccount,
+    setActiveAccount,
     locale,
     openAccountFormModal,
     openAccountSelectorModal,
@@ -75,9 +81,17 @@ export function AccountSettingsScreen() {
       data: { initialAccount: currentAccount },
     });
     if (saved) {
-      updateAccount(saved);
+      const row = await saveAccount({ id: saved.id, name: saved.name.trim() });
+      setActiveAccountId(row.id);
+      setLocalActiveAccount({ ...saved, id: row.id });
     }
-  }, [currentAccount, openAccountFormModal, updateAccount]);
+  }, [
+    currentAccount,
+    openAccountFormModal,
+    saveAccount,
+    setActiveAccountId,
+    setLocalActiveAccount,
+  ]);
 
   return (
     <View style={styles.fill}>

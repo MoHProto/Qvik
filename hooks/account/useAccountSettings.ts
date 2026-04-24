@@ -14,11 +14,15 @@ export function useAccountSettings() {
 
   useEffect(() => {
     if (accounts.length === 0) return;
+    const persistedActiveId = models.find((m) => m.isActive)?.id ?? null;
     setActiveAccountId((prev) => {
       if (prev != null && accounts.some((a) => a.id === prev)) return prev;
+      if (persistedActiveId && accounts.some((a) => a.id === persistedActiveId)) {
+        return persistedActiveId;
+      }
       return accounts[0]!.id;
     });
-  }, [accounts]);
+  }, [accounts, models]);
 
   const placeholderAccount: AccountItemData = useMemo(
     () => ({
@@ -31,9 +35,10 @@ export function useAccountSettings() {
 
   const currentAccount = useMemo(() => {
     if (accounts.length === 0) return placeholderAccount;
-    const id = activeAccountId ?? accounts[0]!.id;
+    const persistedActiveId = models.find((m) => m.isActive)?.id ?? null;
+    const id = activeAccountId ?? persistedActiveId ?? accounts[0]!.id;
     return accounts.find((a) => a.id === id) ?? accounts[0]!;
-  }, [accounts, activeAccountId, placeholderAccount]);
+  }, [accounts, activeAccountId, models, placeholderAccount]);
 
   const languageLabel = useMemo(() => t(`language.name.${locale}`), [locale, t]);
 

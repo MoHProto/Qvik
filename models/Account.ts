@@ -5,4 +5,5 @@ export class Account extends Model {
   static table = 'accounts';
 
   @field('name') name!: string;
+  @field('is_active') isActive!: boolean;
 }
