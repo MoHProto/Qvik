@@ -173,5 +173,27 @@ export const migrations = schemaMigrations({
         ),
       ],
     },
+    {
+      toVersion: 16,
+      steps: [
+        addColumns({
+          table: 'accounts',
+          columns: [{ name: 'private_key', type: 'string', isOptional: true }],
+        }),
+        unsafeExecuteSql(
+          "UPDATE accounts SET private_key = '' WHERE private_key IS NULL;",
+        ),
+        addColumns({
+          table: 'threads',
+          columns: [{ name: 'is_authorized', type: 'boolean', isOptional: true }],
+        }),
+        unsafeExecuteSql(
+          'UPDATE threads SET is_authorized = 0 WHERE is_authorized IS NULL;',
+        ),
+        unsafeExecuteSql(
+          'create index if not exists "threads_is_authorized" on "threads" ("is_authorized");',
+        ),
+      ],
+    },
   ],
 });

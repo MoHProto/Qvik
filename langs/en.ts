@@ -63,6 +63,7 @@ export const en: Record<string, string> = {
   'language.name.fa': LANGUAGE_NAMES.fa,
   'a11y.close': 'Close',
   'a11y.dismiss': 'Dismiss',
+  'common.cancel': 'Cancel',
   'accountSelector.title': 'Accounts',
   'accountSelector.addNew': 'Add new account',
   'accountSelector.empty': 'No accounts yet.',
@@ -78,6 +79,11 @@ export const en: Record<string, string> = {
   'account.add.error.message': 'Something went wrong. Please try again.',
   'account.validation.nameRequired': 'Name is required',
   'account.validation.nameTooLong': 'Name is too long',
+
+  'thread.authorize.title': 'Authorize website?',
+  'thread.authorize.message':
+    'This website requires authorization. Do you want to authorize using your account to sign requests?',
+  'thread.authorize.confirm': 'Authorize',
   'demo.thread.1.title': 'Design sync',
   'demo.thread.1.desc': 'Discuss navigation patterns for v2.',
   'demo.thread.2.title': 'Mobile release',

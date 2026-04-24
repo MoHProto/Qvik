@@ -6,4 +6,5 @@ export class Account extends Model {
 
   @field('name') name!: string;
   @field('is_active') isActive!: boolean;
+  @field('private_key') privateKey!: string;
 }

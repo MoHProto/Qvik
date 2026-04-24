@@ -1,8 +1,8 @@
-import type { Database } from '@nozbe/watermelondb';
-import { Q } from '@nozbe/watermelondb';
+import type { Database } from "@nozbe/watermelondb";
+import { Q } from "@nozbe/watermelondb";
 
-import type { Message } from 'models';
-import type { MessageStatus } from 'types/message';
+import type { Message } from "models";
+import type { MessageStatus } from "types/message";
 
 export type MessageCreateParams = {
   threadId: string;
@@ -23,19 +23,19 @@ export class MessageService {
   constructor(private readonly db: Database) {}
 
   async getById(id: string): Promise<Message> {
-    return this.db.get<Message>('messages').find(id);
+    return this.db.get<Message>("messages").find(id);
   }
 
   async listByThread(threadId: string): Promise<Message[]> {
     return this.db
-      .get<Message>('messages')
-      .query(Q.where('thread_id', threadId), Q.sortBy('timestamp', Q.asc))
+      .get<Message>("messages")
+      .query(Q.where("thread_id", threadId), Q.sortBy("timestamp", Q.asc))
       .fetch();
   }
 
   async create(params: MessageCreateParams): Promise<Message> {
     return this.db.write(async () => {
-      return this.db.get<Message>('messages').create((message) => {
+      return this.db.get<Message>("messages").create((message) => {
         message.threadId = params.threadId;
         message.body = params.body;
         message.timestamp = new Date().getTime();
@@ -49,7 +49,7 @@ export class MessageService {
     return this.db.write(async () => {
       const message = await this.getById(params.id);
       if (!message) {
-        throw new Error('Message not found');
+        throw new Error("Message not found");
       }
       return message.update((message) => {
         if (params.body !== undefined) {
@@ -62,7 +62,7 @@ export class MessageService {
           message.isOutgoing = params.isOutgoing;
         }
         if (params.buttons !== undefined) {
-          message.buttons = params.buttons;
+          message.buttons = params.buttons as { label: string; url: string }[];
         }
       });
     });

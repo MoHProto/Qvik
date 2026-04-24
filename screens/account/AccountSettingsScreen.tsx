@@ -7,8 +7,6 @@ import { useAccountSettings } from 'hooks/account/useAccountSettings';
 import { useAccountUpdate } from 'hooks/account/useAccountUpdate';
 import { useI18n } from 'hooks/i18n/I18nProvider';
 import { useLanguagePickerModal } from 'hooks/i18n/useLanguagePickerModal';
-import { usePlainClient } from 'hooks/plain/usePlainClient';
-import { useThreadOne } from 'hooks/thread/useThreadOne';
 import React, { useCallback } from 'react';
 import { View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
@@ -30,8 +28,6 @@ export function AccountSettingsScreen() {
   const openAccountSelectorModal = useAccountSelectorModal();
   const openAccountFormModal = useAccountFormModal();
   const openLanguagePickerModal = useLanguagePickerModal();
-  const { data: thread } = useThreadOne(currentAccount?.id);
-  const plainClient = usePlainClient(thread?.url);
   
   const onLanguagePress = useCallback(async () => {
     const result = await openLanguagePickerModal({

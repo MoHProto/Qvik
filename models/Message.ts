@@ -13,7 +13,7 @@ export class Message extends Model {
   @field("is_outgoing") isOutgoing!: boolean;
   @field("buttons") private buttonsRaw!: string;
 
-  get buttons(): unknown {
+  get buttons(): { label: string; url: string }[] {
     try {
       return JSON.parse(this.buttonsRaw ?? "[]");
     } catch {
@@ -21,7 +21,7 @@ export class Message extends Model {
     }
   }
 
-  set buttons(value: unknown) {
+  set buttons(value: { label: string; url: string }[]) {
     this.buttonsRaw = JSON.stringify(value ?? []);
   }
 }

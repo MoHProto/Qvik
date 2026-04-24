@@ -9,8 +9,9 @@ export class Thread extends Model {
   @field("description") description!: string;
   @field("url") url!: string;
   @field("menu") private menuRaw!: string;
+  @field("is_authorized") isAuthorized!: boolean;
 
-  get menu(): unknown {
+  get menu(): { label: string; url: string }[] {
     try {
       return JSON.parse(this.menuRaw ?? "[]");
     } catch {
@@ -18,7 +19,7 @@ export class Thread extends Model {
     }
   }
 
-  set menu(value: unknown) {
+  set menu(value: { label: string; url: string }[]) {
     this.menuRaw = JSON.stringify(value ?? []);
   }
 }

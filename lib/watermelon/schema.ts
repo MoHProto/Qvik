@@ -1,13 +1,14 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export const schema = appSchema({
-  version: 15,
+  version: 16,
   tables: [
     tableSchema({
       name: 'accounts',
       columns: [
         { name: 'name', type: 'string' },
         { name: 'is_active', type: 'boolean', isIndexed: true },
+        { name: 'private_key', type: 'string', isOptional: true },
       ],
     }),
     tableSchema({
@@ -18,6 +19,7 @@ export const schema = appSchema({
         { name: 'description', type: 'string' },
         { name: 'url', type: 'string', isIndexed: true },
         { name: 'menu', type: 'string' },
+        { name: 'is_authorized', type: 'boolean', isOptional: true },
       ],
     }),
     tableSchema({

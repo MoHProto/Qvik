@@ -4,10 +4,7 @@ import {
   getMessageFormListInsetBottom,
   MessageForm,
 } from "components/message/MessageForm";
-import {
-  MessageButtonData,
-  MessageItemData,
-} from "components/message/messageItemShared";
+import { MessageItemData } from "components/message/messageItemShared";
 import { MessageList } from "components/message/MessageList";
 import { ThreadTitleButton } from "components/thread/ThreadTitleButton";
 import type { MenuItem } from "components/ui/MenuModal";
@@ -24,24 +21,6 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { StyleSheet, useUnistyles } from "react-native-unistyles";
 
 function buildMessageItemData(message: Message): MessageItemData {
-  const rawButtons = message.buttons;
-  const buttons: MessageButtonData[] = Array.isArray(rawButtons)
-    ? rawButtons
-        .filter(
-          (b): b is MessageButtonData =>
-            typeof b === "object" &&
-            b != null &&
-            "label" in b &&
-            "url" in b &&
-            typeof (b as { label?: unknown }).label === "string" &&
-            typeof (b as { url?: unknown }).url === "string",
-        )
-        .map((b) => ({
-          label: b.label,
-          url: b.url,
-        }))
-    : [];
-
   return {
     id: message.id,
     threadId: message.threadId,
@@ -49,24 +28,8 @@ function buildMessageItemData(message: Message): MessageItemData {
     body: message.body,
     timestamp: message.timestamp,
     isOutgoing: message.isOutgoing,
-    buttons,
+    buttons: message.buttons,
   };
-}
-
-function buildMenuItems(rawMenu: unknown): MenuItem[] {
-  return Array.isArray(rawMenu)
-    ? rawMenu
-        .filter(
-          (m): m is MenuItem =>
-            typeof m === "object" &&
-            m != null &&
-            "label" in m &&
-            "url" in m &&
-            typeof (m as { label?: unknown }).label === "string" &&
-            typeof (m as { url?: unknown }).url === "string",
-        )
-        .map((m) => ({ label: m.label, url: m.url }))
-    : [];
 }
 
 export default function MessageListScreen() {
@@ -79,8 +42,6 @@ export default function MessageListScreen() {
   const { data: thread } = useThreadOne(threadId);
   const { data: messages = [] } = useMessageList(threadId);
   const { mutateAsync: visitThread } = useThreadVisit(threadId);
-
-  const menuItems = useMemo(() => buildMenuItems(thread?.menu), [thread]);
 
   const listBottomInset = useMemo(
     () =>
@@ -152,7 +113,7 @@ export default function MessageListScreen() {
       <MessageForm
         onStartPress={handleStartPress}
         showMenuButton={messages.length > 0}
-        menu={menuItems}
+        menu={thread?.menu ?? []}
         onMenuItemPress={handleMenuItemPress}
       />
     </View>
