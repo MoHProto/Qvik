@@ -6,6 +6,7 @@ import {
   Pressable,
   Modal as RNModal,
   StyleSheet as RNStyleSheet,
+  Text,
   useWindowDimensions,
   View,
   type StyleProp,
@@ -14,6 +15,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 import type { PopupProps } from 'react-popup-manager';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 const DEFAULT_ANIM_MS = 240;
 
@@ -21,6 +23,20 @@ export type OverlaySheetModalRenderContext<TResult> = {
   /** Run close animation, hide modal, then `onClose(result)` for the popup manager. */
   finish: (result: TResult) => void;
 };
+
+export type OverlaySheetModalHeaderProps<TResult> = {
+  title: string;
+  /** Result to return when pressing close (default `null`). */
+  closeValue?: TResult;
+  /** a11y label for the close button. */
+  closeLabel?: string;
+  /** Optional trailing slot (e.g. action button). */
+  trailing?: (ctx: OverlaySheetModalRenderContext<TResult>) => React.ReactNode;
+};
+
+export type OverlaySheetModalHeader<TResult> =
+  | string
+  | OverlaySheetModalHeaderProps<TResult>;
 
 export type OverlaySheetModalProps<TResult = unknown> = PopupProps & {
   maxSheetHeight: number;
@@ -38,6 +54,8 @@ export type OverlaySheetModalProps<TResult = unknown> = PopupProps & {
   sheetSize?: 'intrinsic' | 'fill';
   /** Merged into the animated sheet container after base layout styles. */
   sheetStyle?: StyleProp<ViewStyle>;
+  /** Optional standardized sheet header (title + close). */
+  header?: OverlaySheetModalHeader<TResult>;
   children: (ctx: OverlaySheetModalRenderContext<TResult>) => React.ReactNode;
 };
 
@@ -55,6 +73,7 @@ export function OverlaySheetModal<TResult = unknown>({
   hardwareBackValue = null as TResult,
   sheetSize = 'intrinsic',
   sheetStyle,
+  header,
   children,
 }: OverlaySheetModalProps<TResult>) {
   const insets = useSafeAreaInsets();
@@ -148,7 +167,30 @@ export function OverlaySheetModal<TResult = unknown>({
       </Pressable>
 
       <Animated.View style={[styles.sheet, sheetLayoutStyle, sheetStyle, viewportCapStyle]}>
-        {children({ finish })}
+        {header ? (
+          <View style={styles.sheetHeader}>
+            <Text numberOfLines={1} style={styles.sheetTitle}>
+              {typeof header === 'string' ? header : header.title}
+            </Text>
+            <View style={styles.sheetHeaderActions}>
+              {typeof header === 'string' ? null : header.trailing ? header.trailing({ finish }) : null}
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel={typeof header === 'string' ? 'Close' : header.closeLabel ?? 'Close'}
+                hitSlop={12}
+                onPress={() =>
+                  finish(
+                    (typeof header === 'string' ? null : header.closeValue ?? null) as TResult,
+                  )
+                }
+                style={({ pressed }) => [styles.closeButton, pressed && styles.closeButtonPressed]}
+              >
+                <Ionicons name="close" size={18} color={theme.colors.text} />
+              </Pressable>
+            </View>
+          </View>
+        ) : null}
+        <View style={styles.content}>{children({ finish })}</View>
       </Animated.View>
     </View>
   );
@@ -211,10 +253,49 @@ const styles = StyleSheet.create((theme) => ({
     backgroundColor: theme.colors.surface,
     borderTopLeftRadius: theme.radius.sheet,
     borderTopRightRadius: theme.radius.sheet,
-    paddingTop: theme.spacing[2],
+    paddingTop: 0,
     borderWidth: RNStyleSheet.hairlineWidth,
     borderBottomWidth: 0,
     borderColor: theme.colors.border,
     overflow: 'hidden',
+  },
+  sheetHeader: {
+    zIndex: 2,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: theme.spacing[3],
+    paddingHorizontal: theme.spacing[4],
+    paddingTop: theme.spacing[3],
+    paddingBottom: theme.spacing[3],
+    backgroundColor: theme.colors.surface,
+  },
+  sheetHeaderActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    gap: theme.spacing[2],
+  },
+  sheetTitle: {
+    flex: 1,
+    minWidth: 0,
+    fontSize: 17,
+    fontWeight: '600',
+    color: theme.colors.text,
+    textAlign: 'left',
+  },
+  closeButton: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: theme.colors.incomingBubble,
+  },
+  closeButtonPressed: {
+    opacity: 0.65,
+  },
+  content: {
+    paddingTop: theme.spacing[2],
   },
 }));

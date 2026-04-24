@@ -52,7 +52,6 @@ export function MessageForm({
           onPress={() => {
             const { response } = popupManager.open(MenuModal, {
               data: menu,
-              onPress: onMenuItemPress,
             });
 
             response.then((result) => {

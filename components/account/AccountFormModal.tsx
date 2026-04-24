@@ -1,7 +1,6 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import React, { useCallback, useMemo } from 'react';
 import { Dimensions, Pressable, Text, View } from 'react-native';
-import { StyleSheet, useUnistyles } from 'react-native-unistyles';
+import { StyleSheet } from 'react-native-unistyles';
 import type { PopupProps } from 'react-popup-manager';
 
 import { OverlaySheetModal } from 'components/ui/OverlaySheetModal';
@@ -53,7 +52,6 @@ const AccountFormModalBody = React.memo(function AccountFormModalBody({
   formData,
   showSuccessToast,
 }: AccountFormModalBodyProps) {
-  const { theme } = useUnistyles();
   const notify = useNotifyToast();
   const { t } = useI18n();
 
@@ -77,21 +75,6 @@ const AccountFormModalBody = React.memo(function AccountFormModalBody({
 
   return (
     <>
-      <View style={styles.sheetHeader}>
-        <Text style={styles.sheetTitle} numberOfLines={1}>
-          {t('accountForm.title')}
-        </Text>
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={t('a11y.close')}
-          hitSlop={12}
-          onPress={() => finish(null)}
-          style={({ pressed }) => [styles.closeButton, pressed && styles.closeButtonPressed]}
-        >
-          <Ionicons name="close" size={18} color={theme.colors.text} />
-        </Pressable>
-      </View>
-
       <View style={[styles.formHost, { maxHeight: formMaxHeight }]}>
         <AccountForm data={formData} onSubmit={handleFormSubmit} centeredText />
       </View>
@@ -102,6 +85,7 @@ const AccountFormModalBody = React.memo(function AccountFormModalBody({
 export function AccountFormModal({ isOpen: _isOpen, onClose, data }: AccountFormModalProps) {
   const formData = useMemo(() => mergeInitial(data?.initialAccount), [data?.initialAccount]);
   const showSuccessToast = data?.showSuccessToast !== false;
+  const { t } = useI18n();
 
   return (
     <OverlaySheetModal<Account | null | undefined>
@@ -109,6 +93,7 @@ export function AccountFormModal({ isOpen: _isOpen, onClose, data }: AccountForm
       keyboardAvoiding
       onClose={onClose}
       sheetSize="intrinsic"
+      header={t('accountForm.title')}
     >
       {({ finish }) => (
         <AccountFormModalBody finish={finish} formData={formData} showSuccessToast={showSuccessToast} />
@@ -118,36 +103,6 @@ export function AccountFormModal({ isOpen: _isOpen, onClose, data }: AccountForm
 }
 
 const styles = StyleSheet.create((theme) => ({
-  sheetHeader: {
-    zIndex: 2,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: theme.spacing[3],
-    paddingHorizontal: theme.spacing[4],
-    paddingTop: theme.spacing[3],
-    paddingBottom: theme.spacing[2],
-    backgroundColor: theme.colors.surface,
-  },
-  sheetTitle: {
-    flex: 1,
-    minWidth: 0,
-    fontSize: 17,
-    fontWeight: '600',
-    color: theme.colors.text,
-    textAlign: 'left',
-  },
-  closeButton: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: theme.colors.incomingBubble,
-  },
-  closeButtonPressed: {
-    opacity: 0.65,
-  },
   formHost: {
     minHeight: 0,
     flexShrink: 1,

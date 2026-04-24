@@ -18,7 +18,6 @@ export type MessageBubbleVariant = "incoming" | "outgoing";
 
 export type MessageBubbleData = {
   text: string;
-  /** Pre-formatted time under the bubble (omit when hidden, e.g. pending). */
   time?: string;
 };
 
@@ -29,9 +28,7 @@ export type MessageBubbleButton =
 export type MessageBubbleProps = {
   data: MessageBubbleData;
   variant: MessageBubbleVariant;
-  /** Incoming: treat body as failed / show error styling when true. */
   error?: boolean;
-  /** Loading dots instead of body text (incoming or outgoing). */
   pending?: boolean;
   buttons?: MessageBubbleButton[];
   onButtonPress?: (

@@ -1,4 +1,3 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import {
   emojiData,
   EmojiPicker as LibraryEmojiPicker,
@@ -81,24 +80,10 @@ export function EmojiPickerModal({ isOpen: _isOpen, onClose, data }: EmojiPicker
       maxSheetHeight={maxSheetHeight}
       onClose={onClose}
       sheetSize="fill"
+      header={title}
     >
       {({ finish }) => (
         <>
-          <View style={styles.sheetHeader}>
-            <Text style={styles.sheetTitle} numberOfLines={1}>
-              {title}
-            </Text>
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel="Close"
-              hitSlop={12}
-              onPress={() => finish(null)}
-              style={({ pressed }) => [styles.closeButton, pressed && styles.closeButtonPressed]}
-            >
-              <Ionicons name="close" size={18} color={theme.colors.text} />
-            </Pressable>
-          </View>
-
           <View style={[styles.pickerHost, { minHeight: pickerMinHeight }]}>
             <LibraryEmojiPicker
               emojis={EMOJIS}
@@ -122,36 +107,6 @@ export function EmojiPickerModal({ isOpen: _isOpen, onClose, data }: EmojiPicker
 }
 
 const styles = StyleSheet.create((theme) => ({
-  sheetHeader: {
-    zIndex: 2,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: theme.spacing[3],
-    paddingHorizontal: theme.spacing[4],
-    paddingTop: theme.spacing[3],
-    paddingBottom: theme.spacing[2],
-    backgroundColor: theme.colors.surface,
-  },
-  sheetTitle: {
-    flex: 1,
-    minWidth: 0,
-    fontSize: 17,
-    fontWeight: '600',
-    color: theme.colors.text,
-    textAlign: 'left',
-  },
-  closeButton: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: theme.colors.incomingBubble,
-  },
-  closeButtonPressed: {
-    opacity: 0.65,
-  },
   pickerHost: {
     flex: 1,
     minHeight: 0,
