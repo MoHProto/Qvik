@@ -9,7 +9,6 @@ export type MessageCreateParams = {
   body: string;
   status: MessageStatus;
   isOutgoing: boolean;
-  /** When omitted, uses `Date.now()` (visit flow sets this so rows sort after the paired outgoing message). */
   timestamp?: number;
 };
 
