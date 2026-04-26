@@ -71,6 +71,7 @@ export function MessageBubble({
 }: MessageBubbleProps) {
   const { theme } = useUnistyles();
   const bubble = useIosLikeBubblePalette();
+  const hasTime = !pending && data.time != null && data.time.length > 0;
 
   if (variant === "outgoing") {
     return (
@@ -83,12 +84,14 @@ export function MessageBubble({
               { backgroundColor: bubble.outgoingBubble },
             ]}
           >
-            {pending ? (
-              <JumpingDots dotColor="rgba(255,255,255,0.9)" />
-            ) : (
-              <Text style={styles.outgoingBubbleText}>{data.text}</Text>
-            )}
-            {data.time != null && data.time.length > 0 ? (
+            <View style={[styles.bubbleContent, hasTime && styles.bubbleContentWithTime]}>
+              {pending ? (
+                <JumpingDots dotColor="rgba(255,255,255,0.9)" />
+              ) : (
+                <Text style={styles.outgoingBubbleText}>{data.text}</Text>
+              )}
+            </View>
+            {hasTime ? (
               <Text
                 style={[
                   styles.bubbleTime,
@@ -120,14 +123,16 @@ export function MessageBubble({
             error && styles.incomingBubbleError,
           ]}
         >
-          {pending ? (
-            <JumpingDots />
-          ) : error ? (
-            <Text style={styles.errorText}>{data.text}</Text>
-          ) : (
-            <MessageBody markdown={data.text} />
-          )}
-          {!pending && data.time != null && data.time.length > 0 ? (
+          <View style={[styles.bubbleContent, hasTime && styles.bubbleContentWithTime]}>
+            {pending ? (
+              <JumpingDots />
+            ) : error ? (
+              <Text style={styles.errorText}>{data.text}</Text>
+            ) : (
+              <MessageBody markdown={data.text} />
+            )}
+          </View>
+          {hasTime ? (
             <Text
               style={[
                 styles.bubbleTime,
@@ -172,11 +177,11 @@ const styles = StyleSheet.create((theme) => ({
   },
   bubbleOuterOutgoing: {
     position: "relative",
-    alignSelf: "stretch",
+    alignSelf: "flex-end",
   },
   bubbleOuterIncoming: {
     position: "relative",
-    alignSelf: "stretch",
+    alignSelf: "flex-start",
   },
   bubbleShadow: {
     ...Platform.select({
@@ -197,8 +202,10 @@ const styles = StyleSheet.create((theme) => ({
   outgoingBubble: {
     paddingHorizontal: theme.spacing[4],
     paddingTop: theme.spacing[3],
-    paddingBottom: theme.spacing[2],
+    // Reserve space for the timestamp (positioned absolute).
+    paddingBottom: theme.spacing[4],
     borderRadius: 18,
+    position: "relative",
   },
   outgoingBubbleText: {
     fontSize: 15,
@@ -212,20 +219,31 @@ const styles = StyleSheet.create((theme) => ({
     backgroundColor: theme.colors.surface,
     paddingHorizontal: theme.spacing[4],
     paddingTop: theme.spacing[3],
-    paddingBottom: theme.spacing[2],
+    // Reserve space for the timestamp (positioned absolute).
+    paddingBottom: theme.spacing[4],
     borderRadius: 18,
+    position: "relative",
+  },
+  bubbleContent: {
+    minWidth: 0,
+  },
+  bubbleContentWithTime: {
+    // Prevent last line from flowing underneath the absolute timestamp.
+    paddingRight: theme.spacing[6],
   },
   bubbleTime: {
     fontSize: 10,
     lineHeight: 12,
-    marginTop: theme.spacing[1],
     color: theme.colors.muted,
+    position: "absolute",
+    bottom: theme.spacing[2],
   },
   bubbleTimeOutgoing: {
-    alignSelf: "flex-end",
+    right: theme.spacing[4],
   },
   bubbleTimeIncoming: {
-    alignSelf: "flex-start",
+    // Keep timestamp away from the left tail.
+    right: theme.spacing[4],
   },
   incomingBubbleError: {
     backgroundColor: theme.colors.incomingBubbleError,
