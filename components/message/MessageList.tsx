@@ -42,8 +42,13 @@ export function MessageList({
         inverted={hasMessages}
         data={listData}
         keyExtractor={(item) => item.id ?? `message-${Date.now()}`}
-        renderItem={({ item }) => (
-          <MessageItem data={item} onRetry={onRetry} onVisit={onVisit} />
+        renderItem={({ item, index }) => (
+          <MessageItem
+            data={item}
+            showButtons={index === 0}
+            onRetry={onRetry}
+            onVisit={onVisit}
+          />
         )}
         ListEmptyComponent={
           <View style={styles.emptyWrap}>

@@ -30,7 +30,7 @@ export const uk: Record<string, string> = {
   'messageList.empty': 'У цьому треді немає повідомлень.',
   'messageList.startPress': 'Почати',
   'messageForm.startPress': 'Почати',
-  'messageForm.replyPlaceholder': 'Повідомлення',
+  'messageForm.replyTextPlaceholder': 'Напишіть відповідь',
   'a11y.menu': 'Меню',
   'a11y.sendMessage': 'Надіслати',
   'search.title': 'Пошук',

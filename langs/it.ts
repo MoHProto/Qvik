@@ -30,7 +30,7 @@ export const it: Record<string, string> = {
   'messageList.empty': 'Nessun messaggio in questo thread.',
   'messageList.startPress': 'Avvia',
   'messageForm.startPress': 'Avvia',
-  'messageForm.replyPlaceholder': 'Messaggio',
+  'messageForm.replyTextPlaceholder': 'Scrivi una risposta',
   'a11y.menu': 'Menu',
   'a11y.sendMessage': 'Invia',
   'search.title': 'Cerca',

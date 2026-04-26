@@ -30,7 +30,7 @@ export const nl: Record<string, string> = {
   'messageList.empty': 'Geen berichten in deze thread.',
   'messageList.startPress': 'Start',
   'messageForm.startPress': 'Start',
-  'messageForm.replyPlaceholder': 'Bericht',
+  'messageForm.replyTextPlaceholder': 'Schrijf een antwoord',
   'a11y.menu': 'Menu',
   'a11y.sendMessage': 'Verzenden',
   'search.title': 'Zoeken',

@@ -30,7 +30,7 @@ export const fr: Record<string, string> = {
   'messageList.empty': 'Aucun message dans ce fil.',
   'messageList.startPress': 'Démarrer',
   'messageForm.startPress': 'Démarrer',
-  'messageForm.replyPlaceholder': 'Message',
+  'messageForm.replyTextPlaceholder': 'Écrire une réponse',
   'a11y.menu': 'Menu',
   'a11y.sendMessage': 'Envoyer',
   'search.title': 'Recherche',

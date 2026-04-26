@@ -30,7 +30,7 @@ export const ar: Record<string, string> = {
   'messageList.empty': 'لا توجد رسائل في هذه السلسلة.',
   'messageList.startPress': 'ابدأ',
   'messageForm.startPress': 'ابدأ',
-  'messageForm.replyPlaceholder': 'رسالة',
+  'messageForm.replyTextPlaceholder': 'اكتب ردًا',
   'a11y.menu': 'القائمة',
   'a11y.sendMessage': 'إرسال',
   'search.title': 'بحث',

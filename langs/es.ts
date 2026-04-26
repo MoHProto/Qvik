@@ -30,7 +30,7 @@ export const es: Record<string, string> = {
   'messageList.empty': 'No hay mensajes en este hilo.',
   'messageList.startPress': 'Iniciar',
   'messageForm.startPress': 'Iniciar',
-  'messageForm.replyPlaceholder': 'Mensaje',
+  'messageForm.replyTextPlaceholder': 'Escribe una respuesta',
   'a11y.menu': 'Menú',
   'a11y.sendMessage': 'Enviar',
   'search.title': 'Buscar',

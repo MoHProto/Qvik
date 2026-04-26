@@ -30,7 +30,7 @@ export const uz: Record<string, string> = {
   'messageList.empty': 'Bu mavzuda xabarlar yo‘q.',
   'messageList.startPress': 'Boshlash',
   'messageForm.startPress': 'Boshlash',
-  'messageForm.replyPlaceholder': 'Xabar',
+  'messageForm.replyTextPlaceholder': 'Javob yozing',
   'a11y.menu': 'Menyu',
   'a11y.sendMessage': 'Yuborish',
   'search.title': 'Qidirish',

@@ -84,7 +84,12 @@ export function MessageBubble({
               { backgroundColor: bubble.outgoingBubble },
             ]}
           >
-            <View style={[styles.bubbleContent, hasTime && styles.bubbleContentWithTime]}>
+            <View
+              style={[
+                styles.bubbleContent,
+                hasTime && styles.bubbleContentWithTime,
+              ]}
+            >
               {pending ? (
                 <JumpingDots dotColor="rgba(255,255,255,0.9)" />
               ) : (
@@ -123,7 +128,12 @@ export function MessageBubble({
             error && styles.incomingBubbleError,
           ]}
         >
-          <View style={[styles.bubbleContent, hasTime && styles.bubbleContentWithTime]}>
+          <View
+            style={[
+              styles.bubbleContent,
+              hasTime && styles.bubbleContentWithTime,
+            ]}
+          >
             {pending ? (
               <JumpingDots />
             ) : error ? (
@@ -264,6 +274,8 @@ const styles = StyleSheet.create((theme) => ({
     paddingVertical: theme.spacing[2],
     paddingHorizontal: theme.spacing[3],
     backgroundColor: theme.colors.surface,
+    borderWidth: 1,
+    borderColor: theme.colors.primary,
     borderRadius: theme.radius.pill,
   },
   buttonPressed: {

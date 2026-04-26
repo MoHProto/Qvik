@@ -26,6 +26,7 @@ export type MessageItemData = {
 
 export type MessageItemProps = {
   data: MessageItemData;
+  showButtons?: boolean;
   onRetry?: (item: MessageItemData) => void;
   onVisit?: (button: MessageButtonData, item: MessageItemData) => void;
 };

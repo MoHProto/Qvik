@@ -30,7 +30,7 @@ export const kk: Record<string, string> = {
   'messageList.empty': 'Бұл тредте хабарламалар жоқ.',
   'messageList.startPress': 'Бастау',
   'messageForm.startPress': 'Бастау',
-  'messageForm.replyPlaceholder': 'Хабарлама',
+  'messageForm.replyTextPlaceholder': 'Жауап жазыңыз',
   'a11y.menu': 'Мәзір',
   'a11y.sendMessage': 'Жіберу',
   'search.title': 'Іздеу',

@@ -30,7 +30,7 @@ export const tr: Record<string, string> = {
   'messageList.empty': 'Bu akışta mesaj yok.',
   'messageList.startPress': 'Başlat',
   'messageForm.startPress': 'Başlat',
-  'messageForm.replyPlaceholder': 'İleti',
+  'messageForm.replyTextPlaceholder': 'Yanıt yaz',
   'a11y.menu': 'Menü',
   'a11y.sendMessage': 'Gönder',
   'search.title': 'Ara',

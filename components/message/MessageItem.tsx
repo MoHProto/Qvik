@@ -8,7 +8,12 @@ import { formatBubbleTime, type MessageItemProps } from "./messageItemShared";
 
 export type { MessageItemData, MessageItemProps } from "./messageItemShared";
 
-export function MessageItem({ data, onRetry, onVisit }: MessageItemProps) {
+export function MessageItem({
+  data,
+  showButtons = false,
+  onRetry,
+  onVisit,
+}: MessageItemProps) {
   const isPending = data.status === "pending";
   const isError = data.status === "error";
   const showPending = useMinimumPendingDisplay(data.id, isPending, isError);
@@ -55,7 +60,7 @@ export function MessageItem({ data, onRetry, onVisit }: MessageItemProps) {
         }}
         error={isError}
         pending={showPending}
-        buttons={buttons}
+        buttons={showButtons ? buttons : []}
         onButtonPress={(button) => {
           if (button.type === "visit") {
             onVisit?.({ url: button.url, label: button.label }, data);

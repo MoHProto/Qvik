@@ -30,7 +30,7 @@ export const fa: Record<string, string> = {
   'messageList.empty': 'در این رشته پیامی وجود ندارد.',
   'messageList.startPress': 'شروع',
   'messageForm.startPress': 'شروع',
-  'messageForm.replyPlaceholder': 'پیام',
+  'messageForm.replyTextPlaceholder': 'پاسخ بنویسید',
   'a11y.menu': 'منو',
   'a11y.sendMessage': 'ارسال',
   'search.title': 'جستجو',

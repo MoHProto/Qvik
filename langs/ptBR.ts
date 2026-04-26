@@ -30,7 +30,7 @@ export const ptBR: Record<string, string> = {
   'messageList.empty': 'Nenhuma mensagem nesta thread.',
   'messageList.startPress': 'Iniciar',
   'messageForm.startPress': 'Iniciar',
-  'messageForm.replyPlaceholder': 'Mensagem',
+  'messageForm.replyTextPlaceholder': 'Escreva uma resposta',
   'a11y.menu': 'Menu',
   'a11y.sendMessage': 'Enviar',
   'search.title': 'Buscar',

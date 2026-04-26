@@ -129,14 +129,14 @@ export function MessageForm({
               {({ values, handleChange, handleBlur, handleSubmit }) => (
                 <View style={styles.replyCluster}>
                   <TextInput
-                    accessibilityLabel={t("messageForm.replyPlaceholder")}
+                    accessibilityLabel={t("messageForm.replyTextPlaceholder")}
                     autoCapitalize="sentences"
                     autoCorrect
                     editable={!visitInFlight}
                     onBlur={handleBlur("replyText")}
                     onChangeText={handleChange("replyText")}
                     onSubmitEditing={() => handleSubmit()}
-                    placeholder={t("messageForm.replyPlaceholder")}
+                    placeholder={t("messageForm.replyTextPlaceholder")}
                     placeholderTextColor={theme.colors.muted}
                     returnKeyType="send"
                     style={styles.replyField}

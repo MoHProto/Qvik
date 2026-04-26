@@ -30,7 +30,7 @@ export const ru: Record<string, string> = {
   'messageList.empty': 'В этом треде нет сообщений.',
   'messageList.startPress': 'Начать',
   'messageForm.startPress': 'Начать',
-  'messageForm.replyPlaceholder': 'Сообщение',
+  'messageForm.replyTextPlaceholder': 'Напишите ответ',
   'a11y.menu': 'Меню',
   'a11y.sendMessage': 'Отправить',
   'search.title': 'Поиск',
