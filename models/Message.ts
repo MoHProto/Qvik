@@ -12,6 +12,7 @@ export class Message extends Model {
   @field("status") status!: MessageStatus;
   @field("is_outgoing") isOutgoing!: boolean;
   @field("buttons") private buttonsRaw!: string;
+  @field("path") path?: string;
 
   get buttons(): { label: string; url: string }[] {
     try {

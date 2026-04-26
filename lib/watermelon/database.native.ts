@@ -3,11 +3,13 @@ import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
 
 import { modelClasses } from 'models';
 
+import { migrateMessagesPathColumnBeforeAdapter } from './migrateMessagesPathColumn';
 import { migrateThreadsTableUrlColumnBeforeAdapter } from './migrateThreadsTableUrlColumn';
 import { migrations } from './migrations';
 import { schema } from './schema';
 
 migrateThreadsTableUrlColumnBeforeAdapter();
+migrateMessagesPathColumnBeforeAdapter();
 
 const adapter = new SQLiteAdapter({
   schema,

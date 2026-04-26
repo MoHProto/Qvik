@@ -9,6 +9,8 @@ export type MessageCreateParams = {
   body: string;
   status: MessageStatus;
   isOutgoing: boolean;
+  /** When omitted, uses `Date.now()` (visit flow sets this so rows sort after the paired outgoing message). */
+  timestamp?: number;
 };
 
 export type MessageUpdateParams = {
@@ -17,6 +19,7 @@ export type MessageUpdateParams = {
   status?: MessageStatus;
   isOutgoing?: boolean;
   buttons?: unknown;
+  path?: string | null;
 };
 
 export class MessageService {
@@ -29,7 +32,11 @@ export class MessageService {
   async listByThread(threadId: string): Promise<Message[]> {
     return this.db
       .get<Message>("messages")
-      .query(Q.where("thread_id", threadId), Q.sortBy("timestamp", Q.asc))
+      .query(
+        Q.where("thread_id", threadId),
+        Q.sortBy("timestamp", Q.asc),
+        Q.sortBy("id", Q.asc),
+      )
       .fetch();
   }
 
@@ -38,7 +45,7 @@ export class MessageService {
       return this.db.get<Message>("messages").create((message) => {
         message.threadId = params.threadId;
         message.body = params.body;
-        message.timestamp = new Date().getTime();
+        message.timestamp = params.timestamp ?? Date.now();
         message.status = params.status;
         message.isOutgoing = params.isOutgoing;
       });
@@ -63,6 +70,9 @@ export class MessageService {
         }
         if (params.buttons !== undefined) {
           message.buttons = params.buttons as { label: string; url: string }[];
+        }
+        if (params.path !== undefined) {
+          message.path = params.path ?? undefined;
         }
       });
     });

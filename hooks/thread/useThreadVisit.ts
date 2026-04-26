@@ -47,14 +47,26 @@ export function useThreadVisit(threadId: string | null | undefined) {
   const { mutateAsync: updateThread } = useThreadUpdate();
 
   return useMutation({
-    mutationFn: async (variables: { path: string; body?: string }) => {
+    mutationFn: async (variables: {
+      path: string;
+      body?: string;
+      queryInput?: string;
+    }) => {
       if (!thread) {
         throw new Error("Thread not found");
       }
 
       const pathText = variables.body ?? variables.path;
+      const trimmedQuery = variables.queryInput?.trim();
+      const requestPayload = {
+        path: variables.path,
+        ...(trimmedQuery ? { input: trimmedQuery } : {}),
+      };
 
-      await createMessage({
+      const inputStatusPatch = (status: MessageStatus) =>
+        status === "input" ? { path: variables.path } : {};
+
+      const outgoing = await createMessage({
         threadId: thread.id,
         body: pathText,
         status: "input",
@@ -66,12 +78,11 @@ export function useThreadVisit(threadId: string | null | undefined) {
         body: "",
         status: "pending",
         isOutgoing: false,
+        timestamp: outgoing.timestamp + 1,
       });
 
       try {
-        const response = await plainClient.request({
-          path: variables.path,
-        });
+        const response = await plainClient.request(requestPayload);
 
         if (response.status === "unauthorized") {
           const ok = await confirmAuthorizeWebsite({
@@ -89,11 +100,7 @@ export function useThreadVisit(threadId: string | null | undefined) {
               account?.privateKey ?? null,
             );
 
-            console.log("signedClient", signedClient);
-
-            const signedResponse = await signedClient.request({
-              path: variables.path,
-            });
+            const signedResponse = await signedClient.request(requestPayload);
 
             const signedMetadata = signedResponse.metadata ?? {};
             const signedTitle =
@@ -113,11 +120,13 @@ export function useThreadVisit(threadId: string | null | undefined) {
               menu: signedResponse.menu,
             });
 
+            const signedStatus = signedResponse.status as MessageStatus;
             await updateMessage({
               id: pending.id,
-              status: signedResponse.status as MessageStatus,
+              status: signedStatus,
               body: signedResponse.body ?? t("error.unknown"),
               buttons: signedResponse.buttons,
+              ...inputStatusPatch(signedStatus),
             });
 
             return signedResponse;
@@ -141,11 +150,13 @@ export function useThreadVisit(threadId: string | null | undefined) {
           menu: response.menu,
         });
 
+        const resStatus = response.status as MessageStatus;
         await updateMessage({
           id: pending.id,
-          status: response.status as MessageStatus,
+          status: resStatus,
           body: response.body ?? t("error.unknown"),
           buttons: response.buttons,
+          ...inputStatusPatch(resStatus),
         });
 
         return response;

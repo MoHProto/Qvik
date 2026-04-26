@@ -195,5 +195,13 @@ export const migrations = schemaMigrations({
         ),
       ],
     },
+    {
+      toVersion: 17,
+      steps: [
+        // `path` is added in `migrateMessagesPathColumnBeforeAdapter` so broken v17 DBs get the
+        // column without a duplicate ALTER when upgrading from v16 (pre-migration runs first).
+        unsafeExecuteSql('SELECT 1;'),
+      ],
+    },
   ],
 });

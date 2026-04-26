@@ -41,7 +41,33 @@ export default function MessageListScreen() {
   const { threadId } = useLocalSearchParams<{ threadId: string }>();
   const { data: thread } = useThreadOne(threadId);
   const { data: messages = [] } = useMessageList(threadId);
-  const { mutateAsync: visitThread } = useThreadVisit(threadId);
+  const {
+    mutateAsync: visitThread,
+    isPending: visitInFlight,
+  } = useThreadVisit(threadId);
+
+  const replyComposer = useMemo(() => {
+    if (messages.length === 0) {
+      return null;
+    }
+    let i = messages.length - 1;
+    while (i >= 0 && messages[i].isOutgoing) {
+      i--;
+    }
+    if (i < 0) {
+      return null;
+    }
+    const incoming = messages[i];
+    if (incoming.status !== "input") {
+      return null;
+    }
+    const path =
+      typeof incoming.path === "string" ? incoming.path.trim() : "";
+    if (!path) {
+      return null;
+    }
+    return { path, key: incoming.id };
+  }, [messages]);
 
   const listBottomInset = useMemo(
     () =>
@@ -68,6 +94,23 @@ export default function MessageListScreen() {
       visitThread({ path: button.url, body: button.label });
     },
     [visitThread],
+  );
+
+  const replyPath = replyComposer?.path;
+  const replyComposerKey = replyComposer?.key;
+
+  const handleSendReply = useCallback(
+    async (text: string) => {
+      if (!replyPath) {
+        return;
+      }
+      await visitThread({
+        path: replyPath,
+        body: text,
+        queryInput: text,
+      });
+    },
+    [visitThread, replyPath],
   );
 
   useLayoutEffect(() => {
@@ -115,6 +158,10 @@ export default function MessageListScreen() {
         showMenuButton={messages.length > 0}
         menu={thread?.menu ?? []}
         onMenuItemPress={handleMenuItemPress}
+        replyPath={replyPath}
+        replyComposerKey={replyComposerKey}
+        onSendReply={handleSendReply}
+        visitInFlight={visitInFlight}
       />
     </View>
   );
